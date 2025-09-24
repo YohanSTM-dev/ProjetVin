@@ -1,37 +1,51 @@
 ﻿using ProjetCaveVin.Model;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ProjetCaveVin.Model;
-using System;
-using System.Data;
+using System.Data; 
 using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 
 namespace ProjetCaveVin.Helpers
 {
-    public static class DatabaseConnexion
+    public class DatabaseConnexion 
     {
+        private SqlConnection _connection;
 
-        public static bool TestConnexion(Connexion c)
+        public DatabaseConnexion(Connexion connexion)
+        {
+            _connection = new SqlConnection(connexion.ToString());
+        }
+
+        public DatabaseConnexion(string connectionString)
+        {
+            _connection = new SqlConnection(connectionString);
+        }
+
+        public void Open()
+        {
+            if (_connection.State != ConnectionState.Open)
+                _connection.Open();
+        }
+
+        public bool IsOpenConnected()
         {
             try
             {
-                using(SqlConnection connection = new SqlConnection(c.ToString()))
-                {
-                    connection.Open();
-                    Console.Write("Connexion réussie");
-                    return true;
-                }
+                if (_connection.State != ConnectionState.Open)
+                    _connection.Open();
 
+                return true;
             }
             catch (Exception ex)
             {
-                Console.Write($"Erreur de connexion: {ex.Message}");
+                Console.WriteLine("Problème de connexion : " + ex.Message);
                 return false;
             }
         }
+
+        public void Close()
+        {
+            if (_connection.State != ConnectionState.Closed)
+                _connection.Close();
+        }
     }
 }
-     

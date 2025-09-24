@@ -7,9 +7,8 @@ using System.Windows.Input;
 
 namespace ProjetCaveVin.Helpers
 {
-     public class RelayCommand : ICommand
+    public class RelayCommand : ICommand
     {
-
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 
@@ -21,8 +20,8 @@ namespace ProjetCaveVin.Helpers
 
         public event EventHandler CanExecuteChanged
         {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
         }
 
         public bool CanExecute(object parameter) => _canExecute == null || _canExecute();

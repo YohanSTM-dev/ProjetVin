@@ -7,29 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <Window.DataContext>
-        <local:BoutielleViewModel/>
-    </Window.DataContext>
+    <Grid Margin="20">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="Tester la connexion" Width="200" Height="40" Command="{Binding TestConnexionCommand}" Click="Button_Click_1" />
 
-    <StackPanel Margin="20">
-        <TextBlock Text="Nom de la bouteille :" />
-        <TextBox Text="{Binding Nom, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
-
-        <TextBlock Text="Millésime :" />
-        <TextBox Text="{Binding Millesime, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
-
-        <Button Content="Ajouter Bouteille" Command="{Binding AjouterBouteilleCommand}" Margin="0,10"/>
-
-        <ListBox ItemsSource="{Binding Bouteilles}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Id}" Width="30"/>
-                        <TextBlock Text="{Binding Nom}" Width="200"/>
-                        <TextBlock Text="{Binding Millesime}" Width="100"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </StackPanel>
+            <!-- TextBox en lecture seule pour afficher le résultat -->
+            <TextBox Text="{Binding Resultat}" Margin="0,20,0,0" FontSize="16" 
+             TextAlignment="Center" IsReadOnly="True"/>
+        </StackPanel>
+    </Grid>
 </Window>

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks
 
 namespace ProjetCaveVin.Model
 {
@@ -10,25 +6,31 @@ namespace ProjetCaveVin.Model
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public int Port { get; set; } = 1433;
-        public string Host { get; set; }
-        public string Database { get; set; }
+        public string Host { get; set; }          // Exemple : "172.16.119.42"
+        public string Database { get; set; }      // Exemple : "restaurant"
+        public string Instance { get; set; }      // Exemple : "SQLEXPRESS02"
+        public int Port { get; set; } = 1433;     // Port par défaut SQL Server
+
         public Connexion() { }
 
-        public Connexion(string username, string password, int port, string host, string database)
+        public Connexion(string username, string password, string host, string database, string instance = "SQLEXPRESS02", int port = 1433)
         {
             Username = username;
             Password = password;
-            Port = port;
             Host = host;
             Database = database;
-            SqlConnexion dl = new SqlConnexion(this);
+            Instance = instance;
+            Port = port;
         }
 
         public override string ToString()
         {
-            return $"Server={Host};Port={Port};Database={Database};User Id={Username};Password={Password};";
-        }
+            // Chaîne complète de connexion SQL Server
+            string serverPart = string.IsNullOrEmpty(Instance) ? Host : $"{Host}\\{Instance}";
+            if (Port != 1433)
+                serverPart += $",{Port}";
 
+            return $"Server={serverPart};Database={Database};User Id={Username};Password={Password};Encrypt=False;";
+        }
     }
 }
