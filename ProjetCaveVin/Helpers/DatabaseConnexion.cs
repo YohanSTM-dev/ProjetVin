@@ -47,5 +47,13 @@ namespace ProjetCaveVin.Helpers
             if (_connection.State != ConnectionState.Closed)
                 _connection.Close();
         }
+
+        public int Execute(string query)
+        {
+            using (SqlCommand command = new SqlCommand(query, _connection))
+            {
+                return command.ExecuteNonQuery();
+            }
+        }
     }
 }

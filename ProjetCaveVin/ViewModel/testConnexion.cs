@@ -25,14 +25,19 @@ namespace ProjetCaveVin.ViewModel
         {
             try
             {
-                string connectionString = @"Server=172.16.119.41\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
+                string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
 
                 var db = new DatabaseConnexion(connectionString);
-
+                var req = "INSERT INTO Cave (id_cave, Type) VALUES\r\n(1, 'Vin Rouge'),\r\n(2, 'Vin Blanc');";
                 db.Open();
 
                 if (db.IsOpenConnected())
+                {
                     Resultat = "Connexion SQL Server OK !";
+                    db.Execute(req);
+                }
+
+
                 else
                     Resultat = "Erreur de connexion à la base !";
 
