@@ -3,12 +3,14 @@ using System;
 using System.Data; 
 using Microsoft.Data.SqlClient;
 using System.Data.SqlClient;
+using System.IO.Packaging;
 
-namespace ProjetCaveVin.Helpers
+namespace ProjetCaveVin.Model.Connexion
 {
     public class DatabaseConnexion 
     {
         private SqlConnection _connection;
+        public string CommandText { get; internal set; }
 
         public DatabaseConnexion(Connexion connexion)
         {
@@ -55,5 +57,24 @@ namespace ProjetCaveVin.Helpers
                 return command.ExecuteNonQuery();
             }
         }
+
+        public SqlCommand createCommand()
+        {
+            return _connection.CreateCommand();
+        }
+
+        public SqlDataReader ExecuteReader(string query)
+        {
+            using (SqlCommand command = new SqlCommand(query, _connection))
+            {
+                return command.ExecuteReader();
+            }
+        }
+
+        public string GetConnectionString()
+        {
+            return _connection.ConnectionString;
+        }
     }
+
 }
