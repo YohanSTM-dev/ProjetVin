@@ -7,13 +7,32 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <Grid Margin="20">
+    <Grid Margin="20,21,20,19">
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Content="Tester la connexion" Width="200" Height="40" Command="{Binding TestConnexionCommand}" Click="Button_Click_1" />
 
             <!-- TextBox en lecture seule pour afficher le résultat -->
             <TextBox Text="{Binding Resultat}" Margin="0,20,0,0" FontSize="16" 
              TextAlignment="Center" IsReadOnly="True"/>
+
+        </StackPanel>
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,260,0,0">
+
+            <Button Content="Tester la connexion utilisateur" Width="200" Height="40" Command="{Binding TestConnexionUtilisateurCommand}" />
+
+            <TextBox Text="{Binding ResultatUtilisateur}" FontSize="16" 
+            TextAlignment="Center" IsReadOnly="True" RenderTransformOrigin="0.497,0.56" Height="46" Width="204">
+                <TextBox.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleX="2.265"/>
+                        <RotateTransform Angle="-0.12"/>
+                        <TranslateTransform X="0.516"/>
+                    </TransformGroup>
+                </TextBox.RenderTransform>
+            </TextBox>
+
+            <!-- TextBox en lecture seule pour afficher le résultat -->
         </StackPanel>
     </Grid>
 </Window>

@@ -1,16 +1,13 @@
-﻿using ProjetCaveVin.Model;
-using System;
-using System.Data; 
+﻿using System;
+using System.Data;
 using Microsoft.Data.SqlClient;
-using System.Data.SqlClient;
-using System.IO.Packaging;
 
 namespace ProjetCaveVin.Model.Connexion
 {
     public class DatabaseConnexion 
     {
-        private SqlConnection _connection;
-        public string CommandText { get; internal set; }
+        private readonly SqlConnection _connection;
+        public SqlConnection Connection => _connection; // accès direct
 
         public DatabaseConnexion(Connexion connexion)
         {
@@ -34,7 +31,6 @@ namespace ProjetCaveVin.Model.Connexion
             {
                 if (_connection.State != ConnectionState.Open)
                     _connection.Open();
-
                 return true;
             }
             catch (Exception ex)
@@ -43,7 +39,6 @@ namespace ProjetCaveVin.Model.Connexion
                 return false;
             }
         }
-
         public void Close()
         {
             if (_connection.State != ConnectionState.Closed)
@@ -52,23 +47,21 @@ namespace ProjetCaveVin.Model.Connexion
 
         public int Execute(string query)
         {
-            using (SqlCommand command = new SqlCommand(query, _connection))
+            using (var command = new SqlCommand(query, _connection))
             {
                 return command.ExecuteNonQuery();
             }
         }
 
-        public SqlCommand createCommand()
-        {
-            return _connection.CreateCommand();
-        }
-
         public SqlDataReader ExecuteReader(string query)
         {
-            using (SqlCommand command = new SqlCommand(query, _connection))
-            {
-                return command.ExecuteReader();
-            }
+            var command = new SqlCommand(query, _connection);
+            return command.ExecuteReader();
+        }
+
+        public SqlCommand CreateCommand()
+        {
+            return _connection.CreateCommand();
         }
 
         public string GetConnectionString()
@@ -76,5 +69,4 @@ namespace ProjetCaveVin.Model.Connexion
             return _connection.ConnectionString;
         }
     }
-
 }

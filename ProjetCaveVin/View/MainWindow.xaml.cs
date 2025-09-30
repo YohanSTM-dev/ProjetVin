@@ -14,6 +14,7 @@ namespace ProjetCaveVin.View
             InitializeComponent();
 
            DataContext = new testConnexion();
+           
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -22,6 +23,11 @@ namespace ProjetCaveVin.View
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Test_Connexion_Utilisateur(object sender, RoutedEventArgs e)
         {
 
         }

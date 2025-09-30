@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ProjetCaveVin.Model
+namespace ProjetCaveVin.Model.Connexion
 {
     public class Connexion
     {
