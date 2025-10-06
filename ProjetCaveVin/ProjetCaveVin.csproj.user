@@ -7,15 +7,33 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\AdministrateurWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\LoginWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ServeurWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\SommelierWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\AdministrateurWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ServeurWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\SommelierWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

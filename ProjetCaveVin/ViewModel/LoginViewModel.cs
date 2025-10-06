@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ProjetCaveVin.Model.Tables;
 using System.Windows.Controls;
 using ProjetCaveVin.View;
+using System.Windows;
 
 
 namespace ProjetCaveVin.ViewModel
@@ -25,7 +26,10 @@ namespace ProjetCaveVin.ViewModel
         public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
         public string Message { get => _message; set { _message = value; OnPropertyChanged(); } }
 
+
         public ICommand LoginCommand { get; }
+
+        public event Action<Utilisateur> LoginSucceeded;
 
         public LoginViewModel()
         {
@@ -37,7 +41,8 @@ namespace ProjetCaveVin.ViewModel
             var user = Utilisateur.GetByCredentials(Email, Password);
             if (user != null)
             {
-                Message = $"Connexion réussie. Role : {user.Role}";
+                Message = $"Connexion réussie. Role : ({user.Role})";
+                LoginSucceeded?.Invoke(user);
             }
             else
             {
@@ -45,46 +50,5 @@ namespace ProjetCaveVin.ViewModel
             }
         }
 
-        private void ChangementFenetre()
-        {
-            Utilisateur user = Utilisateur.GetByCredentials(Email, Password);
-            if (user != null)
-            {
-                if (user.Role == "serveur")
-                {
-                    ServeurViewModel serveurVM = new ServeurViewModel();
-                    MainWindow mainWindow = new MainWindow(serveurVM);
-                    mainWindow.Show();
-                    App.Current.MainWindow.Close();
-
-                }
-
-                if (user.Role == "Administrateur")
-                {
-                    AdministrateurViewModel adminstrateurVM = new AdministrateurViewModel();
-                    MainWindow mainWindow = new MainWindow(adminstrateurVM);
-                    mainWindow.Show();
-                    App.Current.MainWindow.Close();
-
-                }
-
-                else if (user.Role == "Sommelier")
-                {
-                    SommelierViewModel sommelierVM = new SommelierViewModel();
-                    MainWindow mainWindow = new MainWindow(sommelierVM);
-                    mainWindow.Show();
-                    App.Current.MainWindow.Close();
-
-                }
-
-            }
-
-            else
-            {
-                {
-                    Console.WriteLine("Aucun role a affilé a cette utilisateur ");
-                }
-            }
-        }
     }
 }

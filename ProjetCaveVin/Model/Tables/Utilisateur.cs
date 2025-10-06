@@ -21,7 +21,7 @@ namespace ProjetCaveVin.Model.Tables
 
         public string Role { get; set; }
 
-        
+
 
         public Utilisateur() { }
 
@@ -76,18 +76,18 @@ namespace ProjetCaveVin.Model.Tables
         public static Utilisateur GetByCredentials(string email, string password)
         {
 
-            string req = "select id_utilisateur, Nom,Prenom,Role, Email, Password from Utilisateur where Email = @Email AND Password = @Password;" ;
+            string req = "select id_utilisateur, Nom,Prenom,Role, Email, Password from Utilisateur where Email = @Email AND Password = @Password;";
             var Utilisateurs = new List<Utilisateur>();
             string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
             var db = new DatabaseConnexion(connectionString);
             db.Open();
-            using(var command = db.CreateCommand())
+            using (var command = db.CreateCommand())
             {
                 command.CommandText = req;
                 command.Parameters.AddWithValue("@Email", email);
                 command.Parameters.AddWithValue("@Password", password);
 
-                using(var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
@@ -99,9 +99,9 @@ namespace ProjetCaveVin.Model.Tables
                             Role = reader.GetString(3),
                             Email = reader.GetString(4),
                             Password = reader.GetString(5)
-                           
+
                         };
-                        
+
                     }
                 }
 
@@ -116,4 +116,6 @@ namespace ProjetCaveVin.Model.Tables
 
         }
     }
+
+        
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ProjetCaveVin.ViewModel;
+using ProjetCaveVin.Model.Tables;
 
 namespace ProjetCaveVin.View
 {
@@ -23,7 +24,12 @@ namespace ProjetCaveVin.View
         public LoginWindow()
         {
             InitializeComponent();
-            DataContext = new LoginViewModel();
+            var viewModel = new LoginViewModel();
+            DataContext = viewModel;
+
+
+            viewModel.LoginSucceeded += OnLoginSucceeded;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -34,6 +40,31 @@ namespace ProjetCaveVin.View
                 viewModel.Password = PasswordBox.Password;
                 viewModel.LoginCommand.Execute(null);
             }
+        }
+
+        private void OnLoginSucceeded(Utilisateur user)
+        {
+            Window NextPage = null;
+
+            switch (user.Role)
+            {
+                case "Administrateur":
+                    NextPage = new AdministrateurWindow();
+                    break;
+                case "Serveur":
+                    NextPage = new ServeurWindow();
+                    break;
+                case "Sommelier":
+                    NextPage = new SommelierWindow();
+                    break;
+                default:
+                    MessageBox.Show("Rôle utilisateur inconnu.");
+                    return;
+            }
+
+            NextPage.Show();
+
+            this.Close();
         }
     }
 }

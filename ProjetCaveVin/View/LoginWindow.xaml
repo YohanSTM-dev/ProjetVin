@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Cursor="">
 
             <!-- Email -->
             <TextBlock Text="Email :" FontWeight="Bold" Margin="0,0,0,5"/>
