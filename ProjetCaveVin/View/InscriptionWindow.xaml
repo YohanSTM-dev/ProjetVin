@@ -1,0 +1,29 @@
+﻿<Window x:Class="ProjetCaveVin.View.InscriptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjetCaveVin.View"
+        mc:Ignorable="d"
+        Title="InscriptionWindow" Height="450" Width="800">
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Nom:"/>
+            <TextBox x:Name="NomBox" />
+
+            <TextBlock Text="Prénom:"/>
+            <TextBox x:Name="PrenomBox" />
+
+            <TextBlock Text="Email:"/>
+            <TextBox x:Name="EmailBox" />
+
+            <TextBlock Text="Mot de passe:"/>
+            <PasswordBox x:Name="PasswordBox" />
+
+            <TextBlock Text="Rôle:"/>
+            <ComboBox x:Name="RoleComboBox" />
+
+            <Button Content="S'inscrire" Click="InscriptionButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

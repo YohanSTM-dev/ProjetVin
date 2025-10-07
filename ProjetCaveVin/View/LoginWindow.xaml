@@ -20,6 +20,9 @@
             <!-- Bouton de connexion -->
             <Button Content="Se connecter" Height="35" Command="{Binding LoginCommand}" Margin="0,0,0,10" Click="Button_Click"/>
 
+            <Button Content="S'inscrire" Width="200" Height="40" Margin="0,10,0,0" Click="InscriptionButton_Click"/>
+
+
             <!-- Message d'erreur / succès -->
             <TextBlock Text="{Binding Message}" Foreground="Red" FontWeight="Bold" TextAlignment="Center" TextWrapping="Wrap" />
 

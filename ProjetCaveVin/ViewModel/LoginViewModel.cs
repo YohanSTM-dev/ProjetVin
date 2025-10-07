@@ -41,14 +41,23 @@ namespace ProjetCaveVin.ViewModel
             var user = Utilisateur.GetByCredentials(Email, Password);
             if (user != null)
             {
-                Message = $"Connexion réussie. Role : ({user.Role})";
+                Message = $"Connexion réussie. Role : ({user.Role.Nom})";
+
                 LoginSucceeded?.Invoke(user);
+
+                if (user.Role.Nom == "Administrateur")
+                    new AdministrateurWindow().Show();
+                else if (user.Role.Nom == "Serveur")
+                    new ServeurWindow().Show();
+                else if (user.Role.Nom == "Sommelier")
+                    new SommelierWindow().Show();
             }
             else
             {
                 Message = "Email ou mot de passe incorrect";
             }
         }
+
 
     }
 }

@@ -44,27 +44,46 @@ namespace ProjetCaveVin.View
 
         private void OnLoginSucceeded(Utilisateur user)
         {
-            Window NextPage = null;
-
-            switch (user.Role)
+            if (user == null)
             {
-                case "Administrateur":
-                    NextPage = new AdministrateurWindow();
-                    break;
-                case "Serveur":
-                    NextPage = new ServeurWindow();
-                    break;
-                case "Sommelier":
-                    NextPage = new SommelierWindow();
-                    break;
-                default:
-                    MessageBox.Show("Rôle utilisateur inconnu.");
-                    return;
+                MessageBox.Show("Utilisateur non trouvé.");
+                return;
             }
 
-            NextPage.Show();
+            if (user.Role == null)
+            {
+                MessageBox.Show("Rôle utilisateur introuvable.");
+                return;
+            }
 
+            Window nextWindow = null;
+
+            switch (user.Role.Nom?.ToLower())
+            {
+                case "administrateur":
+                    nextWindow = new AdministrateurWindow();
+                    break;
+                case "serveur":
+                    nextWindow = new ServeurWindow();
+                    break;
+                case "sommelier":
+                    nextWindow = new SommelierWindow();
+                    break;
+                default:
+                    MessageBox.Show($"Rôle inconnu : {user.Role.Nom}");
+                    return;
+            }
+            nextWindow?.Show();
             this.Close();
+        }
+
+        private void InscriptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var inscriptionWindow = new InscriptionWindow(null); 
+            inscriptionWindow.Show();
+            this.Close();
+
         }
     }
 }
+ 
