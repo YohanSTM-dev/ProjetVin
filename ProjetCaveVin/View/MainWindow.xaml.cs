@@ -1,9 +1,11 @@
 ﻿using System.Windows;
+using ProjetCaveVin.Model;
 using ProjetCaveVin.ViewModel;
 
 
 namespace ProjetCaveVin.View
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -13,7 +15,7 @@ namespace ProjetCaveVin.View
         {
             InitializeComponent();
 
-           DataContext = new testConnexion();
+            DataContext = new GestionBouteille();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -25,5 +27,6 @@ namespace ProjetCaveVin.View
         {
 
         }
+
     }
 }

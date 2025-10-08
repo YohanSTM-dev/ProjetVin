@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjetCaveVin.Model
+namespace ProjetCaveVin.Model.Classes
 {
-    internal class Bouteille
+    class TypeBouteille
     {
-
         public int Id { get; set; }
         public string Nom { get; set; }
-        
-        public int Millesime { get; set; }
-        public int Quantite { get; set; }
 
+        public string Photo { get; set; }
     }
 }

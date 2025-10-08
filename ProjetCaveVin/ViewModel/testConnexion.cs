@@ -25,14 +25,16 @@ namespace ProjetCaveVin.ViewModel
         {
             try
             {
-                string connectionString = @"Server=172.16.119.41\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
+                string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
 
                 var db = new DatabaseConnexion(connectionString);
+                //var query = "Insert blabla";
 
                 db.Open();
 
                 if (db.IsOpenConnected())
                     Resultat = "Connexion SQL Server OK !";
+                    // db.Execute(query);
                 else
                     Resultat = "Erreur de connexion à la base !";
 

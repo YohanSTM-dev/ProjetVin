@@ -4,16 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjetCaveVin.ViewModel"
+        xmlns:localm="clr-namespace:ProjetCaveVin.Model"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
     <Grid Margin="20">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Button Content="Tester la connexion" Width="200" Height="40" Command="{Binding TestConnexionCommand}" Click="Button_Click_1" />
 
-            <!-- TextBox en lecture seule pour afficher le résultat -->
-            <TextBox Text="{Binding Resultat}" Margin="0,20,0,0" FontSize="16" 
-             TextAlignment="Center" IsReadOnly="True"/>
-        </StackPanel>
+        <Grid>
+            <DataGrid ItemsSource="{Binding Bouteilles}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
+                    <DataGridTextColumn Header="Libellé" Binding="{Binding Libelle}" />
+                    <DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" />
+                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                    <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
+                    <DataGridTextColumn Header="Code Emplacement" Binding="{Binding Code_Emplacement}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+        </Grid>
     </Grid>
 </Window>
