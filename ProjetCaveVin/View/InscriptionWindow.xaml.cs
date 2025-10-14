@@ -1,4 +1,5 @@
 ﻿using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,16 +21,33 @@ namespace ProjetCaveVin.View
     /// </summary>
     public partial class InscriptionWindow : Window
     {
+
+        private Utilisateur _currentUser;
         public InscriptionWindow(Utilisateur currentUser)
         {
             InitializeComponent();
-            DataContext = new InscriptionWindow(currentUser);
+            _currentUser = currentUser;
+            DataContext = new InscriptionViewModels(currentUser);
         }
+
+
+        public InscriptionWindow()  :this(null)
+        {
+
+        }
+
 
         private void InscriptionButton_Click(object sender, RoutedEventArgs e)
         {
             var registrationWindow = new InscriptionWindow(currentUser: null);
             registrationWindow.Show();
+        }
+
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            var acceuilWindow = new AcceuilWindow();
+            acceuilWindow.Show();
+            this.Close();
         }
     }
 }

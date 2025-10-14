@@ -50,15 +50,21 @@ namespace ProjetCaveVin.ViewModel
             }
         }
 
-
         public InscriptionViewModels(Utilisateur currentUser)
         {
             _currentUser = currentUser;
-
             Roles = GetAvailableRolesForCurrentUser(currentUser);
-
             RegisterCommand = new RelayCommand(Register);
         }
+
+        //private List<string> GetAvailableRolesForCurrentUser(Utilisateur user)
+        //{
+        //    if (user == null) 
+        //        return new List<string> { "Serveur" }; 
+
+        //}
+
+
 
         private void Register()
         {
@@ -96,6 +102,8 @@ namespace ProjetCaveVin.ViewModel
                 Message = "Erreur : " + ex.Message;
             }
         }
+
+
 
 
     }

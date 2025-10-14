@@ -24,6 +24,9 @@
             <ComboBox x:Name="RoleComboBox" />
 
             <Button Content="S'inscrire" Click="InscriptionButton_Click"/>
+
+            <Button Content=" Retour " Click="RetourButton_Click"/>
+            
         </StackPanel>
     </Grid>
 </Window>
