@@ -30,7 +30,10 @@ namespace ProjetCaveVin.Model.Tables
         {
             var utilisateurs = new List<Utilisateur>();
 
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            // string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 
@@ -69,7 +72,11 @@ namespace ProjetCaveVin.Model.Tables
         }
         public static Utilisateur GetByCredentials(string email, string password)
         {
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            //  string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 
@@ -141,7 +148,10 @@ namespace ProjetCaveVin.Model.Tables
 
         public static void Add(Utilisateur user)
         {
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 

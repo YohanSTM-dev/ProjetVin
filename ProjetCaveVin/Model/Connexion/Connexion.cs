@@ -6,14 +6,14 @@ namespace ProjetCaveVin.Model.Connexion
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public string Host { get; set; }          // Exemple : "172.16.119.42"
-        public string Database { get; set; }      // Exemple : "restaurant"
-        public string Instance { get; set; }      // Exemple : "SQLEXPRESS02"
-        public int Port { get; set; } = 1433;     // Port par défaut SQL Server
+        public string Host { get; set; }          
+        public string Database { get; set; }      
+        public string Instance { get; set; }      
+        public int Port { get; set; } = 1433;    
 
         public Connexion() { }
 
-        public Connexion(string username, string password, string host, string database, string instance = "SQLEXPRESS02", int port = 1433)
+        public Connexion(string username, string password, string host, string database, string instance = "SQLEXPRESS", int port = 1433) // changement du SQLEXPRESS02
         {
             Username = username;
             Password = password;

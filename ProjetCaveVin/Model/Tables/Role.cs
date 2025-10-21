@@ -26,7 +26,11 @@ namespace ProjetCaveVin.Model.Tables
         {
 
             var roles = new List<Role>();
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            /*            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            */
+            //POUR MAISON
+
+            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 
@@ -53,7 +57,10 @@ namespace ProjetCaveVin.Model.Tables
 
         public static Role GetById(int id)
         {
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 
@@ -80,7 +87,10 @@ namespace ProjetCaveVin.Model.Tables
 
         public static Role GetByName(string nom)
         {
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
+
+            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
             var db = new DatabaseConnexion(connectionString);
             db.Open();
 

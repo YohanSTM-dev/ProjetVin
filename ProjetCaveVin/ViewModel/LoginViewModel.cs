@@ -45,10 +45,10 @@ namespace ProjetCaveVin.ViewModel
 
                 LoginSucceeded?.Invoke(user);
 
-                if (user.Role.Nom == "Administrateur")
+                if (user.Role.Nom == "Administratif")
                     new AdministrateurWindow().Show();
                 else if (user.Role.Nom == "Serveur")
-                    new ServeurWindow().Show();
+                    new ServeurWindow().Show(); 
                 else if (user.Role.Nom == "Sommelier")
                     new SommelierWindow().Show();
             }

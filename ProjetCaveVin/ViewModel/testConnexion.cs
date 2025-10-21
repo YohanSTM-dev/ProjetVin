@@ -42,7 +42,8 @@ namespace ProjetCaveVin.ViewModel
         {
             try
             {
-                string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
+                //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=restaurant;User Id=yohan;Password=1234;Encrypt=False;";
+                string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
 
                 var db = new DatabaseConnexion(connectionString);
                 //var req = "select * from Utilisateur";

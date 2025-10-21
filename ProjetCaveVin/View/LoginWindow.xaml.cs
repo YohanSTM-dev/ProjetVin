@@ -1,91 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using ProjetCaveVin.ViewModel;
+﻿using System.Windows;
 using ProjetCaveVin.Model.Tables;
 
 namespace ProjetCaveVin.View
 {
-    /// <summary>
-    /// Logique d'interaction pour LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
+        private string _selectedRole;
+
+        public LoginWindow(string selectedRole)
+        {
+            InitializeComponent();
+            _selectedRole = selectedRole;
+
+            // Affiche le rôle choisi
+            //SelectedRoleText.Text = $"Vous vous connectez en tant que : {_selectedRole}";
+        }
+
         public LoginWindow()
         {
             InitializeComponent();
-            var viewModel = new LoginViewModel();
-            DataContext = viewModel;
-
-
-            viewModel.LoginSucceeded += OnLoginSucceeded;
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            var viewModel = DataContext as LoginViewModel;
-            if (viewModel != null)
-            {
-                viewModel.Password = PasswordBox.Password;
-                viewModel.LoginCommand.Execute(null);
-            }
-        }
+            string email = EmailBox.Text;
+            string password = PasswordBox.Password;
 
-        private void OnLoginSucceeded(Utilisateur user)
-        {
+            var user = Utilisateur.GetByCredentials(email, password);
+
             if (user == null)
             {
-                MessageBox.Show("Utilisateur non trouvé.");
+                MessageText.Text = "Email ou mot de passe incorrect.";
                 return;
             }
 
-            if (user.Role == null)
+            if (user.Role.Nom != _selectedRole)
             {
-                MessageBox.Show("Rôle utilisateur introuvable.");
+                MessageText.Text = $"Le rôle ne correspond pas au rôle choisi : {_selectedRole}.";
                 return;
             }
 
-            Window nextWindow = null;
-
-            switch (user.Role.Nom?.ToLower())
+            // Ouvre la bonne fenêtre selon le rôle
+            Window nextWindow = user.Role.Nom switch
             {
-                case "administrateur":
-                    nextWindow = new AdministrateurWindow();
-                    break;
-                case "serveur":
-                    nextWindow = new ServeurWindow();
-                    break;
-                case "sommelier":
-                    nextWindow = new SommelierWindow();
-                    break;
-                default:
-                    MessageBox.Show($"Rôle inconnu : {user.Role.Nom}");
-                    return;
-            }
+                "Administrateur" => new AdministrateurWindow(),
+                "Sommelier" => new SommelierWindow(),
+                "Serveur" => new ServeurWindow(),
+                _ => null
+            };
+
             nextWindow?.Show();
             this.Close();
         }
-
-        private void RetourButton_Click(object sender, RoutedEventArgs e)
-        {
-            var AcceuilWindow = new AcceuilWindow();
-            AcceuilWindow.Show();
-
-
-            this.Close();
-
-        }
-
     }
 }
