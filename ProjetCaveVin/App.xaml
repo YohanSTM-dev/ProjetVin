@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:ProjetCaveVin"
-             StartupUri="View/RoleAccessWindow.xaml"> <!-- -ici qu'on change l'orga des view-->
-    <Application.Resources>
+             StartupUri="View/RoleAccessWindow.xaml"
+	         ShutdownMode="OnLastWindowClose">
+
+	<Application.Resources>
          
     </Application.Resources>
 </Application>

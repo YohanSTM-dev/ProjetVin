@@ -13,11 +13,10 @@
                        FontSize="18" FontWeight="Bold"
                        HorizontalAlignment="Center" />
 
-			<Button Content="Connexion"
-                    Command="{Binding OpenLoginCommand}" />
+			<Button Content="Connexion" Click="ConnexionButton_Click"/>
+			<Button Content="Inscription" Click="InscriptionButton_Click"/>
+			<Button Content="Retour" Click="RetourButton_Click"/>
 
-			<Button Content="Inscription"
-                    Command="{Binding OpenRegisterCommand}" />
 		</StackPanel>
 	</Grid>
 </Window>

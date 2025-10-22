@@ -28,5 +28,28 @@ namespace ProjetCaveVin.View
             InitializeComponent();
             DataContext = new LoginAdminViewModel();
         }
+
+        private void ConnexionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var loginWindow = new LoginWindow("Administrateur");
+            loginWindow.Show();
+            this.Close(); 
+        }
+
+        private void InscriptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var inscriptionWindow = new InscriptionWindow(null);
+            inscriptionWindow.Show();
+            this.Close();
+        }
+
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            var roleAccessWindow = new RoleAccessWindow();
+            roleAccessWindow.Show();
+            this.Close();
+        }
+
+
     }
 }

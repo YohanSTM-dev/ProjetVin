@@ -14,6 +14,8 @@ namespace ProjetCaveVin.Model.Tables
         public string PasswordHash { get; set; }
         public Role Role { get; set; }
 
+        private static string ConnectionString =>
+         @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
         public Utilisateur() { }
 
         public Utilisateur(int id, string nom, string prenom, string email, string passwordHash, Role role)
@@ -32,9 +34,7 @@ namespace ProjetCaveVin.Model.Tables
 
             // string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
 
-            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-            var db = new DatabaseConnexion(connectionString);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -75,9 +75,7 @@ namespace ProjetCaveVin.Model.Tables
 
             //  string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
 
-            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-            var db = new DatabaseConnexion(connectionString);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             try
@@ -124,8 +122,8 @@ namespace ProjetCaveVin.Model.Tables
 
         public static void Create(string nom, string prenom, string email, string password, string role)
         {
-            string connectionString = @"Server=...;Database=Cave;User Id=...;Password=...;Encrypt=False;";
-            var db = new DatabaseConnexion(connectionString);
+           // string connectionString = @"Server=...;Database=Cave;User Id=...;Password=...;Encrypt=False;";
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             string req = "INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, id_role_utilisateur) " +
@@ -150,9 +148,7 @@ namespace ProjetCaveVin.Model.Tables
         {
             //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
 
-            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-            var db = new DatabaseConnexion(connectionString);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -170,6 +166,48 @@ namespace ProjetCaveVin.Model.Tables
 
             db.Close();
         }
+
+
+        public static void InsertUtilisateur(string nom, string prenom, string email, string plainPassword, string nomRole)
+        {
+            var (hash, salt) = PasswordHelper.HashPassword(plainPassword);
+            int roleId;
+
+            // Utilisation d'une seule connexion pour tout
+            var db = new DatabaseConnexion(ConnectionString);
+            
+            db.Open();
+
+                // Récupérer l'id du rôle
+                using (var cmd = db.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT id_role FROM Role WHERE nom = @Role";
+                    cmd.Parameters.AddWithValue("@Role", nomRole);
+                    var result = cmd.ExecuteScalar();
+                    if (result == null)
+                        throw new Exception("Rôle invalide.");
+                    roleId = Convert.ToInt32(result);
+                }
+
+                // Insérer l'utilisateur
+                using (var cmdInsert = db.CreateCommand())
+                {
+                    cmdInsert.CommandText = @"
+                INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, id_role_utilisateur)
+                VALUES (@Nom, @Prenom, @Email, @PasswordHash, @IdRole)";
+                    cmdInsert.Parameters.AddWithValue("@Nom", nom);
+                    cmdInsert.Parameters.AddWithValue("@Prenom", prenom);
+                    cmdInsert.Parameters.AddWithValue("@Email", email);
+                    cmdInsert.Parameters.AddWithValue("@PasswordHash", hash);
+
+                    cmdInsert.Parameters.AddWithValue("@IdRole", roleId);
+
+                    cmdInsert.ExecuteNonQuery();
+                }
+
+                db.Close();
+            }
+        
 
 
 

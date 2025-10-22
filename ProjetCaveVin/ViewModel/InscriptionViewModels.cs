@@ -1,110 +1,86 @@
-﻿using Microsoft.Win32;
+﻿using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.Helpers;
-using ProjetCaveVin.Model.Tables;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ProjetCaveVin.ViewModel
 {
-    public class InscriptionViewModels : BaseViewModel
+    public class InscriptionViewModel : BaseViewModel
     {
-
         private string _nom;
         private string _prenom;
         private string _email;
         private string _password;
-        private string _selectedRole;
-
-        public string Nom { get => _nom; set { _nom = value; OnPropertyChanged(); } }
-        public string Prenom { get => _prenom; set { _prenom = value; OnPropertyChanged(); } }
-        public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
-        public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
-        public string SelectedRole { get => _selectedRole; set { _selectedRole = value; OnPropertyChanged(); } }
-
-        public List<string> Roles { get; set; }
-
         private string _message;
-        public string Message { get => _message; set { _message = value; OnPropertyChanged(); } }
+        private string _role;
+        public List<string> Roles { get; } = new List<string> { "Administratif", "Sommelier", "Serveur" };
 
-        public ICommand RegisterCommand { get; }
 
-        private Utilisateur _currentUser;
-
-        private List<string> GetAvailableRolesForCurrentUser(Utilisateur user)
+        public string Nom
         {
-            if (user == null) // si inscription publique
-                return new List<string>();
-
-            switch (user.Role.Nom)
-            {
-                case "Administrateur":
-                    return new List<string> { "Administrateur", "Sommelier", "Serveur" };
-                case "Sommelier":
-                    return new List<string> { "Serveur" };
-                default:
-                    return new List<string>();
-            }
+            get => _nom;
+            set { _nom = value; OnPropertyChanged(); }
         }
 
-        public InscriptionViewModels(Utilisateur currentUser)
+        public string Prenom
         {
-            _currentUser = currentUser;
-            Roles = GetAvailableRolesForCurrentUser(currentUser);
-            RegisterCommand = new RelayCommand(Register);
+            get => _prenom;
+            set { _prenom = value; OnPropertyChanged(); }
         }
 
-        //private List<string> GetAvailableRolesForCurrentUser(Utilisateur user)
-        //{
-        //    if (user == null) 
-        //        return new List<string> { "Serveur" }; 
+        public string Email
+        {
+            get => _email;
+            set { _email = value; OnPropertyChanged(); }
+        }
 
-        //}
+        public string Password
+        {
+            get => _password;
+            set { _password = value; OnPropertyChanged(); }
+        }
 
+        public string Message
+        {
+            get => _message;
+            set { _message = value; OnPropertyChanged(); }
+        }
 
+        public string Role
+        {
+            get => _role;
+            set { _role = value; OnPropertyChanged(); }
+        }
 
-        private void Register()
+        public ICommand InscriptionCommand { get; }
+
+        public InscriptionViewModel(string role)
+        {
+            Role = role; 
+            InscriptionCommand = new RelayCommand(InscrireUtilisateur);
+        }
+
+        private void InscrireUtilisateur()
         {
             if (string.IsNullOrWhiteSpace(Nom) || string.IsNullOrWhiteSpace(Prenom) ||
-                string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) ||
-                string.IsNullOrWhiteSpace(SelectedRole))
+                string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password))
             {
-                Message = "Tous les champs sont obligatoires.";
+                Message = "Veuillez remplir tous les champs.";
                 return;
             }
 
             try
             {
-                var selectedRoleObject = Role.GetByName(SelectedRole);
-                if (selectedRoleObject == null)
-                {
-                    Message = "Rôle sélectionné invalide.";
-                    return;
-                }
-
-                var newUser = new Utilisateur
-                {
-                    Nom = Nom,
-                    Prenom = Prenom,
-                    Email = Email,
-                    PasswordHash = Password,
-                    Role = selectedRoleObject
-                };
-
-                Utilisateur.Add(newUser);
+                Utilisateur.InsertUtilisateur(Nom, Prenom, Email, Password, Role);
                 Message = "Utilisateur créé avec succès !";
+
+                // Reset champs
+                Nom = Prenom = Email = Password = string.Empty;
             }
             catch (Exception ex)
             {
-                Message = "Erreur : " + ex.Message;
+                Message = $"Erreur lors de l'insertion : {ex.Message}";
             }
         }
-
-
-
-
     }
 }

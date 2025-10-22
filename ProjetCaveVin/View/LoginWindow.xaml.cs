@@ -12,14 +12,7 @@ namespace ProjetCaveVin.View
             InitializeComponent();
             _selectedRole = selectedRole;
 
-            // Affiche le rôle choisi
-            //SelectedRoleText.Text = $"Vous vous connectez en tant que : {_selectedRole}";
-        }
-
-        public LoginWindow()
-        {
-            InitializeComponent();
-
+            System.Diagnostics.Debug.WriteLine($"LoginWindow ouvert avec _selectedRole = {_selectedRole}");
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -41,7 +34,6 @@ namespace ProjetCaveVin.View
                 return;
             }
 
-            // Ouvre la bonne fenêtre selon le rôle
             Window nextWindow = user.Role.Nom switch
             {
                 "Administrateur" => new AdministrateurWindow(),
@@ -51,6 +43,28 @@ namespace ProjetCaveVin.View
             };
 
             nextWindow?.Show();
+            this.Close();
+        }
+
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            Window targetWindow;
+
+            switch (_selectedRole?.Trim().ToLower())
+            {
+                case "administrateur":
+                    targetWindow = new LoginAdminWindow();
+                    break;
+                case "sommelier":
+                case "serveur":
+                    targetWindow = new RoleAccessWindow();
+                    break;
+                default:
+                    targetWindow = new LoginWindow(_selectedRole); 
+                    break;
+            }
+
+            targetWindow.Show();
             this.Close();
         }
     }

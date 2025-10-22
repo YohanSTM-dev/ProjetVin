@@ -59,7 +59,7 @@ namespace ProjetCaveVin.ViewModel
                 }
                 else
                 {
-                    var loginWindow = new LoginWindow();
+                    var loginWindow = new LoginWindow("Sommelier"); // role par défaut pour Sommelier/Serveur
                     loginWindow.Show();
                 }
 

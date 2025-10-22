@@ -1,6 +1,10 @@
+using System.Linq;
 using System.Windows.Input;
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.View;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 
 namespace ProjetCaveVin.ViewModel
 {
@@ -15,9 +19,11 @@ namespace ProjetCaveVin.ViewModel
             OpenRegisterCommand = new RelayCommand(OpenRegister);
         }
 
+        // Note :  a utiliser plutard (fonction non reusssi pour l'instant) -> pour l'instant c'est dans le behind du LoginAdminWindow.xaml.cs
         private void OpenLogin()
         {
-            var loginWindow = new LoginWindow();
+            var loginWindow = new LoginWindow("Serveur"); // role non important ici
+            System.Windows.Application.Current.MainWindow = loginWindow;
             loginWindow.Show();
             CloseCurrentWindow();
         }

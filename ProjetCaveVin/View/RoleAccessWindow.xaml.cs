@@ -16,14 +16,11 @@ namespace ProjetCaveVin.View
 
         private void RoleButton_Click(object sender, RoutedEventArgs e)
         {
-            // Récupère le rôle depuis le Tag du bouton
             _selectedRole = (string)((Button)sender).Tag;
             SelectedRoleText.Text = $"Rôle sélectionné : {_selectedRole}";
 
-            // Affiche le panel pour entrer le mot de passe
             PasswordPanel.Visibility = Visibility.Visible;
 
-            // Reset
             RolePasswordBox.Password = "";
             MessageText.Text = "";
         }
@@ -38,20 +35,18 @@ namespace ProjetCaveVin.View
                 return;
             }
 
-            // Vérifie le mot de passe dans la table RoleAccess
             if (RoleAccess.CheckPassword(_selectedRole, password))
             {
-                // Ouvre la fenêtre correspondante
                 if (_selectedRole == "Administrateur")
                 {
                     new LoginAdminWindow().Show();
                 }
                 else
                 {
-                    new LoginWindow().Show();
+                    new LoginWindow("Administrateur").Show();
                 }
 
-                this.Close(); // Ferme la fenêtre actuelle
+                this.Close(); 
             }
             else
             {
