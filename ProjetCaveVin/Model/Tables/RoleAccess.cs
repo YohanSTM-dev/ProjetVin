@@ -1,118 +1,126 @@
 using System;
 using System.Collections.Generic;
 using ProjetCaveVin.Model.Connexion;
-using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.Helpers;
 
-
-
-namespace ProjetCaveVin.Model.Tables;
-
-using System.Threading.Tasks;
-using ProjetCaveVin.Model.Connexion;
-
-public class RoleAccess
+namespace ProjetCaveVin.Model.Tables
 {
-    public int Id { get; set; }
-    public string RoleName { get; set; }
-    public string PasswordHash { get; set; }
-    public string Salt { get; set; }
-
-    public static RoleAccess GetByRole(string roleName)
+    public class RoleAccess
     {
-        string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+        public int Id { get; set; }
+        public string RoleName { get; set; }
+        public string PasswordHash { get; set; }
+        public string Salt { get; set; }
 
-        var db = new DatabaseConnexion(connectionString);
-        db.Open();
-        using (var cmd = db.CreateCommand())
+        private static string ConnectionString =>
+            @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
+        public static RoleAccess GetByRole(string roleName)
         {
+            var db = new DatabaseConnexion(ConnectionString);
+            db.Open();
+
+            using var cmd = db.CreateCommand();
             cmd.CommandText = "SELECT id_roleaccess, role_name, password_hash, salt FROM RoleAccess WHERE role_name = @r";
             cmd.Parameters.AddWithValue("@r", roleName);
-            using (var reader = cmd.ExecuteReader())
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
             {
-                if (reader.Read())
+                return new RoleAccess
                 {
-                    return new RoleAccess
-                    {
-                        Id = reader.GetInt32(0),
-                        RoleName = reader.GetString(1),
-                        PasswordHash = reader.GetString(2),
-                        Salt = reader.GetString(3)
-                    };
-                }
+                    Id = Convert.ToInt32(reader["id_roleaccess"]),
+                    RoleName = reader.GetString(reader.GetOrdinal("role_name")),
+                    PasswordHash = reader.GetString(reader.GetOrdinal("password_hash")),
+                    Salt = reader.GetString(reader.GetOrdinal("salt"))
+                };
             }
+
+            return null;
         }
-        db.Close();
-        return null;
-    }
 
-    public static void CreateRoleAccess(string roleName, string plainPassword)
-    {
-        string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-        var (hash, salt) = PasswordHelper.HashPassword(plainPassword);
-        var db = new DatabaseConnexion(connectionString);
-        db.Open();
-        using (var cmd = db.CreateCommand())
+        public static void CreateOrInsertRole(string roleName, string plainPassword)
         {
+            var (hash, salt) = PasswordHelper.HashPassword(plainPassword);
+
+             var db = new DatabaseConnexion(ConnectionString);
+            db.Open();
+
+            using var cmd = db.CreateCommand();
             cmd.CommandText = "INSERT INTO RoleAccess (role_name, password_hash, salt) VALUES (@r, @h, @s)";
             cmd.Parameters.AddWithValue("@r", roleName);
             cmd.Parameters.AddWithValue("@h", hash);
             cmd.Parameters.AddWithValue("@s", salt);
+
             cmd.ExecuteNonQuery();
         }
-        db.Close();
-    }
 
-    public static bool CheckPassword(string nomRole, string password)
-    {
-        string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-        var db = new DatabaseConnexion(connectionString);
-        db.Open();
-
-        using (var cmd = db.CreateCommand())
+        public static bool CheckPassword(string roleName, string password)
         {
-            cmd.CommandText = "SELECT PasswordHash, Salt FROM RoleAccess WHERE NomRole = @nom";
-            cmd.Parameters.AddWithValue("@nom", nomRole);
-            using (var reader = cmd.ExecuteReader())
+             var db = new DatabaseConnexion(ConnectionString);
+            db.Open();
+
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = "SELECT password_hash, salt FROM RoleAccess WHERE role_name = @r";
+            cmd.Parameters.AddWithValue("@r", roleName);
+
+            using var reader = cmd.ExecuteReader();
+            if (!reader.Read())
+                return false;
+
+            string hash = reader.GetString(reader.GetOrdinal("password_hash"));
+            string salt = reader.GetString(reader.GetOrdinal("salt"));
+
+            return PasswordHelper.VerifyPassword(password, hash, salt);
+        }
+
+        public static List<RoleAccess> GetAllRoles()
+        {
+            var roles = new List<RoleAccess>();
+
+             var db = new DatabaseConnexion(ConnectionString);
+            db.Open();
+
+            using var cmd = db.CreateCommand();
+            cmd.CommandText = "SELECT id_roleaccess, role_name, password_hash, salt FROM RoleAccess";
+
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                if (!reader.Read())
-                    return false;
+                roles.Add(new RoleAccess
+                {
+                    Id = reader.GetInt32(reader.GetOrdinal("id_roleaccess")),
+                    RoleName = reader.GetString(reader.GetOrdinal("role_name")),
+                    PasswordHash = reader.GetString(reader.GetOrdinal("password_hash")),
+                    Salt = reader.GetString(reader.GetOrdinal("salt"))
+                });
+            }
 
-                string hash = reader.GetString(0);
-                string salt = reader.GetString(1);
+            return roles;
+        }
 
-                return PasswordHelper.VerifyPassword(password, hash, salt);
+        public static void InsertRoleAccess(string roleName, string password)
+        {
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            var db = new DatabaseConnexion(connectionString);
+            db.Open();
+            try
+            {
+                var (hash, salt) = PasswordHelper.HashPassword(password);
+                using (var cmd = db.CreateCommand())
+                {
+                    cmd.CommandText = "INSERT INTO RoleAccess (role_name, password_hash, salt) VALUES (@r, @h, @s)";
+                    cmd.Parameters.AddWithValue("@r", roleName);
+                    cmd.Parameters.AddWithValue("@h", hash);
+                    cmd.Parameters.AddWithValue("@s", salt);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            finally
+            {
+                db.Close();
             }
         }
+
     }
-
-    public static void InsertRoleAccess(string roleName, string password)
-    {
-        string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-        var db = new DatabaseConnexion(connectionString);
-        db.Open();
-
-        try
-        {
-            // Générer hash + salt
-            var (hash, salt) = PasswordHelper.HashPassword(password);
-
-            using (var cmd = db.CreateCommand())
-            {
-                cmd.CommandText = "INSERT INTO RoleAccess (role_name, password_hash, salt) VALUES (@r, @h, @s)";
-                cmd.Parameters.AddWithValue("@r", roleName);
-                cmd.Parameters.AddWithValue("@h", hash);
-                cmd.Parameters.AddWithValue("@s", salt);
-
-                cmd.ExecuteNonQuery(); // Important : exécute la requête
-            }
-        }
-        finally
-        {
-            db.Close(); // Toujours fermer la connexion
-        }
-    }
-
 }
-

@@ -11,31 +11,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ProjetCaveVin.View;
+using ProjetCaveVin.ViewModel;
+using ProjetCaveVin.Model.Tables;
+
 
 namespace ProjetCaveVin.View
 {
     /// <summary>
     /// Logique d'interaction pour AcceuilWindow.xaml
     /// </summary>
-    public partial class AcceuilWindow : Window
+    public partial class LoginAdminWindow : Window
     {
-        public AcceuilWindow()
+        public LoginAdminWindow()
         {
             InitializeComponent();
-        }
-
-        private void BtnSeConnecter_Click(object sender, RoutedEventArgs e)
-        {
-            var login = new LoginWindow();
-            login.Show();
-            this.Close();
-        }
-
-        private void BtnSInscrire_Click(object sender, RoutedEventArgs e)
-        {
-            var Inscription  = new InscriptionWindow();
-            Inscription.Show();
-            this.Close();
+            DataContext = new LoginAdminViewModel();
         }
     }
 }

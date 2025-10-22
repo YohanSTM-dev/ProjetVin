@@ -17,27 +17,39 @@ namespace ProjetCaveVin
         {
             base.OnStartup(e);
 
-            string dbc = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var conn = new DatabaseConnexion(dbc);
-            conn.Open();
-
-            using (var cmd = conn.CreateCommand())
+            try
             {
                 
-                cmd.CommandText = "select Count(*) from RoleAccess;";
-                long count = (long)cmd.ExecuteScalar();
+                string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+                var db = new DatabaseConnexion(connectionString);
+                db.Open();
 
-                if(count == 0)
+               
+                using (var cmd = db.CreateCommand())
                 {
-                    RoleAccess.InsertRoleAccess("Serveur", "serveur123");
-                    RoleAccess.InsertRoleAccess("Sommelier", "sommelier123");
-                    RoleAccess.InsertRoleAccess("Administrateur", "admin123");
+                    cmd.CommandText = "SELECT COUNT(*) FROM RoleAccess;";
+                    int count = Convert.ToInt32(cmd.ExecuteScalar()); 
+
+                    if (count == 0)
+                    {
+                        // Créer les rôles par défaut
+                        RoleAccess.InsertRoleAccess("Serveur", "serveur123");
+                        RoleAccess.InsertRoleAccess("Sommelier", "sommelier123");
+                        RoleAccess.InsertRoleAccess("Administrateur", "admin123");
+                    }
                 }
 
-            }
+                db.Close();
 
-            var roleAcessWindow = new RoleAccessWindow();
-            roleAcessWindow.Show();
+                // Ouvrir la fenêtre de sélection du rôle
+                var roleAccessWindow = new RoleAccessWindow();
+                roleAccessWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erreur au démarrage : " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                Shutdown(); // Ferme l'application si la base n'est pas accessible
+            }
         }
     }
 

@@ -1,13 +1,13 @@
 ﻿using System.Windows;
-using ProjetCaveVin.Helpers;
+using System.Windows.Controls;
+using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.View;
 
 namespace ProjetCaveVin.View
 {
     public partial class RoleAccessWindow : Window
     {
         private string _selectedRole;
-        private int _attempts = 0;
-        private const int MAX_ATTEMPTS = 5;
 
         public RoleAccessWindow()
         {
@@ -16,38 +16,46 @@ namespace ProjetCaveVin.View
 
         private void RoleButton_Click(object sender, RoutedEventArgs e)
         {
-            _selectedRole = (string)((FrameworkElement)sender).Tag;
+            // Récupère le rôle depuis le Tag du bouton
+            _selectedRole = (string)((Button)sender).Tag;
             SelectedRoleText.Text = $"Rôle sélectionné : {_selectedRole}";
+
+            // Affiche le panel pour entrer le mot de passe
             PasswordPanel.Visibility = Visibility.Visible;
-            MessageText.Text = "";
+
+            // Reset
             RolePasswordBox.Password = "";
+            MessageText.Text = "";
         }
 
         private void ValidateRoleAccess_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(_selectedRole))
+            string password = RolePasswordBox.Password;
+
+            if (string.IsNullOrEmpty(password))
             {
-                MessageText.Text = "Choisissez un rôle d'abord.";
+                MessageText.Text = "Veuillez entrer le mot de passe.";
                 return;
             }
 
-            var pass = RolePasswordBox.Password;
-
-            if (RoleAccessHelper.CheckRolePassword(_selectedRole, pass))
+            // Vérifie le mot de passe dans la table RoleAccess
+            if (RoleAccess.CheckPassword(_selectedRole, password))
             {
-                // Ouvre la fenêtre de login avec le rôle choisi
-                var loginWindow = new LoginWindow(_selectedRole);
-                loginWindow.Show();
-                this.Close();
-                return;
+                // Ouvre la fenêtre correspondante
+                if (_selectedRole == "Administrateur")
+                {
+                    new LoginAdminWindow().Show();
+                }
+                else
+                {
+                    new LoginWindow().Show();
+                }
+
+                this.Close(); // Ferme la fenêtre actuelle
             }
-
-            _attempts++;
-            MessageText.Text = "Mot de passe rôle incorrect.";
-            if (_attempts >= MAX_ATTEMPTS)
+            else
             {
-                MessageText.Text = "Trop d'essais. Contactez l'administrateur.";
-                RolePasswordBox.IsEnabled = false;
+                MessageText.Text = "Mot de passe incorrect.";
             }
         }
     }
