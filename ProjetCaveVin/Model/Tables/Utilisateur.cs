@@ -12,27 +12,29 @@ namespace ProjetCaveVin.Model.Tables
         public string Prenom { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+        public string Salt { get; set; }   // ✅ ajouté pour refléter la colonne Salt
         public Role Role { get; set; }
 
         private static string ConnectionString =>
-         @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+
         public Utilisateur() { }
 
-        public Utilisateur(int id, string nom, string prenom, string email, string passwordHash, Role role)
+        public Utilisateur(int id, string nom, string prenom, string email, string passwordHash, string salt, Role role)
         {
             id_utilisateur = id;
             Nom = nom;
             Prenom = prenom;
             Email = email;
             PasswordHash = passwordHash;
+            Salt = salt;
             Role = role;
         }
 
+        // 🔹 Récupère tous les utilisateurs
         public static List<Utilisateur> GetAllUtilisateur()
         {
             var utilisateurs = new List<Utilisateur>();
-
-            // string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
 
             var db = new DatabaseConnexion(ConnectionString);
             db.Open();
@@ -40,10 +42,10 @@ namespace ProjetCaveVin.Model.Tables
             using (var command = db.CreateCommand())
             {
                 command.CommandText = @"
-                    SELECT u.id_utilisateur, u.Nom, u.Prenom, u.Email, u.PasswordHash, r.id_role, r.nom
+                    SELECT u.id_utilisateur, u.Nom, u.Prenom, u.Email, u.PasswordHash, u.Salt, 
+                           r.id_role, r.nom
                     FROM Utilisateur u
-                    INNER JOIN Role r ON u.id_role_utilisateur = r.id_role
-                ";
+                    INNER JOIN Role r ON u.id_role_utilisateur = r.id_role";
 
                 using (var reader = command.ExecuteReader())
                 {
@@ -56,10 +58,11 @@ namespace ProjetCaveVin.Model.Tables
                             Prenom = reader.GetString(2),
                             Email = reader.GetString(3),
                             PasswordHash = reader.GetString(4),
+                            Salt = reader.IsDBNull(5) ? null : reader.GetString(5),
                             Role = new Role
                             {
-                                id_role = reader.GetInt32(5),
-                                Nom = reader.GetString(6)
+                                id_role = reader.GetInt32(6),
+                                Nom = reader.GetString(7)
                             }
                         };
                         utilisateurs.Add(utilisateur);
@@ -70,11 +73,10 @@ namespace ProjetCaveVin.Model.Tables
             db.Close();
             return utilisateurs;
         }
+
+        // 🔹 Vérifie les identifiants
         public static Utilisateur GetByCredentials(string email, string password)
         {
-
-            //  string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
             var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
@@ -82,139 +84,119 @@ namespace ProjetCaveVin.Model.Tables
             {
                 using (var command = db.CreateCommand())
                 {
+                    // 1) Récupérer l'utilisateur par email
                     command.CommandText = @"
-                SELECT u.id_utilisateur, u.Nom, u.Prenom, u.Email, u.PasswordHash, r.id_role, r.nom
-                FROM Utilisateur u
-                INNER JOIN Role r ON u.id_role_utilisateur = r.id_role
-                WHERE u.Email = @Email AND u.PasswordHash = @Password";
-
+                    SELECT id_utilisateur, u.Nom, Prenom, Email, PasswordHash, Salt, r.id_role, r.nom
+                    FROM Utilisateur u
+                    INNER JOIN Role r ON u.id_role_utilisateur = r.id_role
+                    WHERE u.Email = @Email";
                     command.Parameters.AddWithValue("@Email", email);
-                    command.Parameters.AddWithValue("@Password", password);
 
-                    using (var reader = command.ExecuteReader())
+                    using var reader = command.ExecuteReader();
+                    if (!reader.Read())
+                        return null; // utilisateur inexistant
+
+                    string storedHash = reader.GetString(reader.GetOrdinal("PasswordHash"));
+                    string storedSalt = reader.IsDBNull(reader.GetOrdinal("Salt")) ? null : reader.GetString(reader.GetOrdinal("Salt"));
+
+
+                    // 2) Vérifier le mot de passe avec le helper
+                    bool isValid = false;
+                    if (!string.IsNullOrEmpty(storedSalt))
                     {
-                        if (reader.Read())
-                        {
-                            return new Utilisateur
-                            {
-                                id_utilisateur = reader.GetInt32(0),
-                                Nom = reader.GetString(1),
-                                Prenom = reader.GetString(2),
-                                Email = reader.GetString(3),
-                                PasswordHash = reader.GetString(4),
-                                Role = new Role
-                                {
-                                    id_role = reader.GetInt32(5),
-                                    Nom = reader.GetString(6)
-                                }
-                            };
-                        }
+                        isValid = PasswordHelper.VerifyPassword(password, storedHash, storedSalt);
                     }
+                    else
+                    {
+                        // cas legacy si tu veux comparer directement le hash ou texte en clair
+                        isValid = storedHash == password;
+                    }
+
+                    if (!isValid)
+                        return null;
+
+                    // 3) Retourner l'utilisateur si mot de passe correct
+                    return new Utilisateur
+                    {
+                        id_utilisateur = reader.GetInt32(reader.GetOrdinal("id_utilisateur")),
+                        Nom = reader.GetString(reader.GetOrdinal("Nom")),
+                        Prenom = reader.GetString(reader.GetOrdinal("Prenom")),
+                        Email = reader.GetString(reader.GetOrdinal("Email")),
+                        PasswordHash = storedHash,
+                        Role = new Role
+                        {
+                            id_role = reader.GetInt32(reader.GetOrdinal("id_role")),
+                            Nom = reader.GetString(reader.GetOrdinal("nom"))
+                        }
+                    };
                 }
             }
             finally
             {
                 db.Close();
             }
-
-            return null; 
         }
 
-        public static void Create(string nom, string prenom, string email, string password, string role)
+
+
+        // 🔹 Insère un nouvel utilisateur (avec hash + salt)
+    public static void InsertUtilisateur(string nom, string prenom, string email, string plainPassword, string nomRole)
+    {
+        var (hash, salt) = PasswordHelper.HashPassword(plainPassword); // génère hash + salt
+        int roleId;
+
+        var db = new DatabaseConnexion(ConnectionString);
+        db.Open();
+
+        // Récupérer l'id du rôle
+        using (var cmd = db.CreateCommand())
         {
-           // string connectionString = @"Server=...;Database=Cave;User Id=...;Password=...;Encrypt=False;";
+            cmd.CommandText = "SELECT id_role FROM Role WHERE nom = @Role";
+            cmd.Parameters.AddWithValue("@Role", nomRole);
+            var result = cmd.ExecuteScalar();
+            if (result == null)
+                throw new Exception("Rôle invalide.");
+            roleId = Convert.ToInt32(result);
+        }
+
+        // Insérer l'utilisateur avec hash + salt
+        using (var cmdInsert = db.CreateCommand())
+        {
+            cmdInsert.CommandText = @"
+            INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, Salt, id_role_utilisateur)
+            VALUES (@Nom, @Prenom, @Email, @PasswordHash, @Salt, @IdRole)";
+            cmdInsert.Parameters.AddWithValue("@Nom", nom);
+            cmdInsert.Parameters.AddWithValue("@Prenom", prenom);
+            cmdInsert.Parameters.AddWithValue("@Email", email);
+            cmdInsert.Parameters.AddWithValue("@PasswordHash", hash);
+            cmdInsert.Parameters.AddWithValue("@Salt", salt);
+            cmdInsert.Parameters.AddWithValue("@IdRole", roleId);
+
+            cmdInsert.ExecuteNonQuery();
+        }
+
+        db.Close();
+    }
+
+        public static void DeleteUtilisateur(string email)
+        {
             var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
-            string req = "INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, id_role_utilisateur) " +
-                         "VALUES (@Nom, @Prenom, @Email, @Password, (SELECT id_role FROM Role WHERE nom = @Role))";
-
-            using (var cmd = db.CreateCommand())
+            using(var cmd = db.CreateCommand())
             {
-                cmd.CommandText = req;
-                cmd.Parameters.AddWithValue("@Nom", nom);
-                cmd.Parameters.AddWithValue("@Prenom", prenom);
+                cmd.CommandText = @" DELETE FROM Utilisateur WHERE Email = @Email;";
                 cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Password", password);
-                cmd.Parameters.AddWithValue("@Role", role);
-
                 cmd.ExecuteNonQuery();
-            }
 
-            db.Close();
+            }
         }
-
-        public static void Add(Utilisateur user)
-        {
-            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
-            var db = new DatabaseConnexion(ConnectionString);
-            db.Open();
-
-            using (var command = db.CreateCommand())
-            {
-                command.CommandText = @"INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, id_role_utilisateur)
-                                VALUES (@Nom, @Prenom, @Email, @PasswordHash, @IdRole)";
-                command.Parameters.AddWithValue("@Nom", user.Nom);
-                command.Parameters.AddWithValue("@Prenom", user.Prenom);
-                command.Parameters.AddWithValue("@Email", user.Email);
-                command.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
-                command.Parameters.AddWithValue("@IdRole", user.Role.id_role);
-
-                command.ExecuteNonQuery();
-            }
-
-            db.Close();
-        }
-
-
-        public static void InsertUtilisateur(string nom, string prenom, string email, string plainPassword, string nomRole)
-        {
-            var (hash, salt) = PasswordHelper.HashPassword(plainPassword);
-            int roleId;
-
-            // Utilisation d'une seule connexion pour tout
-            var db = new DatabaseConnexion(ConnectionString);
-            
-            db.Open();
-
-                // Récupérer l'id du rôle
-                using (var cmd = db.CreateCommand())
-                {
-                    cmd.CommandText = "SELECT id_role FROM Role WHERE nom = @Role";
-                    cmd.Parameters.AddWithValue("@Role", nomRole);
-                    var result = cmd.ExecuteScalar();
-                    if (result == null)
-                        throw new Exception("Rôle invalide.");
-                    roleId = Convert.ToInt32(result);
-                }
-
-                // Insérer l'utilisateur
-                using (var cmdInsert = db.CreateCommand())
-                {
-                    cmdInsert.CommandText = @"
-                INSERT INTO Utilisateur (Nom, Prenom, Email, PasswordHash, id_role_utilisateur)
-                VALUES (@Nom, @Prenom, @Email, @PasswordHash, @IdRole)";
-                    cmdInsert.Parameters.AddWithValue("@Nom", nom);
-                    cmdInsert.Parameters.AddWithValue("@Prenom", prenom);
-                    cmdInsert.Parameters.AddWithValue("@Email", email);
-                    cmdInsert.Parameters.AddWithValue("@PasswordHash", hash);
-
-                    cmdInsert.Parameters.AddWithValue("@IdRole", roleId);
-
-                    cmdInsert.ExecuteNonQuery();
-                }
-
-                db.Close();
-            }
-        
-
 
 
 
         public override string ToString()
         {
-            return $"{Nom} {Prenom} ({Email}) - Role: {Role}";
+            return $"{Nom} {Prenom} ({Email}) - Rôle: {Role.Nom}";
         }
     }
 }
