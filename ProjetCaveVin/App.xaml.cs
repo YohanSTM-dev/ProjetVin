@@ -53,13 +53,6 @@ namespace ProjetCaveVin
         //        Shutdown(); // Ferme l'application si la base n'est pas accessible
         //    }
         //}
-        static void MainD(string[] args)
-        {
-            // Exemple : supprimer un utilisateur précis
-            Utilisateur.DeleteUtilisateur("paul@cave.fr");
-
-            Console.WriteLine("Utilisateur supprimé avec succès !");
-        }
 
     }
 

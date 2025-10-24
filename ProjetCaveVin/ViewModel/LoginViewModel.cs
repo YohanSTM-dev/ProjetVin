@@ -1,23 +1,12 @@
 ﻿using ProjetCaveVin.Helpers;
 using System.Windows.Input;
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ProjetCaveVin.Model.Tables;
-using System.Windows.Controls;
-using ProjetCaveVin.View;
-using System.Windows;
-
 
 namespace ProjetCaveVin.ViewModel
 {
     public class LoginViewModel : BaseViewModel
     {
-
-
         private string _email;
         private string _password;
         private string _message;
@@ -25,7 +14,6 @@ namespace ProjetCaveVin.ViewModel
         public string Email { get => _email; set { _email = value; OnPropertyChanged(); } }
         public string Password { get => _password; set { _password = value; OnPropertyChanged(); } }
         public string Message { get => _message; set { _message = value; OnPropertyChanged(); } }
-
 
         public ICommand LoginCommand { get; }
 
@@ -39,25 +27,16 @@ namespace ProjetCaveVin.ViewModel
         private void Login()
         {
             var user = Utilisateur.GetByCredentials(Email, Password);
+
             if (user != null)
             {
-                Message = $"Connexion réussie. Role : ({user.Role.Nom})";
-
+                Message = $"Connexion réussie ({user.Role.Nom})";
                 LoginSucceeded?.Invoke(user);
-
-                if (user.Role.Nom == "Administratif")
-                    new AdministrateurWindow().Show();
-                else if (user.Role.Nom == "Serveur")
-                    new ServeurWindow().Show(); 
-                else if (user.Role.Nom == "Sommelier")
-                    new SommelierWindow().Show();
             }
             else
             {
-                Message = "Email ou mot de passe incorrect";
+                Message = "Email ou mot de passe incorrect.";
             }
         }
-
-
     }
 }

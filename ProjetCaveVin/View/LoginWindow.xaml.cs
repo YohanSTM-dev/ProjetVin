@@ -1,5 +1,9 @@
 ﻿using System.Windows;
 using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.ViewModel;
+using ProjetCaveVin.View;
+using System.Windows.Controls;
+
 
 namespace ProjetCaveVin.View
 {
@@ -12,35 +16,37 @@ namespace ProjetCaveVin.View
             InitializeComponent();
             _selectedRole = selectedRole;
 
-            System.Diagnostics.Debug.WriteLine($"LoginWindow ouvert avec _selectedRole = {_selectedRole}");
+            var vm = new LoginViewModel();
+            vm.LoginSucceeded += OnLoginSucceeded;
+            DataContext = vm;
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private void OnLoginSucceeded(Utilisateur user)
         {
-            string email = EmailBox.Text;
-            string password = PasswordBox.Password;
-
-            var user = Utilisateur.GetByCredentials(email, password);
-
-            if (user == null)
-            {
-                MessageText.Text = "Email ou mot de passe incorrect.";
-                return;
-            }
-
             if (user.Role.Nom != _selectedRole)
             {
-                MessageText.Text = $"Le rôle ne correspond pas au rôle choisi : {_selectedRole}.";
+                MessageBox.Show($"Le rôle ne correspond pas au rôle choisi : {_selectedRole}.",
+                                "Erreur de rôle", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            Window nextWindow = user.Role.Nom switch
+            Window nextWindow = null  ;
+            
+            switch(user.Role.Nom)
             {
-                "Administrateur" => new AdministrateurWindow(),
-                "Sommelier" => new SommelierWindow(),
-                "Serveur" => new ServeurWindow(),
-                _ => null
-            };
+                case "Administrateur":
+                    nextWindow = new AdministrateurWindow();
+                    break;
+                case "Serveur":
+                    nextWindow = new ServeurWindow();
+                    break;
+                case "Sommelier":
+                    nextWindow = new SommelierWindow();
+                    break;
+                default:
+                    nextWindow = null;
+                    break;  
+            } 
 
             nextWindow?.Show();
             this.Close();
@@ -48,24 +54,24 @@ namespace ProjetCaveVin.View
 
         private void RetourButton_Click(object sender, RoutedEventArgs e)
         {
-            Window targetWindow;
-
-            switch (_selectedRole?.Trim().ToLower())
+            Window targetWindow = _selectedRole?.Trim().ToLower() switch
             {
-                case "administrateur":
-                    targetWindow = new LoginAdminWindow();
-                    break;
-                case "sommelier":
-                case "serveur":
-                    targetWindow = new RoleAccessWindow();
-                    break;
-                default:
-                    targetWindow = new LoginWindow(_selectedRole); 
-                    break;
-            }
+                "administrateur" => new LoginAdminWindow(),
+                "sommelier" or "serveur" => new RoleAccessWindow(),
+                _ => new RoleAccessWindow()
+            };
 
             targetWindow.Show();
             this.Close();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is LoginViewModel vm)
+            {
+                vm.Password = (sender as PasswordBox)?.Password;
+            }
+        }
+
     }
 }
