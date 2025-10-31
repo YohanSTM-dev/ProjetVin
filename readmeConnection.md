@@ -280,3 +280,20 @@ Vérifie les identifiants de connexion :
 * [ ] Implémenter des tests unitaires sur le ViewModel
 
 ---
+
+## Probleme possible lors de l'importantion
+
+avec les nom differents releve 
+
+```sql
+UPDATE Role SET nom = 'Administrateur' WHERE nom = 'Administratif';
+
+
+```
+ajouter salt dans utilisateur je sais plus si je l'ai mis 
+```sql
+ALTER TABLE Utilisateur ADD Salt VARCHAR(255);
+
+```
+
+
