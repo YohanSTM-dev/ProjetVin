@@ -6,22 +6,64 @@
         xmlns:local="clr-namespace:ProjetCaveVin.ViewModel"
         xmlns:localm="clr-namespace:ProjetCaveVin.Model"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Accueil Cave à Vin"
+        Height="600" Width="900"
+        Background="#FFFDFDFD">
 
-    <Grid Margin="20">
+    <Grid>
+        <!-- Définition des lignes et colonnes -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- logo -->
+            <RowDefinition Height="*"/>
+            <!-- image centrale -->
+            <RowDefinition Height="Auto"/>
+            <!-- images bas -->
+        </Grid.RowDefinitions>
 
-        <Grid>
-            <DataGrid ItemsSource="{Binding Bouteilles}" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Id" Binding="{Binding Id}" />
-                    <DataGridTextColumn Header="Libellé" Binding="{Binding Libelle}" />
-                    <DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" />
-                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
-                    <DataGridTextColumn Header="Code" Binding="{Binding Code}" />
-                    <DataGridTextColumn Header="Code Emplacement" Binding="{Binding Code_Emplacement}" />
-                </DataGrid.Columns>
-            </DataGrid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <!-- gauche -->
+            <ColumnDefinition Width="*"/>
+            <!-- centre -->
+            <ColumnDefinition Width="Auto"/>
+            <!-- droite -->
+        </Grid.ColumnDefinitions>
 
-        </Grid>
+        <!-- Logo en haut à gauche -->
+        <Image Source="Images/logogm.png"
+               Grid.Row="0" Grid.Column="0"
+               Margin="10,10,0,0"
+               Height="57"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left" Width="89" />
+
+        <!-- Image d'accueil au centre -->
+        <Image Source="Images/imageacceuil.png"
+               Stretch="Uniform"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               MaxWidth="600"
+               MaxHeight="400"
+               Margin="102,90,0,0" Grid.ColumnSpan="3" Height="236" Width="455" Grid.RowSpan="2" />
+
+        <!-- Image gestion vin en bas à gauche -->
+        <Image Source="Images/imagegestionvin.png"
+               Grid.Row="1" Grid.Column="0"
+               Margin="102,0,0,40"
+               Height="150"
+               VerticalAlignment="Bottom"
+               HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.RowSpan="2"
+               Cursor="Hand"
+               MouseLeftButtonDown="ImageGestionVin_Click"/>
+
+        <!-- Image stats vin en bas à droite -->
+        <Image Source="Images/imagestatvin.png"
+               Grid.Row="1" Grid.Column="1"
+               Margin="0,0,85,40"
+               Height="150"
+               VerticalAlignment="Bottom"
+               HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+
     </Grid>
 </Window>

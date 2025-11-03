@@ -58,6 +58,7 @@ namespace ProjetCaveVin.Model
                                         b.id_bouteille,
                                         b.Libelle,
                                         b.Millesime,
+                                        b.Prix,
                                         t.LibelleType AS Type,
                                         z.Code AS ZoneCode,
                                         e.Code_Emplacement
@@ -80,9 +81,10 @@ namespace ProjetCaveVin.Model
                             Id = reader.GetInt32(0),
                             Libelle = reader.GetString(1),
                             Millesime = reader.GetString(2),
-                            Type = reader.GetString(3),
-                            Code = reader.GetString(4),
-                            Code_Emplacement = reader.GetString(5),
+                            Prix= reader.GetDecimal(3),
+                            Type = reader.GetString(4),
+                            Code = reader.GetString(5),
+                            Code_Emplacement = reader.GetString(6),
                         };
                         Bouteilles.Add(bouteille);
 

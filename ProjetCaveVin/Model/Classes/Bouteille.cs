@@ -12,6 +12,7 @@ namespace ProjetCaveVin.Model.Classes
         public string Libelle { get; set; }
         public string Millesime { get; set; }
         public decimal Contenance { get; set; }
+        public decimal Prix { get; set; }
         //------------------------------------------
         public string Code { get; set; }
         public string Code_Emplacement { get; set; }
