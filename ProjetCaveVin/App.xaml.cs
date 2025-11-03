@@ -13,7 +13,7 @@ namespace ProjetCaveVin
     public partial class App : Application
     {
 
-        // fonctionnalité plus utile et gerer automatiquement avec la bd 
+        // fonctionnalité a utile pour gerer l'inuitialisation de la base de donnée au demarage de l'application
 
         //protected override void OnStartup(StartupEventArgs e)
         //{
@@ -22,7 +22,7 @@ namespace ProjetCaveVin
         //    try
         //    {
 
-        //        string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+        //        string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
         //        var db = new DatabaseConnexion(connectionString);
         //        db.Open();
 
@@ -30,7 +30,7 @@ namespace ProjetCaveVin
         //        using (var cmd = db.CreateCommand())
         //        {
         //            cmd.CommandText = "SELECT COUNT(*) FROM RoleAccess;";
-        //            int count = Convert.ToInt32(cmd.ExecuteScalar()); 
+        //            int count = Convert.ToInt32(cmd.ExecuteScalar());
 
         //            if (count == 0)
         //            {

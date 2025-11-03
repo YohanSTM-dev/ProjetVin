@@ -13,7 +13,7 @@ namespace ProjetCaveVin.ViewModel
         private string _password;
         private string _message;
         private string _role;
-        public List<string> Roles { get; } = new List<string> { "Administratif", "Sommelier", "Serveur" };
+        public List<string> Roles { get; } = new List<string> { "Administrateur", "Sommelier", "Serveur" };
 
 
         public string Nom
@@ -30,6 +30,7 @@ namespace ProjetCaveVin.ViewModel
 
         public string Email
         {
+
             get => _email;
             set { _email = value; OnPropertyChanged(); }
         }
