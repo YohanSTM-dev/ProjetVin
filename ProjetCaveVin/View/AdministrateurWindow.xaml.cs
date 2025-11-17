@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ProjetCaveVin.ViewModel;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.View
 {

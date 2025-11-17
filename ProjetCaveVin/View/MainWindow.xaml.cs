@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.View
 {

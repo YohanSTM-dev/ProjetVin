@@ -1,9 +1,9 @@
-﻿using ProjetCaveVin.Model.TonProjet.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjetCaveVin.Model.Tables;
 
 namespace ProjetCaveVin.Model.Classes
 {

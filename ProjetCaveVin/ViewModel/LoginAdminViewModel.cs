@@ -5,6 +5,8 @@ using ProjetCaveVin.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.ViewModel
 {

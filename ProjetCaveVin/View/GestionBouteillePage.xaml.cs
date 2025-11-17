@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using ProjetCaveVin.Model;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.View
 {

@@ -3,6 +3,7 @@ using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.ViewModel;
 using ProjetCaveVin.View;
 using System.Windows.Controls;
+using ProjetCaveVin.Model.Classes;
 
 
 namespace ProjetCaveVin.View

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjetCaveVin.View;
 using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.Model.Classes;
 using ProjetCaveVin.Helpers;
 using System.Windows.Input;
 

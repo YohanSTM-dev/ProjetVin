@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.Model.Classes;
+
 using ProjetCaveVin.View;
 
 namespace ProjetCaveVin.View

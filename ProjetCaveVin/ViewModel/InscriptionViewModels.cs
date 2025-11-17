@@ -2,6 +2,8 @@
 using ProjetCaveVin.Helpers;
 using System;
 using System.Windows.Input;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.ViewModel
 {

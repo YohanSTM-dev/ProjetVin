@@ -3,6 +3,8 @@ using ProjetCaveVin.Model;
 using ProjetCaveVin.Model.Connexion;
 using System;
 using System.Windows.Input;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.ViewModel
 {

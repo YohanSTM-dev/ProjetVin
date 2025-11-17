@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
-using ProjetCaveVin.Model.TonProjet.Models;
+using ProjetCaveVin.Model;
 using ProjetCaveVin.ViewModel;
 using System;
 using System.Collections.Generic;

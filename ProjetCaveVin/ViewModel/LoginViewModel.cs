@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System;
 using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.Model.Classes;
 
 namespace ProjetCaveVin.ViewModel
 {

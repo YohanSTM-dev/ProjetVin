@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Input;
 using ProjetCaveVin.ViewModel;
 using ProjetCaveVin.View;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.ViewModel
 {

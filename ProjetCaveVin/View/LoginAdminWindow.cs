@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using ProjetCaveVin.View;
 using ProjetCaveVin.ViewModel;
 using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.Model.Classes;
 
 
 namespace ProjetCaveVin.View
