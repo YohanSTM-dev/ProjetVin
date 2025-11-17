@@ -35,7 +35,7 @@ namespace ProjetCaveVin.View
             switch(user.Role.Nom)
             {
                 case "Administrateur":
-                    nextWindow = new AdministrateurWindow();
+                    nextWindow = new MainWindow();
                     break;
                 case "Serveur":
                     nextWindow = new ServeurWindow();

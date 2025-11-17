@@ -1,30 +1,27 @@
 ﻿using System.Windows;
-using ProjetCaveVin.ViewModel;
-
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ProjetCaveVin.View
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
 
-           DataContext = new testConnexion();
-           
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ImageGestionVin_Click(object sender, MouseButtonEventArgs e)
         {
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
+            var page = new GestionBouteillePage();
+            var navWindow = new NavigationWindow
+            {
+                Content = page,
+                Title = "Gestion des Bouteilles"
+            };
+            navWindow.Show();
+            this.Close();
         }
 
         private void Button_Test_Connexion_Utilisateur(object sender, RoutedEventArgs e)

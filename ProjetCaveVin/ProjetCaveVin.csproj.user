@@ -7,9 +7,6 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="View\AcceuilWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="View\AdministrateurWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,9 +24,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="View\AcceuilWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="View\AdministrateurWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
