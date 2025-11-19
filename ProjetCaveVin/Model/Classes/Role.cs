@@ -37,8 +37,8 @@ namespace ProjetCaveVin.Model.Tables
             */
             //POUR MAISON
 
-            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+           // string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -66,9 +66,9 @@ namespace ProjetCaveVin.Model.Tables
         {
             //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
 
-            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            //string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
 
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -98,7 +98,7 @@ namespace ProjetCaveVin.Model.Tables
 
             string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
 
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())

@@ -38,7 +38,7 @@ namespace ProjetCaveVin.Model.Tables
         {
             var utilisateurs = new List<Utilisateur>();
 
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -79,7 +79,7 @@ namespace ProjetCaveVin.Model.Tables
         //  Vérifie les identifiants
         public static Utilisateur GetByCredentials(string email, string password)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             try
@@ -147,7 +147,7 @@ namespace ProjetCaveVin.Model.Tables
         var (hash, salt) = PasswordHelper.HashPassword(plainPassword); // génère hash + salt
         int roleId;
 
-        var db = new DatabaseConnexion(ConnectionStringLocal);
+        var db = new DatabaseConnexion(ConnectionString);
         db.Open();
 
         // Récupérer l'id du rôle
@@ -182,7 +182,7 @@ namespace ProjetCaveVin.Model.Tables
 
         public static void DeleteUtilisateur(string email)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using(var cmd = db.CreateCommand())
