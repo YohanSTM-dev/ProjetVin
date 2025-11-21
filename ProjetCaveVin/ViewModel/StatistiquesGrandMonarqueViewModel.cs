@@ -1,32 +1,45 @@
-using System.Linq;
-using System.Windows.Input;
 using ProjetCaveVin.Helpers;
-using ProjetCaveVin.View;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using ProjetCaveVin.Model.Classes;
-
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ProjetCaveVin.ViewModel
 {
     public class StatistiquesGrandMonarqueViewModel : BaseViewModel
     {
-        // Propriétés pour les statistiques
-        private int _totalVentes;
-        public int TotalVentes
+        private decimal _coutTotal;
+        public decimal CoutTotal
         {
-            get => _totalVentes;
-            set { _totalVentes = value; OnPropertyChanged(nameof(TotalVentes)); }
+            get { return _coutTotal; }
+            set { _coutTotal = value; OnPropertyChanged(); }
         }
-        private decimal _revenuTotal;
-        public decimal RevenuTotal
+
+        private Dictionary<string, int> _stocksParBouteille;
+        public Dictionary<string, int> StocksParBouteille
         {
-            get => _revenuTotal;
-            set { _revenuTotal = value; OnPropertyChanged(nameof(RevenuTotal)); }
+            get { return _stocksParBouteille; }
+            set { _stocksParBouteille = value; OnPropertyChanged(); }
         }
+
         public StatistiquesGrandMonarqueViewModel()
         {
+            ChargerDonnees();
+        }
+
+        public void ChargerDonnees()
+        {
+            List<Bouteille> bouteilles = Bouteille.getAllBouteilles();
+
+            // Calcul du prix total
+            CoutTotal = CalculerValeurStock(bouteilles);
+
+            StocksParBouteille = bouteilles .GroupBy(b => b.Libelle).ToDictionary(g => g.Key, g => g.Count());
+        }
+
+        private decimal CalculerValeurStock(List<Bouteille> listeDeBouteilles)
+        {
+            if (listeDeBouteilles == null || !listeDeBouteilles.Any()) return 0;
+            return listeDeBouteilles.Sum(b => b.Prix);
         }
     }
 }

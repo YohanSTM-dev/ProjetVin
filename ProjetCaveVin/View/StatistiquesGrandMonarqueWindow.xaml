@@ -8,6 +8,36 @@
         Title="StatistiquesGrandMonarqueWindow" Height="450" Width="800">
 
     <Grid>
-        <Label>Page des statistiques du Grand Monarque</Label>
+        <TextBlock Text="etat des Stocks" 
+           FontSize="20" FontWeight="Bold" Margin="0,20,0,10" 
+           Foreground="#333" HorizontalAlignment="Center"/>
+
+        <Border Background="White" CornerRadius="10" Padding="10" Margin="20" Effect="{DynamicResource MaterialDesignShadowDepth1}">
+            <ListView ItemsSource="{Binding StocksParBouteille}" BorderThickness="0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Key}" 
+                               FontSize="16" 
+                               VerticalAlignment="Center" 
+                               Foreground="Black" 
+                               TextTrimming="CharacterEllipsis"/>
+
+                            <Border Grid.Column="1" Background="#F0F0F0" CornerRadius="5" Padding="10,2">
+                                <TextBlock Text="{Binding Value}" 
+                                   FontWeight="Bold" 
+                                   FontSize="16" 
+                                   Foreground="#B8860B"/>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </Grid>
 </Window>
