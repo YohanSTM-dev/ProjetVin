@@ -7,6 +7,7 @@ namespace ProjetCaveVin.ViewModel
 {
     public class StatistiquesGrandMonarqueViewModel : BaseViewModel
     {
+        // 1. COÛT TOTAL
         private decimal _coutTotal;
         public decimal CoutTotal
         {
@@ -21,6 +22,14 @@ namespace ProjetCaveVin.ViewModel
             set { _stocksParBouteille = value; OnPropertyChanged(); }
         }
 
+
+        private Dictionary<string, int> _repartitionParType;
+        public Dictionary<string, int> RepartitionParType
+        {
+            get { return _repartitionParType; }
+            set { _repartitionParType = value; OnPropertyChanged(); }
+        }
+
         public StatistiquesGrandMonarqueViewModel()
         {
             ChargerDonnees();
@@ -28,12 +37,15 @@ namespace ProjetCaveVin.ViewModel
 
         public void ChargerDonnees()
         {
-            List<Bouteille> bouteilles = Bouteille.getAllBouteilles();
+            List<Bouteille> toutesLesBouteilles = Bouteille.getAllBouteilles();
 
-            // Calcul du prix total
-            CoutTotal = CalculerValeurStock(bouteilles);
+            CoutTotal = CalculerValeurStock(toutesLesBouteilles);
 
-            StocksParBouteille = bouteilles .GroupBy(b => b.Libelle).ToDictionary(g => g.Key, g => g.Count());
+            this.StocksParBouteille = toutesLesBouteilles
+                .GroupBy(b => b.Libelle)
+                .ToDictionary(g => g.Key, g => g.Count());
+
+            this.RepartitionParType = toutesLesBouteilles.GroupBy(b => b.Type).ToDictionary(g => g.Key, g => g.Count());
         }
 
         private decimal CalculerValeurStock(List<Bouteille> listeDeBouteilles)
