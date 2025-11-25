@@ -5,7 +5,7 @@ using ProjetCaveVin.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-
+/*
 namespace ProjetCaveVin.ViewModel
 {
     public class GestionBouteilleViewModel : BaseViewModel
@@ -27,4 +27,4 @@ namespace ProjetCaveVin.ViewModel
         {
         }
     }
-}
+}*/

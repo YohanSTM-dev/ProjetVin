@@ -86,25 +86,50 @@
                 Margin="0,0,0,20"
                 Click="Recharger_Click"/>
 
-        <!-- Ligne 2 : ScrollViewer avec Zones -->
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,0,0,20">
-            <ItemsControl ItemsSource="{Binding Zones}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Style="{StaticResource CardStyle}">
-                            <StackPanel HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Code}" FontSize="16" FontWeight="Bold" TextAlignment="Center" Margin="0,0,0,5"/>
-                            </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+        <!-- Ligne 2 : Filtres + Zones côte à côte -->
+        <Grid Grid.Row="2" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Texte Filtres -->
+            <TextBlock Text="Filtres"
+               FontSize="20"
+               VerticalAlignment="Top"
+               HorizontalAlignment="Left"
+               Margin="0,5,20,0"
+               Grid.Column="0"/>
+
+            <!-- ScrollViewer avec Zones -->
+            <ScrollViewer Grid.Column="1"
+                  VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Zones}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardStyle}"
+                            Width="50"
+                            Margin="2"
+                            Padding="0"
+                            MouseLeftButtonDown="Zone_Click">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding Code}" FontSize="16" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Border>
+
+
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
 
         <!-- Ligne 3 : ScrollViewer avec Bouteilles -->
         <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
