@@ -38,7 +38,7 @@ namespace ProjetCaveVin.Model.Tables
         {
             var utilisateurs = new List<Utilisateur>();
 
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -79,14 +79,13 @@ namespace ProjetCaveVin.Model.Tables
         //  Vérifie les identifiants
         public static Utilisateur GetByCredentials(string email, string password)
         {
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             try
             {
                 using (var command = db.CreateCommand())
                 {
-                    // 1) Récupérer l'utilisateur par email
                     command.CommandText = @"
                     SELECT id_utilisateur, u.Nom, Prenom, Email, PasswordHash, Salt, r.id_role, r.nom
                     FROM Utilisateur u
@@ -96,13 +95,11 @@ namespace ProjetCaveVin.Model.Tables
 
                     using var reader = command.ExecuteReader();
                     if (!reader.Read())
-                        return null; // utilisateur inexistant
+                        return null; 
 
                     string storedHash = reader.GetString(reader.GetOrdinal("PasswordHash"));
                     string storedSalt = reader.IsDBNull(reader.GetOrdinal("Salt")) ? null : reader.GetString(reader.GetOrdinal("Salt"));
 
-
-                    // 2) Vérifier le mot de passe avec le helper
                     bool isValid = false;
                     if (!string.IsNullOrEmpty(storedSalt))
                     {
@@ -110,14 +107,12 @@ namespace ProjetCaveVin.Model.Tables
                     }
                     else
                     {
-                        // cas legacy si tu veux comparer directement le hash ou texte en clair
                         isValid = storedHash == password;
                     }
 
                     if (!isValid)
                         return null;
 
-                    // 3) Retourner l'utilisateur si mot de passe correct
                     return new Utilisateur
                     {
                         id_utilisateur = reader.GetInt32(reader.GetOrdinal("id_utilisateur")),
@@ -141,16 +136,14 @@ namespace ProjetCaveVin.Model.Tables
 
 
 
-        // 🔹 Insère un nouvel utilisateur (avec hash + salt)
     public static void InsertUtilisateur(string nom, string prenom, string email, string plainPassword, string nomRole)
     {
-        var (hash, salt) = PasswordHelper.HashPassword(plainPassword); // génère hash + salt
+        var (hash, salt) = PasswordHelper.HashPassword(plainPassword); 
         int roleId;
 
-        var db = new DatabaseConnexion(ConnectionString);
+        var db = new DatabaseConnexion(ConnectionStringLocal);
         db.Open();
 
-        // Récupérer l'id du rôle
         using (var cmd = db.CreateCommand())
         {
             cmd.CommandText = "SELECT id_role FROM Role WHERE nom = @Role";
@@ -161,7 +154,6 @@ namespace ProjetCaveVin.Model.Tables
             roleId = Convert.ToInt32(result);
         }
 
-        // Insérer l'utilisateur avec hash + salt
         using (var cmdInsert = db.CreateCommand())
         {
             cmdInsert.CommandText = @"
@@ -182,7 +174,7 @@ namespace ProjetCaveVin.Model.Tables
 
         public static void DeleteUtilisateur(string email)
         {
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using(var cmd = db.CreateCommand())

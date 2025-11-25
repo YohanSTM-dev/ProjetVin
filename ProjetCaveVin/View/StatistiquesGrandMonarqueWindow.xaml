@@ -78,6 +78,43 @@
                 </ListView>
             </Border>
 
+
+			<TextBlock Text="Historique des Deplacemeny bouteille"
+                       FontSize="20" FontWeight="Bold" Margin="0,20,0,10"
+                       Foreground="#333"/>
+
+			<Border Background="White" CornerRadius="10" Padding="5" Margin="0,0,0,20">
+				<Border.Effect>
+					<DropShadowEffect Color="Black" Direction="320" ShadowDepth="2" Opacity="0.2" BlurRadius="5"/>
+				</Border.Effect>
+
+				<ListView ItemsSource="{Binding HistoriqueList}" BorderThickness="0" Height="200">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<Grid Margin="0,5">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="120"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+
+								<TextBlock Text="{Binding DateDeplacement, StringFormat={}{0:dd/MM HH:mm}}"
+                                           FontSize="12" Foreground="Gray"
+                                           VerticalAlignment="Center"/>
+
+								<TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="14">
+									<Run Text="Utilisateur"/>
+									<Run Text="{Binding IdUtilisateur}" FontWeight="Bold" Foreground="#B8860B"/>
+									<Run Text=": Bouteille"/>
+									<Run Text="{Binding IdBouteille}" FontWeight="Bold" Foreground="#B8860B"/>
+									<Run Text="vers Emp."/>
+									<Run Text="{Binding IdEmplacement}" FontWeight="Bold" Foreground="#B8860B"/>
+								</TextBlock>
+							</Grid>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+			</Border>
+
         </StackPanel>
     </ScrollViewer>
 </Window>
