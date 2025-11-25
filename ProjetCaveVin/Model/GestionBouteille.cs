@@ -62,7 +62,8 @@ namespace ProjetCaveVin.Model
                                         b.Prix,
                                         t.LibelleType AS Type,
                                         z.Code AS ZoneCode,
-                                        e.Code_Emplacement
+                                        e.Code_Emplacement,
+                                        t.PhotoURL
                                     FROM Bouteille b
                                     INNER JOIN DernierDeplacement d 
                                         ON b.id_bouteille = d.id_bouteille AND d.rn = 1
@@ -82,10 +83,11 @@ namespace ProjetCaveVin.Model
                             Id = reader.GetInt32(0),
                             Libelle = reader.GetString(1),
                             Millesime = reader.GetString(2),
-                            Prix= reader.GetDecimal(3),
+                            Prix = reader.GetDecimal(3),
                             Type = reader.GetString(4),
                             Code = reader.GetString(5),
                             Code_Emplacement = reader.GetString(6),
+                            Photo = reader.GetString(7),
                         };
                         Bouteilles.Add(bouteille);
 
@@ -96,7 +98,7 @@ namespace ProjetCaveVin.Model
                 return Bouteilles;
 
 
-                
+
             }
 
 

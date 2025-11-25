@@ -18,6 +18,7 @@ namespace ProjetCaveVin.Model.Classes
         public string Code_Emplacement { get; set; }
         public string Type { get; set; }
         public string Photo { get; set; }
+
         //------------------------------------------
         public int IdOrigine { get; set; }
         public Origine Origine { get; set; }

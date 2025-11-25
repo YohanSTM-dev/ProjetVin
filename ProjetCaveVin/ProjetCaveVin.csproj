@@ -20,6 +20,9 @@
     <None Remove="View\Images\imagegestionvin.png" />
     <None Remove="View\Images\imagestatvin.png" />
     <None Remove="View\Images\logogm.png" />
+    <None Remove="View\Images\vinblanc.png" />
+    <None Remove="View\Images\vinrose.png" />
+    <None Remove="View\Images\vinrouge.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +44,15 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="View\Images\logogmcomplet.png" />
+    <Resource Include="View\Images\vinblanc.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Images\vinrose.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="View\Images\vinrouge.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   
   </ItemGroup>
 

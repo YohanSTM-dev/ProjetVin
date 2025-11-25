@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using ProjetCaveVin.Model;
-
 namespace ProjetCaveVin.View
 {
     public partial class GestionBouteillePage : Page
@@ -21,5 +20,8 @@ namespace ProjetCaveVin.View
             _gestionBouteille = new GestionBouteille();
             this.DataContext = _gestionBouteille;
         }
+
+       
+
     }
 }
