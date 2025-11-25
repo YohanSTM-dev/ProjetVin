@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using ProjetCaveVin.Model.Tables;
+//using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.ViewModel;
 using ProjetCaveVin.View;
 using System.Windows.Controls;

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjetCaveVin.Model.Connexion;
-using ProjetCaveVin.Model.Tables;
+//using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.Model.Classes;
+
 
 namespace ProjetCaveVin.Model.Classes
 {
@@ -39,13 +41,13 @@ namespace ProjetCaveVin.Model.Classes
                 using (var command = db.CreateCommand())
                 {
                     command.CommandText = @"
-                        INSERT INTO HistoriqueDeplacement (id_bouteille, id_emplacement, id_utilisateur, Date_Deplacement)
-                        VALUES (@IdBouteille, @IdEmplacement, @IdUser, @Date)";
+                        INSERT INTO HistoriqueDeplacement (Date_Deplacement,id_utilisateur,id_bouteille, id_emplacement )
+                        VALUES (@Date, @IdUser,@IdBouteille, @IdEmplacement )";
 
+                    command.Parameters.AddWithValue("@Date", DateTime.Now);
+                    command.Parameters.AddWithValue("@IdUser", idUtilisateur);
                     command.Parameters.AddWithValue("@IdBouteille", idBouteille);
                     command.Parameters.AddWithValue("@IdEmplacement", idNouveauEmplacement);
-                    command.Parameters.AddWithValue("@IdUser", idUtilisateur);
-                    command.Parameters.AddWithValue("@Date", DateTime.Now);
 
                     command.ExecuteNonQuery();
                 }

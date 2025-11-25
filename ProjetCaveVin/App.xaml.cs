@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows;
 using ProjetCaveVin.Model.Connexion;
 using ProjetCaveVin.View;
-using ProjetCaveVin.Model.Tables;
+//using ProjetCaveVin.Model.Tables;
 
 namespace ProjetCaveVin
 {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ProjetCaveVin.View;
 using ProjetCaveVin.ViewModel;
-using ProjetCaveVin.Model.Tables;
+//using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.Model.Classes;
 
 

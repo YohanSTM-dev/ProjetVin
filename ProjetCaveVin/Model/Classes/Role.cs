@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ProjetCaveVin.Model.Connexion;
 
 
-namespace ProjetCaveVin.Model.Tables
+namespace ProjetCaveVin.Model.Classes
 {
     public class Role
     {

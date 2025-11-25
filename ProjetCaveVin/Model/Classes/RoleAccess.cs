@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ProjetCaveVin.Model.Connexion;
 using ProjetCaveVin.Helpers;
 
-namespace ProjetCaveVin.Model.Tables
+namespace ProjetCaveVin.Model.Classes
 {
     public class RoleAccess
     {

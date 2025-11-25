@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 
-namespace ProjetCaveVin.Model.Tables
+namespace ProjetCaveVin.Model.Classes
 {
     public class Utilisateur
     {

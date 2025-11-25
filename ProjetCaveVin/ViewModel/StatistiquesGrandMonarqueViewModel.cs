@@ -2,6 +2,7 @@ using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
 using ProjetCaveVin.Model.Connexion;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -87,14 +88,18 @@ namespace ProjetCaveVin.ViewModel
 
         private void SimulerDeplacement()
         {
-            // ATTENTION : Mets ici des IDs qui existent vraiment dans ta base !
-            // Exemple : On déplace la Bouteille n°1 vers l'Emplacement n°1 par l'Utilisateur n°1
-            int idBouteilleTest = 29;
-            int idEmplacementTest = 7;
-            int idUtilisateurTest = 1011;
+            if(Session.CurrentUser == null)
+            {
+                System.Windows.MessageBox.Show("Erreur: Vous êtes connecter avec aucun compte");
+                return;
+            }
+            int idBouteilleTest = 15;
+            int idEmplacementTest = 14;
+            int idUtilisateur = Session.CurrentUser.id_utilisateur;
 
-            // Appel de ta méthode logique
-            DeplacerUneBouteille(idBouteilleTest, idEmplacementTest, idUtilisateurTest);
+            
+
+            DeplacerUneBouteille(idBouteilleTest, idEmplacementTest, idUtilisateur);
         }
 
 
