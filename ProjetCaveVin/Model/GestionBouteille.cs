@@ -16,7 +16,7 @@ using ProjetCaveVin.Model.Connexion;
 
 namespace ProjetCaveVin.Model
 {
-    internal class GestionBouteille : BaseViewModel
+    public class GestionBouteille : BaseViewModel
     {
         private ObservableCollection<Bouteille> _bouteilles;
         public ObservableCollection<Bouteille> Bouteilles
