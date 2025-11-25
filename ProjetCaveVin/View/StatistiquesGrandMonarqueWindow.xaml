@@ -115,6 +115,22 @@
 				</ListView>
 			</Border>
 
+			<Button Command="{Binding TestDeplacementCommand}"
+        Content="⚡ Simuler Déplacement (+1)"
+        Background="#B8860B"
+        Foreground="White"
+        FontWeight="Bold"
+        Height="40"
+        Margin="0,0,0,20"
+        HorizontalAlignment="Center"
+        Padding="20,0">
+				<Button.Resources>
+					<Style TargetType="Border">
+						<Setter Property="CornerRadius" Value="20"/>
+					</Style>
+				</Button.Resources>
+			</Button>
+
         </StackPanel>
     </ScrollViewer>
 </Window>

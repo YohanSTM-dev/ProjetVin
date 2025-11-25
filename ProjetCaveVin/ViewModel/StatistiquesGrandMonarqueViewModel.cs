@@ -4,6 +4,8 @@ using ProjetCaveVin.Model.Connexion;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+
 
 namespace ProjetCaveVin.ViewModel
 {
@@ -40,9 +42,11 @@ namespace ProjetCaveVin.ViewModel
             set { _historiqueList = value; OnPropertyChanged(); }
         }
 
+        public ICommand TestDeplacementCommand { get; private set; }
 
         public StatistiquesGrandMonarqueViewModel()
         {
+            TestDeplacementCommand = new RelayCommand(SimulerDeplacement);
             ChargerDonnees();
         }
 
@@ -80,6 +84,19 @@ namespace ProjetCaveVin.ViewModel
             if(historique == null) { return;}
 
         }
-        
+
+        private void SimulerDeplacement()
+        {
+            // ATTENTION : Mets ici des IDs qui existent vraiment dans ta base !
+            // Exemple : On déplace la Bouteille n°1 vers l'Emplacement n°1 par l'Utilisateur n°1
+            int idBouteilleTest = 29;
+            int idEmplacementTest = 7;
+            int idUtilisateurTest = 1011;
+
+            // Appel de ta méthode logique
+            DeplacerUneBouteille(idBouteilleTest, idEmplacementTest, idUtilisateurTest);
+        }
+
+
     }
 }

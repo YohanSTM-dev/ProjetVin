@@ -31,7 +31,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static void EnregistrerMouvement(int idBouteille, int idNouveauEmplacement, int idUtilisateur)
         {
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             try
