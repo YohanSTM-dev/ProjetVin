@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ProjetCaveVin.Model.Connexion;
 
 
-namespace ProjetCaveVin.Model.Tables
+namespace ProjetCaveVin.Model.Classes
 {
     public class Role
     {
@@ -38,7 +38,7 @@ namespace ProjetCaveVin.Model.Tables
             //POUR MAISON
 
            // string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using (var command = db.CreateCommand())

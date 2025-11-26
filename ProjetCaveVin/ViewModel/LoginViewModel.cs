@@ -1,8 +1,9 @@
 ﻿using ProjetCaveVin.Helpers;
 using System.Windows.Input;
 using System;
-using ProjetCaveVin.Model.Tables;
+//using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.Model.Classes;
+using System.Diagnostics.Eventing.Reader;
 
 namespace ProjetCaveVin.ViewModel
 {
@@ -31,6 +32,7 @@ namespace ProjetCaveVin.ViewModel
 
             if (user != null)
             {
+                Session.CurrentUser = user;
                 Message = $"Connexion réussie ({user.Role.Nom})";
                 LoginSucceeded?.Invoke(user);
             }

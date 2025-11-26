@@ -30,5 +30,13 @@ namespace ProjetCaveVin.View
         {
 
         }
+
+        private void ImageStat_Click(object sender, MouseButtonEventArgs e)
+        {
+            var page = new StatistiquesGrandMonarqueWindow();
+
+            page.Show();
+            this.Close();
+        }
     }
 }

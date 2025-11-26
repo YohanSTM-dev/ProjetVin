@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ProjetCaveVin.Model.Connexion;
 using ProjetCaveVin.Helpers;
 
-namespace ProjetCaveVin.Model.Tables
+namespace ProjetCaveVin.Model.Classes
 {
     public class RoleAccess
     {
@@ -20,7 +20,7 @@ namespace ProjetCaveVin.Model.Tables
 
         public static RoleAccess GetByRole(string roleName)
         {
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using var cmd = db.CreateCommand();
@@ -46,7 +46,7 @@ namespace ProjetCaveVin.Model.Tables
         {
             var (hash, salt) = PasswordHelper.HashPassword(plainPassword);
 
-             var db = new DatabaseConnexion(ConnectionString);
+             var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using var cmd = db.CreateCommand();
@@ -60,7 +60,7 @@ namespace ProjetCaveVin.Model.Tables
 
         public static bool CheckPassword(string roleName, string password)
         {
-             var db = new DatabaseConnexion(ConnectionString);
+             var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using var cmd = db.CreateCommand();
@@ -81,7 +81,7 @@ namespace ProjetCaveVin.Model.Tables
         {
             var roles = new List<RoleAccess>();
 
-             var db = new DatabaseConnexion(ConnectionString);
+             var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using var cmd = db.CreateCommand();
@@ -105,7 +105,7 @@ namespace ProjetCaveVin.Model.Tables
         public static void InsertRoleAccess(string roleName, string password)
         {
             // string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
             try
             {
