@@ -57,8 +57,8 @@ namespace ProjetCaveVin.View
         {
             Window targetWindow = _selectedRole?.Trim().ToLower() switch
             {
-                "administrateur" => new LoginAdminWindow(),
-                "sommelier" or "serveur" => new RoleAccessWindow(),
+                "Administrateur" => new LoginAdminWindow(),
+                "Sommelier" or "Serveur" => new RoleAccessWindow(),
                 _ => new RoleAccessWindow()
             };
 

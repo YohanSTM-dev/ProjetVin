@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +33,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static void EnregistrerMouvement(int idBouteille, int idNouveauEmplacement, int idUtilisateur)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             try
@@ -63,7 +63,7 @@ namespace ProjetCaveVin.Model.Classes
         {
             var listeRetour = new List<HistoriqueDeplacement>();
 
-            var db = new DatabaseConnexion(ConnectionStringLocal); 
+            var db = new DatabaseConnexion(ConnectionString); 
             db.Open();
 
             using (var command = db.CreateCommand())

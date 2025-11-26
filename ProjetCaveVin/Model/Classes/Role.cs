@@ -38,7 +38,7 @@ namespace ProjetCaveVin.Model.Classes
             //POUR MAISON
 
            // string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(ConnectionString);
             db.Open();
 
             using (var command = db.CreateCommand())
