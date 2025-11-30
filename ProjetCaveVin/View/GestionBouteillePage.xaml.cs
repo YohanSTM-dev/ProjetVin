@@ -28,8 +28,10 @@ namespace ProjetCaveVin.View
             if (sender is Border border && border.DataContext is Zone zone)
             {
                 ZoneSelectionnee = zone.Code;
-                MessageBox.Show("Zone sélectionnée : " + ZoneSelectionnee);
+
+                _viewModel.FiltrerParZone(ZoneSelectionnee);
             }
         }
+
     }
 }

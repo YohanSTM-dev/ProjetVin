@@ -67,7 +67,6 @@
                    Width="250"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Left"/>
-
             <TextBlock Text="Liste des bouteilles"
                        Grid.Column="1"
                        FontSize="26"
@@ -85,6 +84,8 @@
                 HorizontalAlignment="Left"
                 Margin="0,0,0,20"
                 Click="Recharger_Click"/>
+        
+        
 
         <!-- Ligne 2 : Filtres + Zones côte à côte -->
         <Grid Grid.Row="2" Margin="0,0,0,20">

@@ -39,5 +39,17 @@ namespace ProjetCaveVin.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        public void FiltrerParZone(string codeZone)
+        {
+            var liste = _gestionEmplacementViewModel.GetBouteillesParZone(codeZone);
+
+            _gestionBouteille.Bouteilles = new ObservableCollection<Bouteille>(liste);
+
+            OnPropertyChanged(nameof(Bouteilles));
+        }
+
+
     }
 }

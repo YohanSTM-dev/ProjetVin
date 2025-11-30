@@ -18,6 +18,8 @@ namespace ProjetCaveVin.Model
 {
     public class GestionBouteille : BaseViewModel
     {
+        public List<Bouteille> AllBouteilles { get; private set; }
+
         private ObservableCollection<Bouteille> _bouteilles;
         public ObservableCollection<Bouteille> Bouteilles
         {
@@ -32,13 +34,17 @@ namespace ProjetCaveVin.Model
         public GestionBouteille()
         {
             // Charger la liste dès l'initialisation
-            Bouteilles = new ObservableCollection<Bouteille>(GetBouteille());
+            AllBouteilles = GetBouteille(); // récupère toutes les bouteilles depuis la base
+            Bouteilles = new ObservableCollection<Bouteille>(AllBouteilles);
+
+            
         }
 
         private List<Bouteille> GetBouteille()
         {
             List<Bouteille> Bouteilles = new();
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;User Id=pol;Password=1234;Encrypt=False;";
 
             var db = new DatabaseConnexion(connectionString);
 
