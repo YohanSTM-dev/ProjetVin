@@ -31,7 +31,7 @@ namespace ProjetCaveVin.ViewModel
             get { return _repartitionVins; }
             set { _repartitionVins = value; OnPropertyChanged(); }
         }
-
+        
         public StatistiquesViewModel()
         {
             ChargerDonnees();

@@ -1,3 +1,4 @@
+<!-- Page pour voir modifier l'emplacement d'une bouteille et voir les differents emplacement des bouteilles -->
 <Window x:Class="ProjetCaveVin.View.StatistiquesGrandMonarqueWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
