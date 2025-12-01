@@ -87,7 +87,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static void AjouterBouteille(Bouteille nouvelleBouteille, int idEmplacement, int idUtilisateur)
         {
-            var db = new DatabaseConnexion(ConnectionString);
+            var db = new DatabaseConnexion(ConnectionStringLocal);
             db.Open();
 
             using (var connection = db.CreateCommand().Connection)
@@ -137,6 +137,57 @@ namespace ProjetCaveVin.Model.Classes
                 }
             }
             db.Close();
+        }
+
+        public static List<Bouteille> GetAllBouteillesAvecEmplacement()
+        {
+            var list = new List<Bouteille>();
+            var db = new DatabaseConnexion(ConnectionStringLocal); 
+            db.Open();
+
+            using (var cmd = db.CreateCommand())
+            {
+
+                cmd.CommandText = @"
+            SELECT 
+                b.id_bouteille, 
+                b.Libelle, 
+                b.Millesime, 
+                b.Contenance, 
+                b.Prix, 
+                b.id_origine,
+                e.Code_Emplacement
+            FROM Bouteille b
+            INNER JOIN HistoriqueDeplacement h ON b.id_bouteille = h.id_bouteille
+            INNER JOIN Emplacement e ON h.id_emplacement = e.id_emplacement
+
+            -- FILTRE MAGIQUE : On ne garde que la ligne la plus récente pour chaque bouteille
+
+            WHERE h.Date_Deplacement = (
+                SELECT MAX(h2.Date_Deplacement) 
+                FROM HistoriqueDeplacement h2 
+                WHERE h2.id_bouteille = b.id_bouteille
+            )";
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new Bouteille
+                        {
+                            Id = reader.GetInt32(0),
+                            Libelle = reader.GetString(1),
+                            Millesime = reader.IsDBNull(2) ? "" : reader.GetString(2),
+                            Contenance = reader.GetDecimal(3),
+                            Prix = reader.GetDecimal(4),
+                            IdOrigine = reader.GetInt32(5),
+                            Code_Emplacement = reader.GetString(6)
+                        });
+                    }
+                }
+            }
+            db.Close();
+            return list;
         }
 
 

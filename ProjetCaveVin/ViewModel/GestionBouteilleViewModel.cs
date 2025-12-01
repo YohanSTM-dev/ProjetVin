@@ -27,6 +27,9 @@ namespace ProjetCaveVin.ViewModel
         }
         public GestionBouteilleViewModel()
         {
+
+
+
         }
     }
 }

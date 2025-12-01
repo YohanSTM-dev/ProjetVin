@@ -1,108 +1,107 @@
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
-using ProjetCaveVin.Model.Connexion;
-using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
-
 
 namespace ProjetCaveVin.ViewModel
 {
     public class StatistiquesGrandMonarqueViewModel : BaseViewModel
     {
+
+        private ObservableCollection<Bouteille> _listeBouteilles;
+        public ObservableCollection<Bouteille> ListeBouteilles
+        {
+            get => _listeBouteilles;
+            set { _listeBouteilles = value; OnPropertyChanged(); }
+        }
+
         private decimal _coutTotal;
         public decimal CoutTotal
         {
-            get { return _coutTotal; }
+            get => _coutTotal;
             set { _coutTotal = value; OnPropertyChanged(); }
         }
 
-
-        private Dictionary<string, int> _stocksParBouteille;
-        public Dictionary<string, int> StocksParBouteille
+        private string _bonjourUser;
+        public string BonjourUser
         {
-            get { return _stocksParBouteille; }
-            set { _stocksParBouteille = value; OnPropertyChanged(); }
+            get => _bonjourUser;
+            set { _bonjourUser = value; OnPropertyChanged(); }
         }
 
 
-
-        private Dictionary<string, int> _repartitionParType;
-        public Dictionary<string, int> RepartitionParType
+        private Bouteille _selectedBouteille;
+        public Bouteille SelectedBouteille
         {
-            get { return _repartitionParType; }
-            set { _repartitionParType = value; OnPropertyChanged(); }
+            get => _selectedBouteille;
+            set
+            {
+                _selectedBouteille = value;
+                OnPropertyChanged();
+                //on force le bouton à revérifier s'il peut être cliqué
+                //(DeplacerCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            }
         }
 
-        private List<HistoriqueDeplacement> _historiqueList;
-        public List<HistoriqueDeplacement> HistoriqueList
+        // L'ID de l'emplacement où on veut l'envoyer (saisi dans un TextBox)
+        private int _targetEmplacementId;
+        public int TargetEmplacementId
         {
-            get { return _historiqueList; }
-            set { _historiqueList = value; OnPropertyChanged(); }
+            get => _targetEmplacementId;
+            set { _targetEmplacementId = value; OnPropertyChanged(); }
         }
 
-        public ICommand TestDeplacementCommand { get; private set; }
+        public ICommand DeplacerCommand { get; }
+        public ICommand RefreshCommand { get; }
 
         public StatistiquesGrandMonarqueViewModel()
         {
-            TestDeplacementCommand = new RelayCommand(SimulerDeplacement);
+            if (Session.CurrentUser != null)
+                BonjourUser = $"Bonjour, {Session.CurrentUser.Prenom}";
+            else
+                BonjourUser = "Mode Invité";
+
+            DeplacerCommand = new RelayCommand(ExecuterDeplacement, PeutDeplacer);
+            RefreshCommand = new RelayCommand(ChargerDonnees);
+
             ChargerDonnees();
         }
+
 
         public void ChargerDonnees()
         {
-            List<Bouteille> toutesLesBouteilles = Bouteille.getAllBouteilles();
+            var liste = Bouteille.GetAllBouteillesAvecEmplacement();
 
-            CoutTotal = CalculerValeurStock(toutesLesBouteilles);
-
-            this.StocksParBouteille = toutesLesBouteilles
-                .GroupBy(b => b.Libelle)
-                .ToDictionary(g => g.Key, g => g.Count());
-
-            this.RepartitionParType = toutesLesBouteilles.GroupBy(b => b.Type).ToDictionary(g => g.Key, g => g.Count());
-
-            //afficher Historique
-            HistoriqueList = HistoriqueDeplacement.GetAllHistoriqueDeplacements();
+            ListeBouteilles = new ObservableCollection<Bouteille>(liste);
+            CoutTotal = liste.Sum(b => b.Prix);
         }
 
-        private decimal CalculerValeurStock(List<Bouteille> listeDeBouteilles) // calcule la valeur totale du stock
+        private bool PeutDeplacer()
         {
-            if (listeDeBouteilles == null || !listeDeBouteilles.Any()) return 0;
-            return listeDeBouteilles.Sum(b => b.Prix);
+            return SelectedBouteille != null;
         }
 
-        public void DeplacerUneBouteille(int idBouteille, int idNouveauEmplacement, int idUtilisateur)
+        private void ExecuterDeplacement()
         {
-            HistoriqueDeplacement.EnregistrerMouvement(idBouteille, idNouveauEmplacement, idUtilisateur);
-
-            ChargerDonnees();
-        }
-
-        private void AfficherHistoriqueDeplacement(HistoriqueDeplacement historique)
-        {
-            if(historique == null) { return;}
-
-        }
-
-        private void SimulerDeplacement()
-        {
-            if(Session.CurrentUser == null)
+            if (SelectedBouteille == null) return;
+            if (TargetEmplacementId <= 0)
             {
-                System.Windows.MessageBox.Show("Erreur: Vous êtes connecter avec aucun compte");
+                MessageBox.Show("Veuillez saisir un ID d'emplacement valide (ex: 1, 2...).");
                 return;
             }
 
-            int idBouteilleTest = 30;
-            int idEmplacementTest = 8;
-            int idUtilisateur = Session.CurrentUser.id_utilisateur;
+            HistoriqueDeplacement.EnregistrerMouvement(
+                SelectedBouteille.Id,
+                TargetEmplacementId,
+                Session.CurrentUser.id_utilisateur
+            );
 
-            
+            MessageBox.Show($"Bouteille déplacée vers l'emplacement ID {TargetEmplacementId} !");
 
-            DeplacerUneBouteille(idBouteilleTest, idEmplacementTest, idUtilisateur);
+            ChargerDonnees();
+            TargetEmplacementId = 0; // Reset du champ
         }
-
-
     }
 }

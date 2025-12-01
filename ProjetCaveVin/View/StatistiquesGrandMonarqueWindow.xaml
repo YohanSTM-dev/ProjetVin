@@ -3,134 +3,113 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProjetCaveVin.ViewModel"
+        xmlns:vm="clr-namespace:ProjetCaveVin.ViewModel"
         mc:Ignorable="d"
-        Title="Statistiques Grand Monarque" Height="600" Width="800"
-        WindowStartupLocation="CenterScreen">
+        Title="Gestion des Stocks - Grand Monarque"
+        Height="650" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F4F4">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
+	<Grid Margin="20">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-        <StackPanel Margin="20">
+		<StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,20">
+			<TextBlock Text="STOCK &amp; MOUVEMENTS" FontSize="24" FontWeight="Bold" Foreground="#333"/>
+			<TextBlock Text="{Binding BonjourUser}" FontSize="16" Foreground="#B8860B" VerticalAlignment="Bottom" Margin="20,0,0,4"/>
 
-            <StackPanel HorizontalAlignment="Center" Margin="0,0,0,30">
-                <TextBlock Text="Valorisation Totale de la Cave" 
-                           FontSize="18" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding CoutTotal, StringFormat=\{0:C\}}" 
-                           FontSize="36" FontWeight="Bold" Foreground="#B8860B" HorizontalAlignment="Center"/>
-            </StackPanel>
+			<TextBlock Text="{Binding CoutTotal, StringFormat='Valorisation : {0:C2}'}"
+                       FontSize="18" FontWeight="Bold" Foreground="#2E7D32"
+                       HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Bottom"/>
+		</StackPanel>
 
-            <TextBlock Text="Detail par Bouteille" 
-                       FontSize="20" FontWeight="Bold" Margin="0,0,0,10" 
-                       Foreground="#333"/>
+		<Border Grid.Row="1" Grid.Column="0" Background="White" CornerRadius="8" Padding="10" Margin="0,0,20,0">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
+			</Border.Effect>
 
-            <Border Background="White" CornerRadius="10" Padding="5" Margin="0,0,0,20">
-                <Border.Effect>
-                    <DropShadowEffect Color="Black" Direction="320" ShadowDepth="2" Opacity="0.2" BlurRadius="5"/>
-                </Border.Effect>
+			<DataGrid ItemsSource="{Binding ListeBouteilles}"
+                      SelectedItem="{Binding SelectedBouteille}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      Background="White"
+                      BorderThickness="0">
 
-                <ListView ItemsSource="{Binding StocksParBouteille}" BorderThickness="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
+					<DataGridTextColumn Header="Nom du Vin" Binding="{Binding Libelle}" Width="*"/>
+					<DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" Width="80"/>
 
-                                <TextBlock Text="{Binding Key}" FontSize="14" FontWeight="SemiBold"
-                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+					<DataGridTextColumn Header="EMPLACEMENT" Binding="{Binding Code_Emplacement}" Width="120" FontWeight="Bold">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="TextBlock">
+								<Setter Property="Foreground" Value="#B8860B"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
 
-                                <Border Grid.Column="1" Background="#F0F0F0" CornerRadius="10" Padding="10,2" Margin="10,0,0,0">
-                                    <TextBlock Text="{Binding Value}" FontWeight="Bold" Foreground="#B8860B"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
+					<DataGridTextColumn Header="Prix" Binding="{Binding Prix, StringFormat=C2}" Width="80"/>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Border>
 
-            <TextBlock Text="Repartition par Type" 
-                       FontSize="20" FontWeight="Bold" Margin="0,10,0,10" 
-                       Foreground="#333"/>
+		<Border Grid.Row="1" Grid.Column="1" Background="White" CornerRadius="8" Padding="20">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
+			</Border.Effect>
 
-            <Border Background="White" CornerRadius="10" Padding="5" Margin="0,0,0,20">
-                <Border.Effect>
-                    <DropShadowEffect Color="Black" Direction="320" ShadowDepth="2" Opacity="0.2" BlurRadius="5"/>
-                </Border.Effect>
+			<StackPanel>
+				<TextBlock Text="DÉPLACER UNE BOUTEILLE" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
 
-                <ListView ItemsSource="{Binding RepartitionParType}" BorderThickness="0">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="0,5">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
+				<TextBlock Text="Vin sélectionné :" FontSize="12" Foreground="Gray"/>
+				<Border Background="#F9F9F9" Padding="10" Margin="0,5,0,20" CornerRadius="5">
+					<StackPanel>
+						<TextBlock Text="{Binding SelectedBouteille.Libelle, TargetNullValue='Aucune sélection'}"
+                                   FontWeight="Bold" FontSize="14" TextWrapping="Wrap"/>
+						<TextBlock Text="{Binding SelectedBouteille.Code_Emplacement, StringFormat='Actuellement en : {0}', TargetNullValue='Loc: ---'}"
+                                   Foreground="#B8860B" Margin="0,5,0,0"/>
+					</StackPanel>
+				</Border>
 
-                                <TextBlock Text="{Binding Key}" FontSize="14" VerticalAlignment="Center"/>
+				<TextBlock Text="Vers l'Emplacement (ID) :" FontSize="12" Foreground="Gray"/>
+				<TextBox Text="{Binding TargetEmplacementId, UpdateSourceTrigger=PropertyChanged}"
+                         Height="40" FontSize="16" FontWeight="Bold"
+                         Padding="5" VerticalContentAlignment="Center"
+                         BorderBrush="#DDD" BorderThickness="1"
+                         Margin="0,5,0,20"/>
 
-                                <Border Grid.Column="1" Background="#E0F7FA" CornerRadius="10" Padding="10,2" Margin="10,0,0,0">
-                                    <TextBlock Text="{Binding Value}" FontWeight="Bold" Foreground="#006064"/>
-                                </Border>
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </Border>
+				<TextBlock Text="Astuce : Entrez l'ID de la zone cible (ex: 1, 2...)"
+                           FontSize="10" FontStyle="Italic" Foreground="Gray" Margin="0,-15,0,20"/>
 
+				<Button Command="{Binding DeplacerCommand}"
+                        Content="CONFIRMER LE DÉPLACEMENT"
+                        Height="50"
+                        Background="#B8860B" Foreground="White"
+                        FontWeight="Bold" FontSize="14"
+                        Cursor="Hand">
+					<Button.Resources>
+						<Style TargetType="Border">
+							<Setter Property="CornerRadius" Value="25"/>
+						</Style>
+					</Button.Resources>
+				</Button>
 
-			<TextBlock Text="Historique des Deplacemeny bouteille"
-                       FontSize="20" FontWeight="Bold" Margin="0,20,0,10"
-                       Foreground="#333"/>
+				<Button Command="{Binding RefreshCommand}"
+                        Content="Actualiser la liste"
+                        Height="30" Margin="0,20,0,0"
+                        Background="Transparent" Foreground="Gray" BorderThickness="0"
+                        Cursor="Hand"/>
 
-			<Border Background="White" CornerRadius="10" Padding="5" Margin="0,0,0,20">
-				<Border.Effect>
-					<DropShadowEffect Color="Black" Direction="320" ShadowDepth="2" Opacity="0.2" BlurRadius="5"/>
-				</Border.Effect>
+			</StackPanel>
+		</Border>
 
-				<ListView ItemsSource="{Binding HistoriqueList}" BorderThickness="0" Height="200">
-					<ListView.ItemTemplate>
-						<DataTemplate>
-							<Grid Margin="0,5">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="120"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-
-								<TextBlock Text="{Binding DateDeplacement, StringFormat={}{0:dd/MM HH:mm}}"
-                                           FontSize="12" Foreground="Gray"
-                                           VerticalAlignment="Center"/>
-
-								<TextBlock Grid.Column="1" VerticalAlignment="Center" FontSize="14">
-									<Run Text="Utilisateur"/>
-									<Run Text="{Binding IdUtilisateur}" FontWeight="Bold" Foreground="#B8860B"/>
-									<Run Text=": Bouteille"/>
-									<Run Text="{Binding IdBouteille}" FontWeight="Bold" Foreground="#B8860B"/>
-									<Run Text="vers Emp."/>
-									<Run Text="{Binding IdEmplacement}" FontWeight="Bold" Foreground="#B8860B"/>
-								</TextBlock>
-							</Grid>
-						</DataTemplate>
-					</ListView.ItemTemplate>
-				</ListView>
-			</Border>
-
-			<Button Command="{Binding TestDeplacementCommand}"
-        Content="⚡ Simuler Déplacement (+1)"
-        Background="#B8860B"
-        Foreground="White"
-        FontWeight="Bold"
-        Height="40"
-        Margin="0,0,0,20"
-        HorizontalAlignment="Center"
-        Padding="20,0">
-				<Button.Resources>
-					<Style TargetType="Border">
-						<Setter Property="CornerRadius" Value="20"/>
-					</Style>
-				</Button.Resources>
-			</Button>
-
-        </StackPanel>
-    </ScrollViewer>
+	</Grid>
 </Window>
