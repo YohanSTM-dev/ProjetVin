@@ -15,7 +15,7 @@
             <StackPanel HorizontalAlignment="Center" Margin="0,0,0,30">
                 <TextBlock Text="Valorisation Totale de la Cave" 
                            FontSize="18" Foreground="Gray" HorizontalAlignment="Center"/>
-                <TextBlock Text="{Binding CoutTotal, StringFormat=C2}" 
+                <TextBlock Text="{Binding CoutTotal, StringFormat=\{0:C\}}" 
                            FontSize="36" FontWeight="Bold" Foreground="#B8860B" HorizontalAlignment="Center"/>
             </StackPanel>
 

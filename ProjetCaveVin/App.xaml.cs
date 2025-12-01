@@ -1,59 +1,40 @@
-﻿using System.Configuration;
+﻿using ProjetCaveVin.Model.Classes;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Windows;
-using ProjetCaveVin.Model.Connexion;
-using ProjetCaveVin.View;
-//using ProjetCaveVin.Model.Tables;
 
-namespace ProjetCaveVin
+namespace ProjetCaveVin;
+
+/// <summary>
+/// Interaction logic for App.xaml
+/// </summary>
+public partial class App : Application
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    // Cette méthode s'exécute tout au début, avant d'ouvrir la première fenêtre
+    protected override void OnStartup(StartupEventArgs e)
     {
+        base.OnStartup(e);
 
-        // fonctionnalité a utile pour gerer l'inuitialisation de la base de donnée au demarage de l'application
+        try
+        {
+            // 1. On regarde si des rôles existent déjà
+            List<RoleAccess> rolesExistants = RoleAccess.GetAllRoles();
 
-        //protected override void OnStartup(StartupEventArgs e)
-        //{
-        //    base.OnStartup(e);
-
-        //    try
-        //    {
-
-        //        string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-        //        var db = new DatabaseConnexion(connectionString);
-        //        db.Open();
-
-
-        //        using (var cmd = db.CreateCommand())
-        //        {
-        //            cmd.CommandText = "SELECT COUNT(*) FROM RoleAccess;";
-        //            int count = Convert.ToInt32(cmd.ExecuteScalar());
-
-        //            if (count == 0)
-        //            {
-        //                // Créer les rôles par défaut
-        //                RoleAccess.InsertRoleAccess("Serveur", "serveur123");
-        //                RoleAccess.InsertRoleAccess("Sommelier", "sommelier123");
-        //                RoleAccess.InsertRoleAccess("Administrateur", "admin123");
-        //            }
-        //        }
-
-        //        db.Close();
-
-        //        // Ouvrir la fenêtre de sélection du rôle
-        //        var roleAccessWindow = new RoleAccessWindow();
-        //        roleAccessWindow.Show();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Erreur au démarrage : " + ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        Shutdown(); // Ferme l'application si la base n'est pas accessible
-        //    }
-        //}
-
+            // 2. Si la liste est vide (ce qui est le cas après ton DELETE SQL)
+            if (rolesExistants.Count == 0)
+            {
+                // 3. On crée les rôles avec un VRAI hash valide généré par le C#
+                // Mot de passe par défaut : "1234"
+                RoleAccess.CreateOrInsertRole("Administrateur", "1234");
+                RoleAccess.CreateOrInsertRole("Sommelier", "1234");
+                RoleAccess.CreateOrInsertRole("Serveur", "1234");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            // Si la base n'est pas accessible, on affiche l'erreur mais on ne crash pas tout de suite
+            MessageBox.Show($"Erreur lors de l'initialisation de la base de données : \n{ex.Message}", "Erreur Système");
+        }
     }
-
 }
