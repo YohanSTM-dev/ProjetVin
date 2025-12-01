@@ -19,21 +19,8 @@ namespace ProjetCaveVin.ViewModel
         public ICommand ShowGestionBouteillesCommand {  get;  }
         public ICommand ShowStatistiquesGrandMonarqueCommand { get; }
 
-        public AdministrateurViewModels()
-		{
-            ShowGestionBouteillesCommand = new RelayCommand(showGestionBouteilles);
-            ShowStatistiquesGrandMonarqueCommand = new RelayCommand(showStatistiquesGrandMonarque);
+      
 
-        }
-
-
-		public void showGestionBouteilles()
-		{
-            
-            var gestionBouteilleWindow = new GestionBouteilleWindow();
-            System.Windows.Application.Current.MainWindow = gestionBouteilleWindow;
-            gestionBouteilleWindow.Show();
-        }
 
 		public void showStatistiquesGrandMonarque()
 		{

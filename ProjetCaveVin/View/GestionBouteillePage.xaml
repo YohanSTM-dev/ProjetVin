@@ -1,135 +1,211 @@
 <Page x:Class="ProjetCaveVin.View.GestionBouteillePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:vm="clr-namespace:ProjetCaveVin.Model"
       Title="Gestion des Bouteilles"
-      Background="#FFFDFDFD">
+      Background="#EEE9E3">
 
-	<Page.Resources>
-		<!-- Ombre de base pour les cartes -->
-		<DropShadowEffect x:Key="CardShadow" BlurRadius="8" ShadowDepth="2" Opacity="0.3"/>
+    <Page.Resources>
+        <!-- Ombre de base pour les cartes -->
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="10" ShadowDepth="3" Opacity="0.35"/>
 
-		<!-- Style pour les cartes -->
-		<Style x:Key="CardStyle" TargetType="Border">
-			<Setter Property="Background" Value="#FFF"/>
-			<Setter Property="CornerRadius" Value="10"/>
-			<Setter Property="BorderBrush" Value="#DDD"/>
-			<Setter Property="BorderThickness" Value="1"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="Margin" Value="10"/>
-			<Setter Property="Width" Value="180"/>
-			<Setter Property="Effect" Value="{StaticResource CardShadow}"/>
-			<Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-			<Setter Property="Cursor" Value="Hand"/>
-			<Setter Property="RenderTransform">
-				<Setter.Value>
-					<ScaleTransform ScaleX="1" ScaleY="1"/>
-				</Setter.Value>
-			</Setter>
-			<Style.Triggers>
-				<Trigger Property="IsMouseOver" Value="True">
-					<Setter Property="Effect">
-						<Setter.Value>
-							<DropShadowEffect BlurRadius="15" ShadowDepth="4" Opacity="0.5"/>
-						</Setter.Value>
-					</Setter>
-					<Setter Property="RenderTransform">
-						<Setter.Value>
-							<ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
-						</Setter.Value>
-					</Setter>
-				</Trigger>
-			</Style.Triggers>
-		</Style>
-	</Page.Resources>
+        <!-- Style pour les cartes -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#d5caaa"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderBrush" Value="#b09b5f"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Width" Value="200"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect BlurRadius="18" ShadowDepth="5" Opacity="0.6"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1.07" ScaleY="1.07"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-	<Grid Margin="20">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<!-- Logo et titre -->
-			<RowDefinition Height="Auto"/>
-			<!-- Bouton recharger -->
-			<RowDefinition Height="*"/>
-			<!-- Cartes -->
-		</Grid.RowDefinitions>
+        <!-- Style pour titres -->
+        <Style x:Key="GoldTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#b09b5f"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
 
-		<!-- Ligne 0 : Logo et titre -->
-		<Grid Grid.Row="0" Margin="0,0,0,20">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<!-- Logo -->
-				<ColumnDefinition Width="*"/>
-				<!-- Titre -->
-			</Grid.ColumnDefinitions>
+        <!-- Style pour le TextBox de recherche -->
+        <Style x:Key="SearchTextBox" TargetType="TextBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#b09b5f"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </Page.Resources>
 
-			<!-- Logo à gauche -->
-			<Image Source="Images/logogmcomplet.png"
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Ligne 0 : Logo et titre -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="Images/logogmcomplet.png"
                    Grid.Column="0"
                    Height="120"
-                   Width="250"
-                   VerticalAlignment="Top"
-                   HorizontalAlignment="Left"/>
+                   Width="250"/>
 
-			<!-- Titre à droite du logo -->
-			<TextBlock Text="Liste des bouteilles"
-                       Grid.Column="1"
-                       FontSize="26"
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Left"
-                       Margin="20,0,0,0"/>
-		</Grid>
+            <TextBlock Text="Liste des bouteilles" Grid.Column="1"
+                       FontSize="30" Style="{StaticResource GoldTitle}"
+                       VerticalAlignment="Center" Margin="20,0,0,0"/>
+        </Grid>
 
-		<!-- Ligne 1 : bouton recharger -->
-		<Button Grid.Row="1"
-                Content="Recharger les bouteilles"
-                Width="220"
-                Height="40"
-                HorizontalAlignment="Left"
-                Margin="0,0,0,20"
-                Click="Recharger_Click"/>
+        <!-- Ligne 1 : boutons d'action -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+            <Button Content="Recharger les bouteilles"
+                    Width="240" Height="45" Margin="0,0,10,0"
+                    Background="#b09b5f" Foreground="White"
+                    BorderBrush="#c1b183" BorderThickness="2" FontWeight="Bold"
+                    Click="Recharger_Click"/>
 
-		<!-- Ligne 2 : ScrollViewer avec cartes -->
-		<ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding Bouteilles}">
-				<ItemsControl.ItemsPanel>
-					<ItemsPanelTemplate>
-						<WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
-					</ItemsPanelTemplate>
-				</ItemsControl.ItemsPanel>
+            <Button Content="Réinitialiser les filtres"
+                    Width="200" Height="45"
+                    Background="#8B7355" Foreground="White"
+                    BorderBrush="#A0846E" BorderThickness="2" FontWeight="Bold"
+                    Click="ResetButton_Click"/>
+        </StackPanel>
 
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<Border Style="{StaticResource CardStyle}">
-							<StackPanel HorizontalAlignment="Center">
-								<TextBlock Text="{Binding Libelle}"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           TextAlignment="Center"
+        <!-- Ligne 2 : Filtre par libellé -->
+        <Grid Grid.Row="2" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Rechercher :" 
+                       Grid.Column="0"
+                       FontSize="16" 
+                       Style="{StaticResource GoldTitle}"
+                       VerticalAlignment="Center" 
+                       Margin="0,0,15,0"/>
+
+            <TextBox x:Name="LibelleTextBox"
+                     Grid.Column="1"
+                     Style="{StaticResource SearchTextBox}"
+                     TextChanged="LibelleTextBox_TextChanged"/>
+        </Grid>
+
+        <!-- Ligne 3 : Filtres par Zones -->
+        <Grid Grid.Row="3" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Zones :" FontSize="18" Style="{StaticResource GoldTitle}"
+                       Margin="0,5,20,0" Grid.Column="0" VerticalAlignment="Top"/>
+
+            <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" MaxHeight="100">
+                <ItemsControl ItemsSource="{Binding Zones}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Left" Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardStyle}" 
+                                    Width="70" 
+                                    Height="50"
+                                    Padding="4"
+                                    Margin="5"
+                                    Background="#c1b183" 
+                                    BorderBrush="#b09b5f"
+                                    MouseLeftButtonDown="Zone_Click">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Code}" 
+                                               FontSize="16" 
+                                               FontWeight="Bold"
+                                               TextAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+        <!-- Ligne 4 : Bouteilles -->
+        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Bouteilles}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel HorizontalAlignment="Center" Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Libelle}" 
+                                           FontSize="18" 
+                                           Style="{StaticResource GoldTitle}" 
+                                           TextAlignment="Center" 
                                            Margin="0,0,0,5"/>
-								<TextBlock Text="{Binding Prix, StringFormat={}{0:F2} €}"
-                                           FontSize="14"
-                                           Foreground="DarkRed"
-                                           FontWeight="SemiBold"
-                                           TextAlignment="Center"
+                                <TextBlock Text="{Binding Prix, StringFormat={}{0:F2} €}" 
+                                           FontSize="16" 
+                                           Foreground="DarkRed" 
+                                           FontWeight="SemiBold" 
+                                           TextAlignment="Center" 
                                            Margin="0,0,0,8"/>
-								<TextBlock Text="{Binding Type}"
-                                           FontSize="13"
-                                           Foreground="Gray"
+                                <TextBlock Text="{Binding Type}" 
+                                           FontSize="14" 
+                                           Foreground="#5c4e2c" 
                                            TextAlignment="Center"/>
-								<TextBlock Text="{Binding Code, StringFormat=Zone : {0}}"
-                                           FontSize="12"
-                                           Foreground="Gray"
+                                <TextBlock Text="{Binding Code, StringFormat=Zone : {0}}" 
+                                           FontSize="13" 
+                                           Foreground="#5c4e2c" 
                                            TextAlignment="Center"/>
-								<TextBlock Text="{Binding Code_Emplacement, StringFormat=Emplacement : {0}}"
-                                           FontSize="12"
-                                           Foreground="Gray"
+                                <TextBlock Text="{Binding Code_Emplacement, StringFormat=Emplacement : {0}}" 
+                                           FontSize="13" 
+                                           Foreground="#5c4e2c" 
                                            TextAlignment="Center"/>
-							</StackPanel>
-						</Border>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
-	</Grid>
+                                <Image Width="200" 
+                                       Source="{Binding Photo}" 
+                                       Margin="0,10,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
 </Page>

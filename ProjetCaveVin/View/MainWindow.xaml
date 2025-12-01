@@ -37,6 +37,7 @@
                Height="57"
                VerticalAlignment="Top"
                HorizontalAlignment="Left" Width="89" />
+        
 
         <!-- Image d'accueil au centre -->
         <Image Source="Images/imageacceuil.png"
