@@ -93,8 +93,9 @@ namespace ProjetCaveVin.ViewModel
                 System.Windows.MessageBox.Show("Erreur: Vous êtes connecter avec aucun compte");
                 return;
             }
-            int idBouteilleTest = 15;
-            int idEmplacementTest = 14;
+
+            int idBouteilleTest = 30;
+            int idEmplacementTest = 8;
             int idUtilisateur = Session.CurrentUser.id_utilisateur;
 
             
