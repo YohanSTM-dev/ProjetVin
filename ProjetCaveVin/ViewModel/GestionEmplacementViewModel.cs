@@ -34,8 +34,8 @@ namespace ProjetCaveVin.ViewModel
         private List<Zone> GetZones()
         {
             List<Zone> Zones = new();
-            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
-            string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;User Id=pol;Password=1234;Encrypt=False;";
+            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;User Id=pol;Password=1234;Encrypt=False;";
             var db = new DatabaseConnexion(connectionString);
 
             db.Open();
@@ -74,7 +74,8 @@ namespace ProjetCaveVin.ViewModel
         public List<Bouteille> GetBouteillesParZone(string codeZone)
         {
             List<Bouteille> bouteilles = new();
-            string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;User Id=pol;Password=1234;Encrypt=False;";
+            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            //string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;User Id=pol;Password=1234;Encrypt=False;";
 
             var db = new DatabaseConnexion(connectionString);
             db.Open();

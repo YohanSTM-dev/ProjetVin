@@ -9,7 +9,6 @@ namespace ProjetCaveVin.View
     public partial class GestionBouteillePage : Page
     {
         private GestionBouteillePageViewModel _viewModel;
-        private string ZoneSelectionnee;
 
         public GestionBouteillePage()
         {
@@ -21,17 +20,26 @@ namespace ProjetCaveVin.View
         private void Recharger_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.RechargerBouteilles();
+            LibelleTextBox.Text = string.Empty;
         }
 
         private void Zone_Click(object sender, MouseButtonEventArgs e)
         {
             if (sender is Border border && border.DataContext is Zone zone)
             {
-                ZoneSelectionnee = zone.Code;
-
-                _viewModel.FiltrerParZone(ZoneSelectionnee);
+                _viewModel.FiltrerParZone(zone.Code);
             }
         }
 
+        private void LibelleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _viewModel.FiltrerParLibelle(LibelleTextBox.Text);
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.ReinitialiserFiltres();
+            LibelleTextBox.Text = string.Empty;
+        }
     }
 }
