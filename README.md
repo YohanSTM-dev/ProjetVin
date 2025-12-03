@@ -28,9 +28,9 @@ Téléchargez sur le cloud  les fichiers suivants :
 
 ## 🧩 Installation de l’application (`setup1.msi`)
 1. Dezipez `setup1.zip`.
-1. Exécutez `setup1.msi`.
-2. Suivez les étapes de l’assistant d’installation.
-3. Vérifiez que l’application apparaît dans la liste de vos programmes installés.
+2. Exécutez `setup1.msi`.
+3. Suivez les étapes de l’assistant d’installation.
+4. Une fois installé, lancez le .exe
 
 ---
 
