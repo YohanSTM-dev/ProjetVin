@@ -38,11 +38,9 @@ Téléchargez sur le cloud  les fichiers suivants :
 
 1. Ouvrez **SQL Server Management Studio (SSMS)**.
 2. Connectez-vous à votre instance **SQL Express** (ex. : `.\SQLEXPRESS`).
-3. Dans *Object Explorer*, faites un clic droit sur **Databases** → **Restore Database...**
-4. Sélectionnez **Device** puis ajoutez le fichier `database.bak`.
-5. Vérifiez que :
-   - Le nom de la base correspond à celui souhaité.
-   - L’option **Overwrite the existing database** n’est activée que si nécessaire.
-6. Cliquez sur **OK** pour lancer la restauration.
+3. Faites un clic droit sur **Base de données** → **Restaurer la base**
+4. Sélectionnez **Support** puis ajoutez le fichier `database.bak`.(vous devez copier le fichier dans C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup pour que sqlserver le voit)
+5. Cliquez sur **OK** pour lancer la restauration.
 
+Pour essayer l'application, connectez vous en administrateur (mot de passe admin123) puis cliquez sur connexion, ici rentrer l'email paul@cave.fr et le mot de passe popo123. Vous pouvez ensuite cliquer sur les images afin en bas a droite et gauche.
 
