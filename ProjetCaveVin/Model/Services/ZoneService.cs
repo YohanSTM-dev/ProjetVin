@@ -10,7 +10,7 @@ namespace ProjetCaveVin.Model.Services
 
         public ZoneService()
         {
-            _connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            _connectionString = @"Server=.\SQLEXPRESS;Database=cave;Trusted_Connection=True;Encrypt=False;";
         }
 
         public List<Zone> GetAllZones()
