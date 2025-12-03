@@ -42,5 +42,6 @@ Téléchargez sur le cloud  les fichiers suivants :
 4. Sélectionnez **Support** puis ajoutez le fichier `cave.bak`.(vous devez copier le fichier dans C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup pour que sqlserver le voit)
 5. Cliquez sur **OK** pour lancer la restauration.
 
-Pour essayer l'application, connectez vous en administrateur (mot de passe admin123) puis cliquez sur connexion, ici rentrer l'email paul@cave.fr et le mot de passe popo123. Vous pouvez ensuite cliquer sur les images afin en bas a droite et gauche.
+Pour essayer l'application, connectez vous en administrateur (mot de passe admin123) puis cliquez sur connexion, ici rentrer l'email paul@cave.fr et le mot de passe popo123. 
+Vous pouvez ensuite cliquer sur les images en bas a droite pour les stats et en bas à gauche pour la gestion .
 
