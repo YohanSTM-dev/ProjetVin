@@ -1,7 +1,7 @@
 # 🛠️ Installation du Projet
 
 Ce guide explique comment installer et configurer le projet à partir des fichiers fournis sur onedrive.  
-Vous devrez récupérer un **`.zip`** ainsi qu’un **fichier de base de données **.
+Vous devrez récupérer un **`.zip`** ainsi qu’un fichier de base de données .
 
 ---
 
