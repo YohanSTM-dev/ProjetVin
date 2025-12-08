@@ -1,0 +1,115 @@
+<Window x:Class="ProjetCaveVin.View.StatistiquesGrandMonarqueWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:ProjetCaveVin.ViewModel"
+        mc:Ignorable="d"
+        Title="Gestion des Stocks - Grand Monarque"
+        Height="650" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F4F4">
+
+	<Grid Margin="20">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="1*"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,20">
+			<TextBlock Text="STOCK &amp; MOUVEMENTS" FontSize="24" FontWeight="Bold" Foreground="#333"/>
+			<TextBlock Text="{Binding BonjourUser}" FontSize="16" Foreground="#B8860B" VerticalAlignment="Bottom" Margin="20,0,0,4"/>
+
+			<TextBlock Text="{Binding CoutTotal, StringFormat='Valorisation : {0:C2}'}"
+                       FontSize="18" FontWeight="Bold" Foreground="#2E7D32"
+                       HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Bottom"/>
+		</StackPanel>
+
+		<Border Grid.Row="1" Grid.Column="0" Background="White" CornerRadius="8" Padding="10" Margin="0,0,20,0">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
+			</Border.Effect>
+
+			<DataGrid ItemsSource="{Binding ListeBouteilles}"
+                      SelectedItem="{Binding SelectedBouteille}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
+                      Background="White"
+                      BorderThickness="0">
+
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
+					<DataGridTextColumn Header="Nom du Vin" Binding="{Binding Libelle}" Width="*"/>
+					<DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" Width="80"/>
+
+					<DataGridTextColumn Header="EMPLACEMENT" Binding="{Binding Code_Emplacement}" Width="120" FontWeight="Bold">
+						<DataGridTextColumn.ElementStyle>
+							<Style TargetType="TextBlock">
+								<Setter Property="Foreground" Value="#B8860B"/>
+							</Style>
+						</DataGridTextColumn.ElementStyle>
+					</DataGridTextColumn>
+
+					<DataGridTextColumn Header="Prix" Binding="{Binding Prix, StringFormat=C2}" Width="80"/>
+				</DataGrid.Columns>
+			</DataGrid>
+		</Border>
+
+		<Border Grid.Row="1" Grid.Column="1" Background="White" CornerRadius="8" Padding="20">
+			<Border.Effect>
+				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
+			</Border.Effect>
+
+			<StackPanel>
+				<TextBlock Text="DÉPLACER UNE BOUTEILLE" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+
+				<TextBlock Text="Vin sélectionné :" FontSize="12" Foreground="Gray"/>
+				<Border Background="#F9F9F9" Padding="10" Margin="0,5,0,20" CornerRadius="5">
+					<StackPanel>
+						<TextBlock Text="{Binding SelectedBouteille.Libelle, TargetNullValue='Aucune sélection'}"
+                                   FontWeight="Bold" FontSize="14" TextWrapping="Wrap"/>
+						<TextBlock Text="{Binding SelectedBouteille.Code_Emplacement, StringFormat='Actuellement en : {0}', TargetNullValue='Loc: ---'}"
+                                   Foreground="#B8860B" Margin="0,5,0,0"/>
+					</StackPanel>
+				</Border>
+
+				<TextBlock Text="Vers l'Emplacement (ID) :" FontSize="12" Foreground="Gray"/>
+				<TextBox Text="{Binding TargetEmplacementId, UpdateSourceTrigger=PropertyChanged}"
+                         Height="40" FontSize="16" FontWeight="Bold"
+                         Padding="5" VerticalContentAlignment="Center"
+                         BorderBrush="#DDD" BorderThickness="1"
+                         Margin="0,5,0,20"/>
+
+				<TextBlock Text="Astuce : Entrez l'ID de la zone cible (ex: 1, 2...)"
+                           FontSize="10" FontStyle="Italic" Foreground="Gray" Margin="0,-15,0,20"/>
+
+				<Button Command="{Binding DeplacerCommand}"
+                        Content="CONFIRMER LE DÉPLACEMENT"
+                        Height="50"
+                        Background="#B8860B" Foreground="White"
+                        FontWeight="Bold" FontSize="14"
+                        Cursor="Hand">
+					<Button.Resources>
+						<Style TargetType="Border">
+							<Setter Property="CornerRadius" Value="25"/>
+						</Style>
+					</Button.Resources>
+				</Button>
+
+				<Button Command="{Binding RefreshCommand}"
+                        Content="Actualiser la liste"
+                        Height="30" Margin="0,20,0,0"
+                        Background="Transparent" Foreground="Gray" BorderThickness="0"
+                        Cursor="Hand"/>
+
+			</StackPanel>
+		</Border>
+
+	</Grid>
+</Window>

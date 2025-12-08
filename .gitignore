@@ -1,0 +1,4 @@
+# Dossiers générés par Visual Studio
+.vs/
+bin/
+obj/

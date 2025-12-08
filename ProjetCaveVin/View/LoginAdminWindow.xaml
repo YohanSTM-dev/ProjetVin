@@ -1,0 +1,22 @@
+﻿<Window x:Class="ProjetCaveVin.View.LoginAdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjetCaveVin.View"
+        mc:Ignorable="d"
+        Title="AcceuilWindow" Height="450" Width="800">
+	<Grid Margin="20">
+		<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="200">
+
+			<TextBlock Text="Espace Administrateur"
+                       FontSize="18" FontWeight="Bold"
+                       HorizontalAlignment="Center" />
+
+			<Button Content="Connexion" Click="ConnexionButton_Click"/>
+			<Button Content="Inscription" Click="InscriptionButton_Click"/>
+			<Button Content="Retour" Click="RetourButton_Click"/>
+
+		</StackPanel>
+	</Grid>
+</Window>
