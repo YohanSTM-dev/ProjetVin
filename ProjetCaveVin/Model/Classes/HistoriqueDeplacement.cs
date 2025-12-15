@@ -25,15 +25,9 @@ namespace ProjetCaveVin.Model.Classes
         public Emplacement Emplacement { get; set; }
 
 
-        private static string ConnectionString =>
-    @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-        private static string ConnectionStringLocal => @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
-
         public static void EnregistrerMouvement(int idBouteille, int idNouveauEmplacement, int idUtilisateur)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             try
@@ -63,7 +57,7 @@ namespace ProjetCaveVin.Model.Classes
         {
             var listeRetour = new List<HistoriqueDeplacement>();
 
-            var db = new DatabaseConnexion(ConnectionStringLocal); 
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase()); 
             db.Open();
 
             using (var command = db.CreateCommand())

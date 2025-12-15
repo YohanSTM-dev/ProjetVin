@@ -7,17 +7,12 @@ namespace ProjetCaveVin.Model.Services
 {
     public class BouteilleService : IBouteilleService
     {
-        private readonly string _connectionString;
 
-        public BouteilleService()
-        {
-            _connectionString = @"Server=.\SQLEXPRESS;Database=cave;Trusted_Connection=True;Encrypt=False;";
-        }
 
         public List<Bouteille> GetAllBouteilles()
         {
             List<Bouteille> bouteilles = new();
-            var db = new DatabaseConnexion(_connectionString);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -75,7 +70,7 @@ namespace ProjetCaveVin.Model.Services
         public List<Bouteille> GetBouteillesParZone(string codeZone)
         {
             List<Bouteille> bouteilles = new();
-            var db = new DatabaseConnexion(_connectionString);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())

@@ -15,11 +15,6 @@ namespace ProjetCaveVin.Model.Classes
         public string Salt { get; set; }   
         public Role Role { get; set; }
 
-        private static string ConnectionString =>
-            @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-        private static string ConnectionStringLocal => @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
         public Utilisateur() { }
 
         public Utilisateur(int id, string nom, string prenom, string email, string passwordHash, string salt, Role role)
@@ -38,7 +33,7 @@ namespace ProjetCaveVin.Model.Classes
         {
             var utilisateurs = new List<Utilisateur>();
 
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -79,7 +74,7 @@ namespace ProjetCaveVin.Model.Classes
         //  Vérifie les identifiants
         public static Utilisateur GetByCredentials(string email, string password)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             try
@@ -141,7 +136,7 @@ namespace ProjetCaveVin.Model.Classes
         var (hash, salt) = PasswordHelper.HashPassword(plainPassword); 
         int roleId;
 
-        var db = new DatabaseConnexion(ConnectionStringLocal);
+        var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
         db.Open();
 
         using (var cmd = db.CreateCommand())
@@ -174,7 +169,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static void DeleteUtilisateur(string email)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using(var cmd = db.CreateCommand())

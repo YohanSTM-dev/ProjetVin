@@ -30,7 +30,7 @@ namespace ProjetCaveVin.ViewModel
             {
                 string connectionString = @"Server=.\SQLEXPRESS;Database=cave;Trusted_Connection=True;Encrypt=False;";
 
-                var db = new DatabaseConnexion(connectionString);
+                var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
                 //var query = "Insert blabla";
 
                 db.Open();

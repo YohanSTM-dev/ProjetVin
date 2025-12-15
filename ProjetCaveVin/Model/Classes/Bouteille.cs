@@ -29,17 +29,12 @@ namespace ProjetCaveVin.Model.Classes
 
 
         public List<HistoriqueDeplacement> HistoriqueDeplacements { get; set; } = new List<HistoriqueDeplacement>();
-        private static string ConnectionString =>
-        @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-        private static string ConnectionStringLocal => @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
 
 
         public static List<Bouteille> getAllBouteilles()
         {
             var listBouteilles = new List<Bouteille>();
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
             using (var command = db.CreateCommand())
             {
@@ -88,7 +83,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static void AjouterBouteille(Bouteille nouvelleBouteille, int idEmplacement, int idUtilisateur)
         {
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var connection = db.CreateCommand().Connection)
@@ -143,7 +138,7 @@ namespace ProjetCaveVin.Model.Classes
         public static List<Bouteille> GetAllBouteillesAvecEmplacement()
         {
             var list = new List<Bouteille>();
-            var db = new DatabaseConnexion(ConnectionStringLocal); 
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase()); 
             db.Open();
 
             using (var cmd = db.CreateCommand())

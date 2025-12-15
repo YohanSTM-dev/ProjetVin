@@ -6,17 +6,12 @@ namespace ProjetCaveVin.Model.Services
 {
     public class ZoneService : IZoneService
     {
-        private readonly string _connectionString;
 
-        public ZoneService()
-        {
-            _connectionString = @"Server=.\SQLEXPRESS;Database=cave;Trusted_Connection=True;Encrypt=False;";
-        }
 
         public List<Zone> GetAllZones()
         {
             List<Zone> zones = new();
-            var db = new DatabaseConnexion(_connectionString);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())

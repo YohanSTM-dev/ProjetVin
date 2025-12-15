@@ -14,12 +14,6 @@ namespace ProjetCaveVin.Model.Classes
         public int id_role { get; set; }
         public string Nom { get; set; }
 
-        private static string ConnectionString =>
-        @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-        private static string ConnectionStringLocal =>  @"Server=.\SQLEXPRESS;Database=cave;Trusted_Connection=True;Encrypt=False;";
-
-
 
         public Role() { }
 
@@ -33,12 +27,7 @@ namespace ProjetCaveVin.Model.Classes
         {
 
             var roles = new List<Role>();
-            /*            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-            */
-            //POUR MAISON
-
-           // string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -64,11 +53,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static Role GetById(int id)
         {
-            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
-            //string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())
@@ -94,11 +79,7 @@ namespace ProjetCaveVin.Model.Classes
 
         public static Role GetByName(string nom)
         {
-            //string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=Cave;User Id=yohan;Password=1234;Encrypt=False;";
-
-            string connectionString = @"Server=localhost\SQLEXPRESS,1433;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-
-            var db = new DatabaseConnexion(ConnectionStringLocal);
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
 
             using (var command = db.CreateCommand())

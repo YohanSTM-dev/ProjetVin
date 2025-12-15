@@ -77,5 +77,11 @@ namespace ProjetCaveVin.Model.Connexion
             db.Open();
             return db;
         }
+        public static string ConnexionDatabase()
+        {
+            //string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            string connectionString = @"Server=localhost\SQLEXPRESS002;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+           return connectionString;
+        }
     }
 }
