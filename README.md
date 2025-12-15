@@ -9,9 +9,8 @@ Ce guide détaille la procédure pour installer l'application et configurer la b
 
 Avant de commencer, assurez-vous que les éléments suivants sont installés sur votre machine :
 
-- **SQL Server Express** : [Télécharger ici](https://www.microsoft.com/sql-server/sql-server-downloads)
+- **SQL Server Express Basic** : [Télécharger ici](https://www.microsoft.com/sql-server/sql-server-downloads)
 - **SQL Server Management Studio (SSMS)** : [Télécharger ici](https://aka.ms/ssms)
-- Une instance **SQL Express** opérationnelle (généralement `.\SQLEXPRESS`)
 - Le logiciel **HashTab** (pour la vérification d'intégrité)
 
 ---
@@ -70,7 +69,7 @@ setx DB_CONNECTION "Server=<VOTRE_IP>\SQLEXPRESS;Database=cave;User Id=<NOM_USER
 2.  Ouvrez **SQL Server Management Studio (SSMS)**.
 3.  Connectez-vous à votre instance (ex: `.\SQLEXPRESS`).
 4.  Clic droit sur **Bases de données** \> **Restaurer la base de données...**
-5.  Sélectionnez **Périphérique** (Device), cliquez sur `...` puis **Ajouter**.
+5.  Sélectionnez **Support**, cliquez sur `...` puis **Ajouter**.
 6.  Sélectionnez le fichier `cave.bak` copié précédemment.
 7.  Cliquez sur **OK** pour lancer la restauration.
 
@@ -79,12 +78,12 @@ setx DB_CONNECTION "Server=<VOTRE_IP>\SQLEXPRESS;Database=cave;User Id=<NOM_USER
 ## 🚀 5. Test de l'application
 
 1.  Lancez l'application installée.
-2.  Cliquez sur **Connexion**.
-3.  Utilisez les identifiants suivants :
+2.  Allez dans l'espace admin et entrez le mot de passe **admin123**.
+3.  Cliquez sur **Connexion**.
+4.  Utilisez les identifiants suivants :
       - **Email :** `paul@cave.fr`
       - **Mot de passe :** `popo123`
 
-*(Note : le mot de passe administrateur global est `admin123`)*
 
 **Fonctionnalités :**
 
