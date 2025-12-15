@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Data;
 using Microsoft.Data.SqlClient;
 
@@ -79,9 +80,11 @@ namespace ProjetCaveVin.Model.Connexion
         }
         public static string ConnexionDatabase()
         {
-            //string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-            string connectionString = @"Server=localhost\SQLEXPRESS002;Database=Cave;Trusted_Connection=True;Encrypt=False;";
-           return connectionString;
+            string env = ConfigurationManager.AppSettings["Environment"];
+
+            return ConfigurationManager
+                .ConnectionStrings[$"CaveDb.{env}"]
+                .ConnectionString;
         }
     }
 }
