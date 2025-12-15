@@ -1,6 +1,4 @@
-Voici le contenu formaté en Markdown. Vous n'avez plus qu'à copier le code ci-dessous et le coller dans un fichier nommé **`README.md`** ou **`INSTALL.md`**.
 
-````markdown
 # 🛠️ Guide d'Installation et de Configuration
 
 Ce guide détaille la procédure pour installer l'application et configurer la base de données à partir des fichiers fournis.
