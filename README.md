@@ -14,6 +14,7 @@ Avant de commencer, assurez-vous d’avoir installé :
 - **SQL Server Management Studio (SSMS)**  
   Téléchargement : https://aka.ms/ssms
 - Une instance **SQL Express** opérationnelle (`.\SQLEXPRESS` par défaut)
+- Le logiciel HashTab
 
 ---
 
@@ -30,7 +31,7 @@ Téléchargez sur le cloud  les fichiers suivants :
 1. Dezipez `setup1.zip`.
 2. Exécutez `setup1.msi`.
 3. Suivez les étapes de l’assistant d’installation.
-4. Une fois installé, lancez le .exe
+4. Une fois installé, lancez le .exe, vérifiez le hach SHA-1 en regardant des les propiétés du .exe dans l'onglet Hachages qu'il soit égal à 75C923082F4CBF3A473298724068D7B7B76D844C
 
 ---
 
