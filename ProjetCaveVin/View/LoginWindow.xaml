@@ -3,78 +3,136 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:ProjetCaveVin.ViewModel"
         Title="Connexion"
-        Height="400" Width="350"
+        Height="860" Width="600"
         WindowStartupLocation="CenterScreen"
-        Background="#FFF8F8F8">
+        Background="#EFEDEB">
 
-	<Window.DataContext>
-		<vm:LoginViewModel />
-	</Window.DataContext>
+    <Window.DataContext>
+        <vm:LoginViewModel />
+    </Window.DataContext>
 
-	<Grid Margin="20">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
+    <Grid>
 
-		<!-- Titre -->
-		<TextBlock Text="Connexion"
-				   FontSize="22"
-				   FontWeight="Bold"
-				   Foreground="#5A0010"
-				   HorizontalAlignment="Center"
-				   Margin="0,0,0,20"/>
+        <!-- Carte luxe -->
+        <Border Width="340"
+                Padding="32"
+                Background="White"
+                CornerRadius="22"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                BorderBrush="#B8860B"
+                BorderThickness="2">
 
-		<!-- Email -->
-		<TextBlock Text="Email :"
-				   Grid.Row="1"
-				   FontWeight="SemiBold"/>
-		<TextBox Grid.Row="2"
-				 Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-				 Margin="0,5,0,15"
-				 Height="28"
-				 Padding="5"/>
+            <!-- Ombre douce -->
+            <Border.Effect>
+                <DropShadowEffect Color="Black"
+                                  BlurRadius="25"
+                                  ShadowDepth="4"
+                                  Opacity="0.18"/>
+            </Border.Effect>
 
-		<!-- Mot de passe -->
-		<TextBlock Text="Mot de passe :"
-				   Grid.Row="3"
-				   FontWeight="SemiBold"/>
-		<PasswordBox Grid.Row="4"
-					 x:Name="PasswordBox"
-					 Margin="0,5,0,15"
-					 Height="28"
-					 Padding="5"
-					 PasswordChanged="PasswordBox_PasswordChanged"/>
+            <StackPanel>
 
-		<!-- Message -->
-		<TextBlock Text="{Binding Message}"
-				   Grid.Row="5"
-				   Foreground="Red"
-				   FontSize="12"
-				   Margin="0,5,0,10"
-				   TextWrapping="Wrap"/>
+                <!-- Titre -->
+                <TextBlock Text="Connexion"
+           FontSize="26"
+           FontWeight="SemiBold"
+           Foreground="#2F2F2F"
+           HorizontalAlignment="Center"/>
 
-		<!-- Boutons -->
-		<StackPanel Grid.Row="6"
-					Orientation="Horizontal"
-					HorizontalAlignment="Center"
-					Margin="0,10,0,0"
-                >
-			<Button Content="Connexion"
-					Width="100"
-					Command="{Binding LoginCommand}"
-					Background="#5A0010"
-					Foreground="White"
-					FontWeight="Bold"/>
-			<Button Content="Retour"
-					Width="100"
-					Click="RetourButton_Click"/>
-		</StackPanel>
-	</Grid>
+                <TextBlock Text="GRAND MONARQUE"
+           FontSize="13"
+           FontWeight="Bold"
+           Foreground="#B8860B"
+           HorizontalAlignment="Center"
+           Margin="0,6,0,30"/>
 
+
+                <!-- Email -->
+                <TextBlock Text="Adresse email"
+                           FontWeight="SemiBold"
+                           Foreground="#666"/>
+
+                <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
+                         Height="36"
+                         Padding="10"
+                         Margin="0,6,0,18"
+                         BorderBrush="#E0E0E0"
+                         BorderThickness="1"
+                         Background="#FAFAFA"/>
+
+                <!-- Mot de passe -->
+                <TextBlock Text="Mot de passe"
+                           FontWeight="SemiBold"
+                           Foreground="#666"/>
+
+                <PasswordBox x:Name="PasswordBox"
+                             Height="36"
+                             Padding="10"
+                             Margin="0,6,0,14"
+                             BorderBrush="#E0E0E0"
+                             BorderThickness="1"
+                             Background="#FAFAFA"
+                             PasswordChanged="PasswordBox_PasswordChanged"/>
+
+                <!-- Message -->
+                <TextBlock Text="{Binding Message}"
+                           Foreground="#8B0000"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,20"/>
+
+                <!-- Boutons -->
+                <StackPanel>
+
+                    <!-- Bouton principal -->
+                    <Button Content="Connexion"
+                            Height="46"
+                            FontSize="15"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Background="#B8860B"
+                            BorderThickness="0"
+                            Command="{Binding LoginCommand}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="23"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+
+                    <!-- Retour -->
+                    <Button Content="Retour"
+                            Height="38"
+                            Margin="0,12,0,0"
+                            FontSize="14"
+                            Foreground="#B8860B"
+                            Background="Transparent"
+                            BorderBrush="#B8860B"
+                            BorderThickness="1"
+                            Click="RetourButton_Click">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="19"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
+
+        <!-- Signature dorée -->
+        <Border Height="6"
+                VerticalAlignment="Top">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                    <GradientStop Color="#1A1A1A" Offset="0"/>
+                    <GradientStop Color="#B8860B" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+    </Grid>
 </Window>

@@ -3,71 +3,150 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProjetCaveVin.ViewModel"
-        xmlns:localm="clr-namespace:ProjetCaveVin.Model"
         mc:Ignorable="d"
         Title="Accueil Cave à Vin"
         Height="600" Width="900"
-        Background="#FFFDFDFD">
+        WindowStartupLocation="CenterScreen">
+
+    <!-- Fond dégradé subtil -->
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FDF6F0" Offset="0"/>
+            <GradientStop Color="#F8EFE0" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
 
     <Grid>
-        <!-- Définition des lignes et colonnes -->
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <!-- logo -->
-            <RowDefinition Height="*"/>
-            <!-- image centrale -->
-            <RowDefinition Height="Auto"/>
-            <!-- images bas -->
-        </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <!-- gauche -->
-            <ColumnDefinition Width="*"/>
-            <!-- centre -->
-            <ColumnDefinition Width="Auto"/>
-            <!-- droite -->
-        </Grid.ColumnDefinitions>
+        <!-- Bande dorée haut -->
+        <Border Height="6"
+                VerticalAlignment="Top"
+                Background="#B8860B"/>
 
-        <!-- Logo en haut à gauche -->
-        <Image Source="Images/logogm.png"
-               Grid.Row="0" Grid.Column="0"
-               Margin="10,10,0,0"
-               Height="57"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left" Width="89" />
-        
+        <!-- Carte centrale -->
+        <Border Margin="40"
+                Background="White"
+                CornerRadius="22"
+                BorderBrush="#B8860B"
+                BorderThickness="2"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch">
+            <Border.Effect>
+                <DropShadowEffect Color="Black"
+                                  BlurRadius="25"
+                                  ShadowDepth="4"
+                                  Opacity="0.15"/>
+            </Border.Effect>
 
-        <!-- Image d'accueil au centre -->
-        <Image Source="Images/imageacceuil.png"
-               Stretch="Uniform"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
-               MaxWidth="600"
-               MaxHeight="400"
-               Margin="102,90,0,0" Grid.ColumnSpan="3" Height="236" Width="455" Grid.RowSpan="2" />
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <!-- Image gestion vin en bas à gauche -->
-        <Image Source="Images/imagegestionvin.png"
-               Grid.Row="1" Grid.Column="0"
-               Margin="102,0,0,40"
-               Height="150"
-               VerticalAlignment="Bottom"
-               HorizontalAlignment="Left" Grid.ColumnSpan="2" Grid.RowSpan="2"
-               Cursor="Hand"
-               MouseLeftButtonDown="ImageGestionVin_Click"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-        <!-- Image stats vin en bas à droite -->
-        <Image Source="Images/imagestatvin.png"
-               Grid.Row="1" Grid.Column="1"
-               Margin="0,0,85,40"
-               Height="150"
-               VerticalAlignment="Bottom"
-               HorizontalAlignment="Right" Grid.ColumnSpan="2" Grid.RowSpan="2" 
-			   Cursor="Hand"
-			   MouseLeftButtonDown="ImageStat_Click"/>
+                <!-- Logo haut gauche -->
+                <Image Source="Images/logogm.png"
+                       Height="60"
+                       Width="90"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"/>
 
+                <!-- Titre accueil -->
+                <TextBlock Grid.Column="0" Grid.ColumnSpan="2"
+                           Grid.Row="0"
+                           Text="Bienvenue dans la cave Grand Monarque"
+                           FontSize="24"
+                           FontWeight="Bold"
+                           Foreground="#5A0010"
+                           HorizontalAlignment="Center"
+                           Margin="0,10,0,20"/>
 
+                <!-- Image centrale avec cadre léger -->
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                        CornerRadius="18"
+                        BorderBrush="#B8860B"
+                        BorderThickness="2"
+                        Background="White"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Padding="5"
+                        Margin="0,0,0,20">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black"
+                                          BlurRadius="15"
+                                          ShadowDepth="3"
+                                          Opacity="0.2"/>
+                    </Border.Effect>
+                    <Image Source="Images/imageacceuil.png"
+                           Stretch="Uniform"
+                           MaxWidth="600"
+                           MaxHeight="300"/>
+                </Border>
+
+                <!-- Images d’actions en bas -->
+                <StackPanel Grid.Row="2" Grid.Column="0"
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="0,0,20,10">
+                    <Border CornerRadius="16"
+                            BorderBrush="#B8860B"
+                            BorderThickness="2"
+                            Background="White"
+                            Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="Black"
+                                              BlurRadius="12"
+                                              ShadowDepth="2"
+                                              Opacity="0.2"/>
+                        </Border.Effect>
+                        <Image Source="Images/imagegestionvin.png"
+                               Height="150"
+                               Cursor="Hand"
+                               MouseLeftButtonDown="ImageGestionVin_Click"/>
+                    </Border>
+                    <TextBlock Text="Gestion du vin"
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="2" Grid.Column="1"
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Margin="20,0,0,10">
+                    <Border CornerRadius="16"
+                            BorderBrush="#B8860B"
+                            BorderThickness="2"
+                            Background="White"
+                            Padding="4">
+                        <Border.Effect>
+                            <DropShadowEffect Color="Black"
+                                              BlurRadius="12"
+                                              ShadowDepth="2"
+                                              Opacity="0.2"/>
+                        </Border.Effect>
+                        <Image Source="Images/imagestatvin.png"
+                               Height="150"
+                               Cursor="Hand"
+                               MouseLeftButtonDown="ImageStat_Click"/>
+                    </Border>
+                    <TextBlock Text="Statistiques"
+                               FontWeight="SemiBold"
+                               Foreground="#333"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
     </Grid>
 </Window>
