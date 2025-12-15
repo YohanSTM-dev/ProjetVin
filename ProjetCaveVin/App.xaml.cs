@@ -1,40 +1,48 @@
 ﻿using ProjetCaveVin.Model.Classes;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
+using System.Data.SqlClient;
 using System.Windows;
 
-namespace ProjetCaveVin;
-
-/// <summary>
-/// Interaction logic for App.xaml
-/// </summary>
-public partial class App : Application
+namespace ProjetCaveVin
 {
-    // Cette méthode s'exécute tout au début, avant d'ouvrir la première fenêtre
-    protected override void OnStartup(StartupEventArgs e)
+    /// <summary>
+    /// Interaction logic for App.xaml
+    /// </summary>
+    public partial class App : Application
     {
-        base.OnStartup(e);
+        // Stocke la chaîne de connexion globale pour toute l'application
+        public static string ConnectionString { get; private set; }
 
-        try
+        protected override void OnStartup(StartupEventArgs e)
         {
-            // 1. On regarde si des rôles existent déjà
-            List<RoleAccess> rolesExistants = RoleAccess.GetAllRoles();
+            base.OnStartup(e);
 
-            // 2. Si la liste est vide (ce qui est le cas après ton DELETE SQL)
-            if (rolesExistants.Count == 0)
+            try
             {
-                // 3. On crée les rôles avec un VRAI hash valide généré par le C#
-                // Mot de passe par défaut : "1234"
-                RoleAccess.CreateOrInsertRole("Administrateur", "1234");
-                RoleAccess.CreateOrInsertRole("Sommelier", "1234");
-                RoleAccess.CreateOrInsertRole("Serveur", "1234");
+                //. Lire la variable d'environnement DB_CONNECTION
+                ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+                if (string.IsNullOrEmpty(ConnectionString))
+                {
+                    throw new Exception("La variable d'environnement 'DB_CONNECTION' n'est pas définie.");
+                }
+
+
+                // . Initialiser les rôles si la table est vide
+                List<RoleAccess> rolesExistants = RoleAccess.GetAllRoles();
+                if (rolesExistants.Count == 0)
+                {
+                    RoleAccess.CreateOrInsertRole("Administrateur", "1234");
+                    RoleAccess.CreateOrInsertRole("Sommelier", "1234");
+                    RoleAccess.CreateOrInsertRole("Serveur", "1234");
+                }
             }
-        }
-        catch (System.Exception ex)
-        {
-            // Si la base n'est pas accessible, on affiche l'erreur mais on ne crash pas tout de suite
-            MessageBox.Show($"Erreur lors de l'initialisation de la base de données : \n{ex.Message}", "Erreur Système");
+            catch (Exception ex)
+            {
+                // Affiche l'erreur et empêche le crash brutal
+                MessageBox.Show($"Erreur lors de l'initialisation de la base de données : \n{ex.Message}", "Erreur Système");
+            }
         }
     }
 }

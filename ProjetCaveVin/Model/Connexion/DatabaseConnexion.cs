@@ -78,13 +78,18 @@ namespace ProjetCaveVin.Model.Connexion
             db.Open();
             return db;
         }
+
         public static string ConnexionDatabase()
         {
-            string env = ConfigurationManager.AppSettings["Environment"];
+            string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
 
-            return ConfigurationManager
-                .ConnectionStrings[$"CaveDb.{env}"]
-                .ConnectionString;
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new Exception("La variable d'environnement 'DB_CONNECTION' n'est pas définie.");
+            }
+
+            return connectionString;
         }
+
     }
 }
