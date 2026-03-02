@@ -83,7 +83,7 @@ namespace ProjetCaveVin.Model.Connexion
 
         public static string ConnexionDatabase()
         {
-            string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+            string connectionString = @"Server=localhost\SQLEXPRESS03;Database=cave;Trusted_Connection=True;TrustServerCertificate = True;";
 
             if (string.IsNullOrEmpty(connectionString))
             {

@@ -1,5 +1,6 @@
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -30,8 +31,7 @@ namespace ProjetCaveVin.ViewModel
             get => _bonjourUser;
             set { _bonjourUser = value; OnPropertyChanged(); }
         }
-
-
+        private BouteilleRepository BouteilleRepository { get; set; } = new BouteilleRepository();
         private Bouteille _selectedBouteille;
         public Bouteille SelectedBouteille
         {
@@ -72,7 +72,7 @@ namespace ProjetCaveVin.ViewModel
 
         public void ChargerDonnees()
         {
-            var liste = Bouteille.GetAllBouteillesAvecEmplacement();
+            var liste = BouteilleRepository.GetAllBouteillesAvecEmplacement();
 
             ListeBouteilles = new ObservableCollection<Bouteille>(liste);
             CoutTotal = liste.Sum(b => b.Prix);
@@ -92,7 +92,7 @@ namespace ProjetCaveVin.ViewModel
                 return;
             }
 
-            HistoriqueDeplacement.EnregistrerMouvement(
+            HDRepository.EnregistrerMouvement(
                 SelectedBouteille.Id,
                 TargetEmplacementId,
                 Session.CurrentUser.id_utilisateur
