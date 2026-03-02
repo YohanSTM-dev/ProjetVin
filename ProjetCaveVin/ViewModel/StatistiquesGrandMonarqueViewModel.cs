@@ -1,6 +1,8 @@
-using ProjetCaveVin.Helpers;
+using ProjetCaveVin.Helpers; 
 using ProjetCaveVin.Model.Classes;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel; 
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -9,6 +11,7 @@ namespace ProjetCaveVin.ViewModel
 {
     public class StatistiquesGrandMonarqueViewModel : BaseViewModel
     {
+        private List<Bouteille> _toutesLesBouteilles;
 
         private ObservableCollection<Bouteille> _listeBouteilles;
         public ObservableCollection<Bouteille> ListeBouteilles
@@ -17,6 +20,7 @@ namespace ProjetCaveVin.ViewModel
             set { _listeBouteilles = value; OnPropertyChanged(); }
         }
 
+        // Stats
         private decimal _coutTotal;
         public decimal CoutTotal
         {
@@ -31,7 +35,21 @@ namespace ProjetCaveVin.ViewModel
             set { _bonjourUser = value; OnPropertyChanged(); }
         }
 
+        // Texte de la barre de recherche
+        private string _texteRecherche;
+        public string TexteRecherche
+        {
+            get => _texteRecherche;
+            set
+            {
+                _texteRecherche = value;
+                OnPropertyChanged();
 
+                AppliquerFiltre();
+            }
+        }
+
+        // Bouteille sélectionnée dans le tableau
         private Bouteille _selectedBouteille;
         public Bouteille SelectedBouteille
         {
@@ -40,18 +58,27 @@ namespace ProjetCaveVin.ViewModel
             {
                 _selectedBouteille = value;
                 OnPropertyChanged();
-                //on force le bouton à revérifier s'il peut être cliqué
-                //(DeplacerCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                // Met à jour l'état du bouton "Déplacer"
+                (DeplacerCommand as RelayCommand)?.RaiseCanExecuteChanged();
             }
         }
 
-        // L'ID de l'emplacement où on veut l'envoyer (saisi dans un TextBox)
+        // ID du nouvel emplacement (saisi par l'user)
         private int _targetEmplacementId;
         public int TargetEmplacementId
         {
             get => _targetEmplacementId;
             set { _targetEmplacementId = value; OnPropertyChanged(); }
         }
+
+        // Onglet des zones 
+        private ObservableCollection<StatistiqueZone> _listeStatsZones;
+        public ObservableCollection<StatistiqueZone> ListeStatsZones
+        {
+            get => _listeStatsZones;
+            set { _listeStatsZones = value; OnPropertyChanged(); }
+        }
+
 
         public ICommand DeplacerCommand { get; }
         public ICommand RefreshCommand { get; }
@@ -63,6 +90,9 @@ namespace ProjetCaveVin.ViewModel
             else
                 BonjourUser = "Mode Invité";
 
+            _toutesLesBouteilles = new List<Bouteille>();
+            ListeBouteilles = new ObservableCollection<Bouteille>();
+
             DeplacerCommand = new RelayCommand(ExecuterDeplacement, PeutDeplacer);
             RefreshCommand = new RelayCommand(ChargerDonnees);
 
@@ -72,10 +102,59 @@ namespace ProjetCaveVin.ViewModel
 
         public void ChargerDonnees()
         {
-            var liste = Bouteille.GetAllBouteillesAvecEmplacement();
+            var listeBrute = Bouteille.GetAllBouteillesAvecEmplacement();
 
-            ListeBouteilles = new ObservableCollection<Bouteille>(liste);
-            CoutTotal = liste.Sum(b => b.Prix);
+            _toutesLesBouteilles = listeBrute ?? new List<Bouteille>();
+
+            // On convertit la List en ObservableCollection
+            ListeBouteilles = new ObservableCollection<Bouteille>(_toutesLesBouteilles);
+
+            CalculerTotal();
+
+            // calculer les stats par emplacement pour l'autre onglet 
+            if(_toutesLesBouteilles != null)
+            {
+                var stats = _toutesLesBouteilles.Where(b => !string.IsNullOrEmpty(b.Code_Emplacement)).GroupBy(b => b.Code_Emplacement).Select(g => new StatistiqueZone
+                {
+                    NomZone = g.Key,
+                    Quantite = g.Count(),
+                    ValeurTotale = g.Sum(b => b.Prix)
+                }).OrderBy(s => s.NomZone).ToList();
+
+                ListeStatsZones = new ObservableCollection<StatistiqueZone>(stats);
+            }
+        }
+
+        private void AppliquerFiltre()
+        {
+            // Si la liste principale est vide, on ne fait rien
+            if (_toutesLesBouteilles == null) return;
+            if (string.IsNullOrWhiteSpace(TexteRecherche))
+            {
+                ListeBouteilles = new ObservableCollection<Bouteille>(_toutesLesBouteilles);
+            }
+            else
+            {
+                // Sinon, on filtre
+                var terme = TexteRecherche.ToLower();
+
+                var resultatFiltre = _toutesLesBouteilles.Where(b =>
+                    (b.Libelle != null && b.Libelle.ToLower().Contains(terme)) ||
+                    (b.Code_Emplacement != null && b.Code_Emplacement.ToLower().Contains(terme))
+                ).ToList(); 
+
+                ListeBouteilles = new ObservableCollection<Bouteille>(resultatFiltre);
+            }
+
+            CalculerTotal();
+        }
+
+        private void CalculerTotal()
+        {
+            if (ListeBouteilles != null)
+                CoutTotal = ListeBouteilles.Sum(b => b.Prix);
+            else
+                CoutTotal = 0;
         }
 
         private bool PeutDeplacer()
@@ -86,22 +165,49 @@ namespace ProjetCaveVin.ViewModel
         private void ExecuterDeplacement()
         {
             if (SelectedBouteille == null) return;
+
             if (TargetEmplacementId <= 0)
             {
                 MessageBox.Show("Veuillez saisir un ID d'emplacement valide (ex: 1, 2...).");
                 return;
             }
 
-            HistoriqueDeplacement.EnregistrerMouvement(
-                SelectedBouteille.Id,
-                TargetEmplacementId,
-                Session.CurrentUser.id_utilisateur
-            );
+            try
+            {
+                HistoriqueDeplacement.EnregistrerMouvement(
+                    SelectedBouteille.Id,
+                    TargetEmplacementId,
+                    Session.CurrentUser.id_utilisateur
+                );
 
-            MessageBox.Show($"Bouteille déplacée vers l'emplacement ID {TargetEmplacementId} !");
+                MessageBox.Show($"Succès ! Bouteille déplacée vers l'emplacement ID {TargetEmplacementId}.");
 
-            ChargerDonnees();
-            TargetEmplacementId = 0; // Reset du champ
+                TargetEmplacementId = 0;
+
+                ChargerDonnees();
+
+                TexteRecherche = "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erreur lors du déplacement : {ex.Message}");
+            }
         }
     }
+
+
+    public class StatistiqueZone
+    {
+        public string NomZone { get; set; } // Ex: "A1" ou "B"
+        public int Quantite { get; set; }
+        public decimal ValeurTotale { get; set; }
+        public int Limite { get; set; }
+
+
+        public string Remplisage => $"{Quantite} / {Limite}"; // Ex: "5 / 20"
+
+        public bool EstPlein => Quantite >= Limite;
+        
+    }
+
 }

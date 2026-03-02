@@ -10,106 +10,179 @@
         WindowStartupLocation="CenterScreen"
         Background="#F4F4F4">
 
+	<Window.Resources>
+		<BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+	</Window.Resources>
+
 	<Grid Margin="20">
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*"/>
-			<ColumnDefinition Width="1*"/>
-		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 
-		<StackPanel Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,20">
-			<TextBlock Text="STOCK &amp; MOUVEMENTS" FontSize="24" FontWeight="Bold" Foreground="#333"/>
+		<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+			<TextBlock Text="CAVE GRAND MONARQUE" FontSize="24" FontWeight="Bold" Foreground="#333"/>
 			<TextBlock Text="{Binding BonjourUser}" FontSize="16" Foreground="#B8860B" VerticalAlignment="Bottom" Margin="20,0,0,4"/>
 
-			<TextBlock Text="{Binding CoutTotal, StringFormat='Valorisation : {0:C2}'}"
-                       FontSize="18" FontWeight="Bold" Foreground="#2E7D32"
-                       HorizontalAlignment="Right" Margin="50,0,0,0" VerticalAlignment="Bottom"/>
+			<Border Background="#E8F5E9" CornerRadius="5" Margin="50,0,0,0" Padding="10,2">
+				<TextBlock Text="{Binding CoutTotal, StringFormat='Valorisation Totale : {0:C2}'}"
+						   FontSize="16" FontWeight="Bold" Foreground="#2E7D32" VerticalAlignment="Center"/>
+			</Border>
 		</StackPanel>
 
-		<Border Grid.Row="1" Grid.Column="0" Background="White" CornerRadius="8" Padding="10" Margin="0,0,20,0">
-			<Border.Effect>
-				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
-			</Border.Effect>
+		<TabControl Grid.Row="1" BorderThickness="0" Background="Transparent">
+			<TabControl.Resources>
+				<Style TargetType="TabItem">
+					<Setter Property="FontSize" Value="14"/>
+					<Setter Property="FontWeight" Value="Bold"/>
+					<Setter Property="Padding" Value="15,10"/>
+					<Setter Property="Margin" Value="0,0,5,0"/>
+					<Setter Property="Cursor" Value="Hand"/>
+				</Style>
+			</TabControl.Resources>
 
-			<DataGrid ItemsSource="{Binding ListeBouteilles}"
-                      SelectedItem="{Binding SelectedBouteille}"
-                      AutoGenerateColumns="False"
-                      IsReadOnly="True"
-                      GridLinesVisibility="Horizontal"
-                      HeadersVisibility="Column"
-                      Background="White"
-                      BorderThickness="0">
+			<TabItem Header="📦 GESTION DU STOCK">
+				<Grid Margin="0,15,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="2*"/>
+						<ColumnDefinition Width="1*"/>
+					</Grid.ColumnDefinitions>
 
-				<DataGrid.Columns>
-					<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
-					<DataGridTextColumn Header="Nom du Vin" Binding="{Binding Libelle}" Width="*"/>
-					<DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" Width="80"/>
+					<Border Grid.Column="0" Background="White" CornerRadius="8" Padding="10" Margin="0,0,20,0">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
 
-					<DataGridTextColumn Header="EMPLACEMENT" Binding="{Binding Code_Emplacement}" Width="120" FontWeight="Bold">
-						<DataGridTextColumn.ElementStyle>
-							<Style TargetType="TextBlock">
-								<Setter Property="Foreground" Value="#B8860B"/>
-							</Style>
-						</DataGridTextColumn.ElementStyle>
-					</DataGridTextColumn>
+							<Border Grid.Row="0" Margin="0,0,0,10" Background="White" CornerRadius="15" BorderBrush="#DDD" BorderThickness="1" Height="35">
+								<Grid>
+									<Grid.ColumnDefinitions>
+										<ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="*"/>
+									</Grid.ColumnDefinitions>
+									<TextBlock Text="🔍" Margin="10,0,5,0" VerticalAlignment="Center" Foreground="Gray"/>
+									<TextBox x:Name="SearchBox" Text="{Binding TexteRecherche, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" BorderThickness="0" Background="Transparent" VerticalContentAlignment="Center" FontSize="14"/>
+									<TextBlock Text="Rechercher (Nom ou Emplacement)..." Grid.Column="1" IsHitTestVisible="False" VerticalAlignment="Center" Foreground="#CCC">
+										<TextBlock.Style>
+											<Style TargetType="TextBlock">
+												<Setter Property="Visibility" Value="Collapsed"/>
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+														<Setter Property="Visibility" Value="Visible"/>
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</TextBlock.Style>
+									</TextBlock>
+								</Grid>
+							</Border>
 
-					<DataGridTextColumn Header="Prix" Binding="{Binding Prix, StringFormat=C2}" Width="80"/>
-				</DataGrid.Columns>
-			</DataGrid>
-		</Border>
+							<DataGrid Grid.Row="1" ItemsSource="{Binding ListeBouteilles}" SelectedItem="{Binding SelectedBouteille}" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" Background="White" BorderThickness="0">
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="40"/>
+									<DataGridTextColumn Header="Vin" Binding="{Binding Libelle}" Width="*"/>
+									<DataGridTextColumn Header="Millésime" Binding="{Binding Millesime}" Width="70"/>
+									<DataGridTextColumn Header="Emplacement" Binding="{Binding Code_Emplacement}" Width="100" FontWeight="Bold" Foreground="#B8860B"/>
+									<DataGridTextColumn Header="Prix" Binding="{Binding Prix, StringFormat=C2}" Width="70"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</Grid>
+					</Border>
 
-		<Border Grid.Row="1" Grid.Column="1" Background="White" CornerRadius="8" Padding="20">
-			<Border.Effect>
-				<DropShadowEffect BlurRadius="10" Opacity="0.1" ShadowDepth="2"/>
-			</Border.Effect>
+					<Border Grid.Column="1" Background="White" CornerRadius="8" Padding="20">
+						<StackPanel>
+							<TextBlock Text="ACTION : DÉPLACER" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
 
-			<StackPanel>
-				<TextBlock Text="DÉPLACER UNE BOUTEILLE" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+							<TextBlock Text="Vin sélectionné :" FontSize="12" Foreground="Gray"/>
+							<Border Background="#F9F9F9" Padding="10" Margin="0,5,0,20" CornerRadius="5">
+								<StackPanel>
+									<TextBlock Text="{Binding SelectedBouteille.Libelle, TargetNullValue='---'}" FontWeight="Bold"/>
+									<TextBlock Text="{Binding SelectedBouteille.Code_Emplacement, StringFormat='Actuel : {0}', TargetNullValue='Loc: ---'}" Foreground="#B8860B"/>
+								</StackPanel>
+							</Border>
 
-				<TextBlock Text="Vin sélectionné :" FontSize="12" Foreground="Gray"/>
-				<Border Background="#F9F9F9" Padding="10" Margin="0,5,0,20" CornerRadius="5">
-					<StackPanel>
-						<TextBlock Text="{Binding SelectedBouteille.Libelle, TargetNullValue='Aucune sélection'}"
-                                   FontWeight="Bold" FontSize="14" TextWrapping="Wrap"/>
-						<TextBlock Text="{Binding SelectedBouteille.Code_Emplacement, StringFormat='Actuellement en : {0}', TargetNullValue='Loc: ---'}"
-                                   Foreground="#B8860B" Margin="0,5,0,0"/>
+							<TextBlock Text="Nouvel ID Emplacement :" FontSize="12" Foreground="Gray"/>
+							<TextBox Text="{Binding TargetEmplacementId, UpdateSourceTrigger=PropertyChanged}" Height="40" FontSize="16" FontWeight="Bold" Padding="5" VerticalContentAlignment="Center" BorderBrush="#DDD" BorderThickness="1" Margin="0,5,0,20"/>
+
+							<Button Command="{Binding DeplacerCommand}" Content="CONFIRMER" Height="45" Background="#B8860B" Foreground="White" FontWeight="Bold">
+								<Button.Resources>
+									<Style TargetType="Border">
+										<Setter Property="CornerRadius" Value="5"/>
+									</Style>
+								</Button.Resources>
+							</Button>
+
+							<Button Command="{Binding RefreshCommand}" Content="Actualiser" Height="30" Margin="0,10,0,0" Background="Transparent" Foreground="Gray" BorderThickness="0"/>
+						</StackPanel>
+					</Border>
+				</Grid>
+			</TabItem>
+
+			<TabItem Header="📊 ZONES &amp; VALEURS">
+				<Grid Margin="0,15,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="1*"/>
+						<ColumnDefinition Width="1*"/>
+					</Grid.ColumnDefinitions>
+
+					<Border Grid.Column="0" Background="White" CornerRadius="8" Padding="20" Margin="0,0,20,0">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+							<TextBlock Text="VALORISATION PAR EMPLACEMENT" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+
+							<DataGrid Grid.Row="1" ItemsSource="{Binding ListeStatsZones}" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" Background="White" BorderThickness="0">
+								<DataGrid.Columns>
+									<DataGridTextColumn Header="Zone / Emplacement" Binding="{Binding NomZone}" Width="*" FontWeight="Bold"/>
+									<DataGridTextColumn Header="Quantité" Binding="{Binding Quantite}" Width="80"/>
+									<DataGridTextColumn Header="Valeur Totale" Binding="{Binding ValeurTotale, StringFormat=C2}" Width="100" Foreground="#2E7D32" FontWeight="Bold"/>
+								</DataGrid.Columns>
+							</DataGrid>
+						</Grid>
+					</Border>
+
+					<Border Grid.Column="1" Background="White" CornerRadius="8" Padding="20">
+						<StackPanel>
+							<TextBlock Text="AJOUTER UNE NOUVELLE ZONE" FontSize="16" FontWeight="Bold" Foreground="#333" Margin="0,0,0,20"/>
+
+							<TextBlock Text="Nom de la Zone / Code :" FontSize="12" Foreground="Gray"/>
+							<TextBox Height="35" Margin="0,5,0,15" BorderBrush="#DDD" BorderThickness="1" VerticalContentAlignment="Center"/>
+
+							<TextBlock Text="Capacité (Nb Bouteilles) :" FontSize="12" Foreground="Gray"/>
+							<TextBox Height="35" Margin="0,5,0,20" BorderBrush="#DDD" BorderThickness="1" VerticalContentAlignment="Center"/>
+
+							<Button Content="CRÉER L'EMPLACEMENT" Height="45" Background="#333" Foreground="White" FontWeight="Bold">
+								<Button.Resources>
+									<Style TargetType="Border">
+										<Setter Property="CornerRadius" Value="5"/>
+									</Style>
+								</Button.Resources>
+							</Button>
+							<TextBlock Text="(Fonctionnalité à implémenter côté BDD)" Foreground="Red" FontSize="10" Margin="0,5,0,0"/>
+						</StackPanel>
+					</Border>
+				</Grid>
+			</TabItem>
+
+			<TabItem Header="📅 RÉSERVATIONS">
+				<Border Background="White" CornerRadius="8" Padding="40" Margin="0,15,0,0">
+					<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+						<TextBlock Text="MODULE DE RÉSERVATION" FontSize="20" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+						<TextBlock Text="Ici, le sommelier pourra mettre de côté des bouteilles pour un service futur." Foreground="Gray" Margin="0,10,0,20" HorizontalAlignment="Center"/>
+						<Button Content="Nouvelle Réservation" Width="200" Height="40" Background="#B8860B" Foreground="White" FontWeight="Bold">
+							<Button.Resources>
+								<Style TargetType="Border">
+									<Setter Property="CornerRadius" Value="20"/>
+								</Style>
+							</Button.Resources>
+						</Button>
 					</StackPanel>
 				</Border>
+			</TabItem>
 
-				<TextBlock Text="Vers l'Emplacement (ID) :" FontSize="12" Foreground="Gray"/>
-				<TextBox Text="{Binding TargetEmplacementId, UpdateSourceTrigger=PropertyChanged}"
-                         Height="40" FontSize="16" FontWeight="Bold"
-                         Padding="5" VerticalContentAlignment="Center"
-                         BorderBrush="#DDD" BorderThickness="1"
-                         Margin="0,5,0,20"/>
-
-				<TextBlock Text="Astuce : Entrez l'ID de la zone cible (ex: 1, 2...)"
-                           FontSize="10" FontStyle="Italic" Foreground="Gray" Margin="0,-15,0,20"/>
-
-				<Button Command="{Binding DeplacerCommand}"
-                        Content="CONFIRMER LE DÉPLACEMENT"
-                        Height="50"
-                        Background="#B8860B" Foreground="White"
-                        FontWeight="Bold" FontSize="14"
-                        Cursor="Hand">
-					<Button.Resources>
-						<Style TargetType="Border">
-							<Setter Property="CornerRadius" Value="25"/>
-						</Style>
-					</Button.Resources>
-				</Button>
-
-				<Button Command="{Binding RefreshCommand}"
-                        Content="Actualiser la liste"
-                        Height="30" Margin="0,20,0,0"
-                        Background="Transparent" Foreground="Gray" BorderThickness="0"
-                        Cursor="Hand"/>
-
-			</StackPanel>
-		</Border>
-
+		</TabControl>
 	</Grid>
 </Window>

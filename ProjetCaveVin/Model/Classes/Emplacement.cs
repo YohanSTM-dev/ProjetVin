@@ -17,4 +17,8 @@ namespace ProjetCaveVin.Model.Classes
         public int id_zone { get; set; }
 
     }
+
+
+
+
 }

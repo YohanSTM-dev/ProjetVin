@@ -79,17 +79,20 @@ namespace ProjetCaveVin.ViewModel
 
         private void AppliquerFiltres()
         {
+
             // Partir de toutes les bouteilles ou des bouteilles de la zone
             var bouteillesFiltrees = string.IsNullOrWhiteSpace(_filtreZone)
                 ? _allBouteilles
                 : _bouteilleService.GetBouteillesParZone(_filtreZone);
-
+             
             // Appliquer le filtre sur le libellé si présent
             if (!string.IsNullOrWhiteSpace(_filtreLibelle))
             {
+
                 bouteillesFiltrees = bouteillesFiltrees
                     .Where(b => b.Libelle.ToLower().Contains(_filtreLibelle.ToLower()))
                     .ToList();
+
             }
 
             Bouteilles = new ObservableCollection<Bouteille>(bouteillesFiltrees);

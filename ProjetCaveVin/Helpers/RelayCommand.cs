@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace ProjetCaveVin.Helpers
 {
- //  SANS PARAMÈTRE (Celle que tu avais déjà) ---
+    // --- SANS PARAMÈTRE (Celle utilisée par DeplacerCommand) ---
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
@@ -30,9 +30,16 @@ namespace ProjetCaveVin.Helpers
         {
             _execute();
         }
+
+        // --- C'EST ICI LA CORRECTION ---
+        // Elle demande à WPF de revérifier tous les boutons.
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
+        }
     }
 
-    //  AVEC PARAMÈTRE <T>
+    // --- AVEC PARAMÈTRE <T>  ---
     public class RelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
@@ -58,6 +65,11 @@ namespace ProjetCaveVin.Helpers
         public void Execute(object parameter)
         {
             _execute((T)parameter);
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CommandManager.InvalidateRequerySuggested();
         }
     }
 }
