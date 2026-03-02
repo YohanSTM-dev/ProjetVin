@@ -1,28 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-
-
 using System.Windows.Input;
 using ProjetCaveVin.ViewModel;
 using ProjetCaveVin.Model.Classes;
 
 
+
 namespace ProjetCaveVin.View
 {
-    public partial class GestionBouteillePage : Page
+    public partial class GestionBouteilleWindow : Window
     {
-        private GestionBouteillePageViewModel _viewModel;
-
-        public GestionBouteillePage()
+        private GestionBouteilleWindowViewModel _dataContext;
+        public GestionBouteilleWindow()
         {
             InitializeComponent();
-            _viewModel = new GestionBouteillePageViewModel();
-            this.DataContext = _viewModel;
+            _dataContext = new GestionBouteilleWindowViewModel();
+            this.DataContext = _dataContext; // ← essentiel pour que le XAML voie Bouteilles et Zones
         }
 
         private void Recharger_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.RechargerBouteilles();
+            _dataContext.RechargerBouteilles();
             LibelleTextBox.Text = string.Empty;
         }
 
@@ -30,19 +28,25 @@ namespace ProjetCaveVin.View
         {
             if (sender is Border border && border.DataContext is Zone zone)
             {
-                _viewModel.FiltrerParZone(zone.Code);
+                _dataContext.FiltrerParZone(zone.Code);
             }
         }
 
         private void LibelleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _viewModel.FiltrerParLibelle(LibelleTextBox.Text);
+            _dataContext.FiltrerParLibelle(LibelleTextBox.Text);
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.ReinitialiserFiltres();
+            _dataContext.ReinitialiserFiltres();
             LibelleTextBox.Text = string.Empty;
+        }
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
         }
     }
 }

@@ -183,6 +183,50 @@
 				</Border>
 			</TabItem>
 
+<<<<<<< HEAD
 		</TabControl>
 	</Grid>
+=======
+				<TextBlock Text="Vers l'Emplacement (ID) :" FontSize="12" Foreground="Gray"/>
+				<TextBox Text="{Binding TargetEmplacementId, UpdateSourceTrigger=PropertyChanged}"
+                         Height="40" FontSize="16" FontWeight="Bold"
+                         Padding="5" VerticalContentAlignment="Center"
+                         BorderBrush="#DDD" BorderThickness="1"
+                         Margin="0,5,0,20"/>
+
+				<TextBlock Text="Astuce : Entrez l'ID de la zone cible (ex: 1, 2...)"
+                           FontSize="10" FontStyle="Italic" Foreground="Gray" Margin="0,-15,0,20"/>
+
+				<Button Command="{Binding DeplacerCommand}"
+                        Content="CONFIRMER LE DÉPLACEMENT"
+                        Height="50"
+                        Background="#B8860B" Foreground="White"
+                        FontWeight="Bold" FontSize="14"
+                        Cursor="Hand">
+					<Button.Resources>
+						<Style TargetType="Border">
+							<Setter Property="CornerRadius" Value="25"/>
+						</Style>
+					</Button.Resources>
+				</Button>
+
+				<Button Command="{Binding RefreshCommand}"
+                        Content="Actualiser la liste"
+                        Height="30" Margin="0,20,0,0"
+                        Background="Transparent" Foreground="Gray" BorderThickness="0"
+                        Cursor="Hand"/>
+
+			</StackPanel>
+		</Border>
+        <Button Content="← Retour"
+Background="Transparent"
+Foreground="#B8860B"
+BorderThickness="0"
+FontSize="14"
+Margin="303,4,0,6"
+Cursor="Hand"
+Click="RetourButton_Click" Grid.Column="1"/>
+
+    </Grid>
+>>>>>>> e68fe6860d3a3d5431aacb4ab4561d27309535c9
 </Window>
