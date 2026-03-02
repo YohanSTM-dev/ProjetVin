@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.Runtime.Intrinsics.Arm;
+using System.Windows;
 using Microsoft.Data.SqlClient;
 
 namespace ProjetCaveVin.Model.Connexion
@@ -72,7 +74,7 @@ namespace ProjetCaveVin.Model.Connexion
 
         public static DatabaseConnexion GetConnection()
         {
-            string connectionString = @"Server=localhost\SQLEXPRESS;Database=Cave;Trusted_Connection=True;Encrypt=False;";
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;Trusted_Connection=True;TrustServerCertificate = True;";
 
             var db = new DatabaseConnexion(connectionString);
             db.Open();
@@ -81,7 +83,7 @@ namespace ProjetCaveVin.Model.Connexion
 
         public static string ConnexionDatabase()
         {
-            string connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION");
+            string connectionString = @"Server=localhost\SQLEXPRESS;Database=cave;Trusted_Connection=True;TrustServerCertificate = True;";
 
             if (string.IsNullOrEmpty(connectionString))
             {

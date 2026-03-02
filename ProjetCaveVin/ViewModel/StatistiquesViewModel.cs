@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 
 namespace ProjetCaveVin.ViewModel
 {
@@ -39,7 +40,7 @@ namespace ProjetCaveVin.ViewModel
 
         public void ChargerDonnees()
         {
-            List<Bouteille> bouteilles = Bouteille.getAllBouteilles();
+            List<Bouteille> bouteilles = BouteilleRepository.getAllBouteilles();
             var totalCoutBouteilles = bouteilles.Sum(b=>b.Prix); // fais la somme des prix de chaque bouteille
             RepartitionVins = bouteilles.GroupBy(b=>b.Type).ToDictionary(TypeGroup => TypeGroup.Key, TypeGroup => TypeGroup.Count());
 

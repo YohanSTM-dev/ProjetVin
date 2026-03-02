@@ -3,6 +3,7 @@ using ProjetCaveVin.Helpers;
 using System;
 using System.Windows.Input;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 
 
 namespace ProjetCaveVin.ViewModel
@@ -74,7 +75,7 @@ namespace ProjetCaveVin.ViewModel
 
             try
             {
-                Utilisateur.InsertUtilisateur(Nom, Prenom, Email, Password, Role);
+                UtilisateurRepository.InsertUtilisateur(Nom, Prenom, Email, Password, Role);
                 Message = "Utilisateur créé avec succès !";
 
                 // Reset champs

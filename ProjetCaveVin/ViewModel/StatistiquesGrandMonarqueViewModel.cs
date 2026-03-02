@@ -1,8 +1,9 @@
-using ProjetCaveVin.Helpers; 
+using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel; 
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -35,6 +36,9 @@ namespace ProjetCaveVin.ViewModel
             set { _bonjourUser = value; OnPropertyChanged(); }
         }
 
+        // Repositories
+        private BouteilleRepository BouteilleRepository { get; set; } = new BouteilleRepository();
+
         // Texte de la barre de recherche
         private string _texteRecherche;
         public string TexteRecherche
@@ -44,7 +48,6 @@ namespace ProjetCaveVin.ViewModel
             {
                 _texteRecherche = value;
                 OnPropertyChanged();
-
                 AppliquerFiltre();
             }
         }
@@ -79,7 +82,6 @@ namespace ProjetCaveVin.ViewModel
             set { _listeStatsZones = value; OnPropertyChanged(); }
         }
 
-
         public ICommand DeplacerCommand { get; }
         public ICommand RefreshCommand { get; }
 
@@ -99,10 +101,10 @@ namespace ProjetCaveVin.ViewModel
             ChargerDonnees();
         }
 
-
         public void ChargerDonnees()
         {
-            var listeBrute = Bouteille.GetAllBouteillesAvecEmplacement();
+            // Utilisation du Repository entrant combiné avec ta variable
+            var listeBrute = BouteilleRepository.GetAllBouteillesAvecEmplacement();
 
             _toutesLesBouteilles = listeBrute ?? new List<Bouteille>();
 
@@ -112,7 +114,7 @@ namespace ProjetCaveVin.ViewModel
             CalculerTotal();
 
             // calculer les stats par emplacement pour l'autre onglet 
-            if(_toutesLesBouteilles != null)
+            if (_toutesLesBouteilles != null)
             {
                 var stats = _toutesLesBouteilles.Where(b => !string.IsNullOrEmpty(b.Code_Emplacement)).GroupBy(b => b.Code_Emplacement).Select(g => new StatistiqueZone
                 {
@@ -141,7 +143,7 @@ namespace ProjetCaveVin.ViewModel
                 var resultatFiltre = _toutesLesBouteilles.Where(b =>
                     (b.Libelle != null && b.Libelle.ToLower().Contains(terme)) ||
                     (b.Code_Emplacement != null && b.Code_Emplacement.ToLower().Contains(terme))
-                ).ToList(); 
+                ).ToList();
 
                 ListeBouteilles = new ObservableCollection<Bouteille>(resultatFiltre);
             }
@@ -174,7 +176,8 @@ namespace ProjetCaveVin.ViewModel
 
             try
             {
-                HistoriqueDeplacement.EnregistrerMouvement(
+                // Utilisation du HDRepository avec ta gestion d'erreur (try/catch)
+                HDRepository.EnregistrerMouvement(
                     SelectedBouteille.Id,
                     TargetEmplacementId,
                     Session.CurrentUser.id_utilisateur
@@ -195,7 +198,6 @@ namespace ProjetCaveVin.ViewModel
         }
     }
 
-
     public class StatistiqueZone
     {
         public string NomZone { get; set; } // Ex: "A1" ou "B"
@@ -203,11 +205,8 @@ namespace ProjetCaveVin.ViewModel
         public decimal ValeurTotale { get; set; }
         public int Limite { get; set; }
 
-
         public string Remplisage => $"{Quantite} / {Limite}"; // Ex: "5 / 20"
 
         public bool EstPlein => Quantite >= Limite;
-        
     }
-
 }

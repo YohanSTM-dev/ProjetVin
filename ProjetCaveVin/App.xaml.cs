@@ -1,4 +1,5 @@
 ﻿using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -30,12 +31,12 @@ namespace ProjetCaveVin
 
 
                 // . Initialiser les rôles si la table est vide
-                List<RoleAccess> rolesExistants = RoleAccess.GetAllRoles();
+                List<RoleAccess> rolesExistants = RARepository.GetAllRoles();
                 if (rolesExistants.Count == 0)
                 {
-                    RoleAccess.CreateOrInsertRole("Administrateur", "1234");
-                    RoleAccess.CreateOrInsertRole("Sommelier", "1234");
-                    RoleAccess.CreateOrInsertRole("Serveur", "1234");
+                    RARepository.CreateOrInsertRole("Administrateur", "1234");
+                    RARepository.CreateOrInsertRole("Sommelier", "1234");
+                    RARepository.CreateOrInsertRole("Serveur", "1234");
                 }
             }
             catch (Exception ex)

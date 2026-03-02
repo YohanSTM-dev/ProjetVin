@@ -1,5 +1,6 @@
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Repositories;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -59,7 +60,7 @@ namespace ProjetCaveVin.ViewModel
             }
 
             // Vérification du mot de passe en base
-            if (RoleAccess.CheckPassword(SelectedRoleName, password))
+            if (RARepository.CheckPassword(SelectedRoleName, password))
             {
                 Window targetWindow;
                 if (SelectedRoleName == "Administrateur")

@@ -4,6 +4,7 @@ using System;
 //using ProjetCaveVin.Model.Tables;
 using ProjetCaveVin.Model.Classes;
 using System.Diagnostics.Eventing.Reader;
+using ProjetCaveVin.Repositories;
 
 namespace ProjetCaveVin.ViewModel
 {
@@ -28,7 +29,7 @@ namespace ProjetCaveVin.ViewModel
 
         private void Login()
         {
-            var user = Utilisateur.GetByCredentials(Email, Password);
+            var user = UtilisateurRepository.GetByCredentials(Email, Password);
 
             if (user != null)
             {
