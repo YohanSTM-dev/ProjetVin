@@ -37,7 +37,7 @@ namespace ProjetCaveVin.Model
         private List<Bouteille> GetBouteille()
         {
             List<Bouteille> Bouteilles = new();
-            string connectionString = @"Server=172.16.119.42\SQLEXPRESS02,1433;Database=cave;User Id=yohan;Password=1234;Encrypt=False;";
+            string connectionString = @"Server=localhost\SQLEXPRESS03;Database=cave;Trusted_Connection=True;Encrypt=False;";
 
             var db = new DatabaseConnexion(connectionString);
 
