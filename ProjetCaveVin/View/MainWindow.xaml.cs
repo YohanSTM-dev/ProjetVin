@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Navigation;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.ViewModel;
 
 
 namespace ProjetCaveVin.View
@@ -16,13 +17,12 @@ namespace ProjetCaveVin.View
 
         private void ImageGestionVin_Click(object sender, MouseButtonEventArgs e)
         {
-            var page = new GestionBouteillePage();
-            var navWindow = new NavigationWindow
-            {
-                Content = page,
-                Title = "Gestion des Bouteilles"
-            };
-            navWindow.Show();
+
+            var viewModel = new GestionBouteilleWindowViewModel();
+
+            var window = new GestionBouteilleWindow();
+            window.Show();
+
             this.Close();
         }
 
@@ -36,6 +36,12 @@ namespace ProjetCaveVin.View
             var page = new StatistiquesGrandMonarqueWindow();
 
             page.Show();
+            this.Close();
+        }
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            var roleAccessWindow = new RoleAccessWindow();
+            roleAccessWindow.Show();
             this.Close();
         }
     }

@@ -19,5 +19,11 @@ namespace ProjetCaveVin.View
             InitializeComponent();
             DataContext = new StatistiquesGrandMonarqueViewModel();
         }
+        private void RetourButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+        }
     }
 }

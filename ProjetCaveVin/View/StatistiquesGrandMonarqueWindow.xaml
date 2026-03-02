@@ -110,6 +110,14 @@
 
 			</StackPanel>
 		</Border>
+        <Button Content="← Retour"
+Background="Transparent"
+Foreground="#B8860B"
+BorderThickness="0"
+FontSize="14"
+Margin="303,4,0,6"
+Cursor="Hand"
+Click="RetourButton_Click" Grid.Column="1"/>
 
-	</Grid>
+    </Grid>
 </Window>

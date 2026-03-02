@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ProjetCaveVin.ViewModel
 {
-    public class GestionBouteillePageViewModel : BaseViewModel
+    public class GestionBouteilleWindowViewModel : BaseViewModel
     {
         private readonly IBouteilleService _bouteilleService;
         private readonly IZoneService _zoneService;
@@ -39,9 +39,8 @@ namespace ProjetCaveVin.ViewModel
             }
         }
 
-        public GestionBouteillePageViewModel()
+        public GestionBouteilleWindowViewModel()
         {
-            // Injection de dépendances (peut être amélioré avec un conteneur IoC)
             _bouteilleService = new BouteilleService();
             _zoneService = new ZoneService();
 
@@ -79,12 +78,10 @@ namespace ProjetCaveVin.ViewModel
 
         private void AppliquerFiltres()
         {
-            // Partir de toutes les bouteilles ou des bouteilles de la zone
             var bouteillesFiltrees = string.IsNullOrWhiteSpace(_filtreZone)
                 ? _allBouteilles
                 : _bouteilleService.GetBouteillesParZone(_filtreZone);
 
-            // Appliquer le filtre sur le libellé si présent
             if (!string.IsNullOrWhiteSpace(_filtreLibelle))
             {
                 bouteillesFiltrees = bouteillesFiltrees
