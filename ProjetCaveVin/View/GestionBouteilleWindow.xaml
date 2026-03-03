@@ -60,6 +60,10 @@
     </Window.Resources>
 
     <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="69*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -69,7 +73,7 @@
         </Grid.RowDefinitions>
 
         <!-- Ligne 0 : Logo et titre -->
-        <Grid Grid.Row="0" Margin="0,0,0,20">
+        <Grid Grid.Row="0" Margin="0,0,0,20" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -84,24 +88,33 @@
                        FontSize="30" Style="{StaticResource GoldTitle}"
                        VerticalAlignment="Center" Margin="20,0,0,0"/>
         </Grid>
+        <Button Content="← Retour"
+Background="Transparent"
+Foreground="#B8860B"
+BorderThickness="0"
+FontSize="14"
+Margin="737,-1,0,11"
+HorizontalAlignment="Left"
+Cursor="Hand"
+Click="RetourButton_Click" Grid.Column="1"/>
 
         <!-- Ligne 1 : boutons d'action -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,20" Grid.ColumnSpan="2">
             <Button Content="Recharger les bouteilles"
                     Width="240" Height="45" Margin="0,0,10,0"
                     Background="#b09b5f" Foreground="White"
                     BorderBrush="#c1b183" BorderThickness="2" FontWeight="Bold"
                     Click="Recharger_Click"/>
-
             <Button Content="Réinitialiser les filtres"
                     Width="200" Height="45"
                     Background="#8B7355" Foreground="White"
                     BorderBrush="#A0846E" BorderThickness="2" FontWeight="Bold"
                     Click="ResetButton_Click"/>
         </StackPanel>
+        <TextBlock Text="{Binding NbBouteille}" Grid.Column="1" Margin="494,32,-626,334" Grid.RowSpan="4" Grid.Row="1"/>
 
         <!-- Ligne 2 : Filtre par libellé -->
-        <Grid Grid.Row="2" Margin="0,0,0,15">
+        <Grid Grid.Row="2" Margin="0,0,0,15" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="400"/>
@@ -122,7 +135,7 @@
         </Grid>
 
         <!-- Ligne 3 : Filtres par Zones -->
-        <Grid Grid.Row="3" Margin="0,0,0,20">
+        <Grid Grid.Row="3" Margin="0,0,0,20" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -163,7 +176,7 @@
         </Grid>
 
         <!-- Ligne 4 : Bouteilles -->
-        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="4" VerticalScrollBarVisibility="Auto" Grid.ColumnSpan="2">
             <ItemsControl ItemsSource="{Binding Bouteilles}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>

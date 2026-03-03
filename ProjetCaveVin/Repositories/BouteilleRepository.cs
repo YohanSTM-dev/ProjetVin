@@ -10,54 +10,62 @@ namespace ProjetCaveVin.Repositories
 {
     public class BouteilleRepository
     {
-        public static List<Bouteille> getAllBouteilles()
+       public List<Bouteille> GetAllBouteilles()
         {
-            var listBouteilles = new List<Bouteille>();
+            List<Bouteille> bouteilles = new();
             var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
             db.Open();
+
             using (var command = db.CreateCommand())
             {
                 command.CommandText = @"
-                                SELECT 
-                                    b.id_bouteille, 
-                                    b.Libelle, 
-                                    b.Millesime, 
-                                    b.Contenance, 
-                                    b.Prix,
-                                    e.Code_Emplacement, 
-                                    tb.libelleType, 
-                                    b.id_origine 
-                                FROM Bouteille b
-                                INNER JOIN HistoriqueDeplacement h ON b.id_bouteille = h.id_bouteille
-                                INNER JOIN Emplacement e ON h.id_emplacement = e.id_emplacement
-                                INNER JOIN TypeBouteille tb on b.id_type = tb.id_type
-                                WHERE h.Date_Deplacement = (
-                                    SELECT MAX(h2.Date_Deplacement) 
-                                    FROM HistoriqueDeplacement h2 
-                                    WHERE h2.id_bouteille = b.id_bouteille
-                                )";
+                    WITH DernierDeplacement AS (
+                        SELECT 
+                            h.id_bouteille,
+                            h.id_emplacement,
+                            h.Date_Deplacement,
+                            ROW_NUMBER() OVER (PARTITION BY h.id_bouteille ORDER BY h.Date_Deplacement DESC) AS rn
+                        FROM HistoriqueDeplacement h
+                    )
+                    SELECT 
+                        b.id_bouteille,
+                        b.Libelle,
+                        b.Millesime,
+                        b.Prix,
+                        t.LibelleType AS Type,
+                        z.Code AS ZoneCode,
+                        e.Code_Emplacement,
+                        t.PhotoURL
+                    FROM Bouteille b
+                    INNER JOIN DernierDeplacement d 
+                        ON b.id_bouteille = d.id_bouteille AND d.rn = 1
+                    INNER JOIN Emplacement e 
+                        ON d.id_emplacement = e.id_emplacement
+                    INNER JOIN Zone z 
+                        ON e.id_zone = z.id_zone
+                    INNER JOIN TypeBouteille t
+                        ON b.id_type = t.id_type;";
 
                 using (var reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        listBouteilles.Add(new Bouteille
+                        bouteilles.Add(new Bouteille
                         {
                             Id = reader.GetInt32(0),
                             Libelle = reader.GetString(1),
-                            Millesime = reader.IsDBNull(2) ? "" : reader.GetString(2),
-                            Contenance = reader.GetDecimal(3),
-                            Prix = reader.GetDecimal(4),
-                            Code_Emplacement = reader.GetString(5),
-
-                            Type = reader.GetString(6),
-                            //Photo = reader.IsDBNull(8) ? null : reader.GetString(8),
-                            IdOrigine = reader.GetInt32(7)
+                            Millesime = reader.GetString(2),
+                            Prix = reader.GetDecimal(3),
+                            Type = reader.GetString(4),
+                            Code = reader.GetString(5),
+                            Code_Emplacement = reader.GetString(6),
+                            Photo = reader.GetString(7),
                         });
                     }
                 }
-                return listBouteilles;
             }
+
+            return bouteilles;
         }
         public static void AjouterBouteille(Bouteille nouvelleBouteille, int idEmplacement, int idUtilisateur)
         {
@@ -122,25 +130,27 @@ namespace ProjetCaveVin.Repositories
             {
 
                 cmd.CommandText = @"
-            SELECT 
+            use cave;
+SELECT 
                 b.id_bouteille, 
                 b.Libelle, 
                 b.Millesime, 
                 b.Contenance, 
                 b.Prix, 
                 b.id_origine,
-                e.Code_Emplacement
+                e.Code_Emplacement,
+                z.Code
             FROM Bouteille b
             INNER JOIN HistoriqueDeplacement h ON b.id_bouteille = h.id_bouteille
             INNER JOIN Emplacement e ON h.id_emplacement = e.id_emplacement
+            inner join Zone z on e.id_zone = z.id_zone
 
             -- FILTRE MAGIQUE : On ne garde que la ligne la plus récente pour chaque bouteille
 
             WHERE h.Date_Deplacement = (
                 SELECT MAX(h2.Date_Deplacement) 
                 FROM HistoriqueDeplacement h2 
-                WHERE h2.id_bouteille = b.id_bouteille
-            )";
+                WHERE h2.id_bouteille = b.id_bouteille)";
 
                 using (var reader = cmd.ExecuteReader())
                 {
@@ -154,13 +164,74 @@ namespace ProjetCaveVin.Repositories
                             Contenance = reader.GetDecimal(3),
                             Prix = reader.GetDecimal(4),
                             IdOrigine = reader.GetInt32(5),
-                            Code_Emplacement = reader.GetString(6)
+                            Code_Emplacement = reader.GetString(6),
+                            Zone = reader.GetString(7)
                         });
                     }
                 }
             }
             db.Close();
             return list;
+        }
+        public List<Bouteille> GetBouteillesParZone(string codeZone)
+        {
+            List<Bouteille> bouteilles = new();
+            var db = new DatabaseConnexion(DatabaseConnexion.ConnexionDatabase());
+            db.Open();
+
+            using (var command = db.CreateCommand())
+            {
+                command.CommandText = @"
+                    WITH DernierDeplacement AS (
+                        SELECT 
+                            h.id_bouteille,
+                            h.id_emplacement,
+                            h.Date_Deplacement,
+                            ROW_NUMBER() OVER (PARTITION BY h.id_bouteille ORDER BY h.Date_Deplacement DESC) AS rn
+                        FROM HistoriqueDeplacement h
+                    )
+                    SELECT 
+                        b.id_bouteille,
+                        b.Libelle,
+                        b.Millesime,
+                        b.Prix,
+                        t.LibelleType AS Type,
+                        z.Code AS ZoneCode,
+                        e.Code_Emplacement,
+                        t.PhotoURL
+                    FROM Bouteille b
+                    INNER JOIN DernierDeplacement d 
+                        ON b.id_bouteille = d.id_bouteille AND d.rn = 1
+                    INNER JOIN Emplacement e 
+                        ON d.id_emplacement = e.id_emplacement
+                    INNER JOIN Zone z 
+                        ON e.id_zone = z.id_zone
+                    INNER JOIN TypeBouteille t
+                        ON b.id_type = t.id_type
+                    WHERE z.Code = @zone;";
+
+                command.Parameters.AddWithValue("@zone", codeZone);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        bouteilles.Add(new Bouteille
+                        {
+                            Id = reader.GetInt32(0),
+                            Libelle = reader.GetString(1),
+                            Millesime = reader.GetString(2),
+                            Prix = reader.GetDecimal(3),
+                            Type = reader.GetString(4),
+                            Code = reader.GetString(5),
+                            Code_Emplacement = reader.GetString(6),
+                            Photo = reader.GetString(7),
+                        });
+                    }
+                }
+            }
+
+            return bouteilles;
         }
     }
 }

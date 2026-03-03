@@ -11,7 +11,7 @@ namespace ProjetCaveVin.ViewModel
 {
     public class StatistiquesViewModel : BaseViewModel
     {
-
+        public BouteilleRepository _bouteilleRepository { get; set; }
         public decimal _coutTotal;
         private decimal CoutTotal
         {
@@ -40,7 +40,7 @@ namespace ProjetCaveVin.ViewModel
 
         public void ChargerDonnees()
         {
-            List<Bouteille> bouteilles = BouteilleRepository.getAllBouteilles();
+            List<Bouteille> bouteilles = _bouteilleRepository.GetAllBouteilles();
             var totalCoutBouteilles = bouteilles.Sum(b=>b.Prix); // fais la somme des prix de chaque bouteille
             RepartitionVins = bouteilles.GroupBy(b=>b.Type).ToDictionary(TypeGroup => TypeGroup.Key, TypeGroup => TypeGroup.Count());
 

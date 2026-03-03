@@ -48,5 +48,6 @@ namespace ProjetCaveVin.View
             mainWindow.Show();
             this.Close();
         }
+
     }
 }

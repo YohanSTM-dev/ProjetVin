@@ -1,9 +1,10 @@
-using System.Windows;
-//using ProjetCaveVin.Model.Tables;
-using ProjetCaveVin.ViewModel;
-using ProjetCaveVin.Model.Connexion;
 using ProjetCaveVin.Helpers;
 using ProjetCaveVin.Model.Classes;
+using ProjetCaveVin.Model.Connexion;
+//using ProjetCaveVin.Model.Tables;
+using ProjetCaveVin.ViewModel;
+using System.Windows;
+using System.Windows.Controls;
 
 
 
@@ -14,16 +15,28 @@ namespace ProjetCaveVin.View
     /// </summary>
     public partial class StatistiquesGrandMonarqueWindow : Window
     {
+        StatistiquesGrandMonarqueViewModel _dataContext = new();
         public StatistiquesGrandMonarqueWindow()
         {
             InitializeComponent();
-            DataContext = new StatistiquesGrandMonarqueViewModel();
+            _dataContext = new StatistiquesGrandMonarqueViewModel();
+            DataContext = _dataContext;
         }
         private void RetourButton_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();
+        }
+
+        private void TabControl_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+      
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -3,19 +3,21 @@ using ProjetCaveVin.Model.Services;
 using ProjetCaveVin.Helpers;
 using System.Collections.ObjectModel;
 using System.Linq;
+using ProjetCaveVin.Repositories;
 
 namespace ProjetCaveVin.ViewModel
 {
     public class GestionBouteilleWindowViewModel : BaseViewModel
     {
-        private readonly IBouteilleService _bouteilleService;
-        private readonly IZoneService _zoneService;
+        private readonly BouteilleRepository _bouteilleRepo;
+        private readonly ZoneRepository _zoneRepo;
 
         private ObservableCollection<Bouteille> _bouteilles;
         private ObservableCollection<Zone> _zones;
         private string _filtreZone;
         private string _filtreLibelle;
-
+        private string _nbBouteille;
+        private int _nombreBouteille = 0;
         // Cache pour toutes les bouteilles
         private List<Bouteille> _allBouteilles;
 
@@ -38,11 +40,22 @@ namespace ProjetCaveVin.ViewModel
                 OnPropertyChanged();
             }
         }
+        public int NombreBouteille
+        {
+            get => _nombreBouteille;
+            set { _nombreBouteille =  value; OnPropertyChanged(); }
+        }
+        public string NbBouteille
+        {
+            get => _nbBouteille;
+            set { _nbBouteille = value; OnPropertyChanged(); }
+        }
+
 
         public GestionBouteilleWindowViewModel()
         {
-            _bouteilleService = new BouteilleService();
-            _zoneService = new ZoneService();
+            _bouteilleRepo = new BouteilleRepository();
+            _zoneRepo = new ZoneRepository();
 
             ChargerDonnees();
         }
@@ -50,10 +63,10 @@ namespace ProjetCaveVin.ViewModel
         private void ChargerDonnees()
         {
             // Charger les zones
-            Zones = new ObservableCollection<Zone>(_zoneService.GetAllZones());
+            Zones = new ObservableCollection<Zone>(_zoneRepo.GetAllZones());
 
             // Charger toutes les bouteilles
-            _allBouteilles = _bouteilleService.GetAllBouteilles();
+            _allBouteilles = _bouteilleRepo.GetAllBouteilles();
             Bouteilles = new ObservableCollection<Bouteille>(_allBouteilles);
         }
 
@@ -80,7 +93,7 @@ namespace ProjetCaveVin.ViewModel
         {
             var bouteillesFiltrees = string.IsNullOrWhiteSpace(_filtreZone)
                 ? _allBouteilles
-                : _bouteilleService.GetBouteillesParZone(_filtreZone);
+                : _bouteilleRepo.GetBouteillesParZone(_filtreZone);
 
             if (!string.IsNullOrWhiteSpace(_filtreLibelle))
             {
@@ -90,6 +103,8 @@ namespace ProjetCaveVin.ViewModel
             }
 
             Bouteilles = new ObservableCollection<Bouteille>(bouteillesFiltrees);
+            NombreBouteille = bouteillesFiltrees.Count;
+            NbBouteille = NombreBouteille.ToString() + " Bouteilles";
         }
 
         public void ReinitialiserFiltres()
@@ -97,6 +112,8 @@ namespace ProjetCaveVin.ViewModel
             _filtreZone = null;
             _filtreLibelle = null;
             Bouteilles = new ObservableCollection<Bouteille>(_allBouteilles);
+            NombreBouteille = Bouteilles.Count;
+            NbBouteille = NombreBouteille.ToString() + " Bouteilles";
         }
     }
 }
